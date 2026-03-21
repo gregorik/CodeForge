@@ -1,0 +1,23 @@
+{
+    "FileVersion": 3,
+    "Version": 1,
+    "VersionName": "0.1.0",
+    "FriendlyName": "CodeForge",
+    "Description": "Visual C++ code generator with node-based class definition and UBT-compliant boilerplate generation.",
+    "Category": "Editor",
+    "CreatedBy": "CodeForge",
+    "EnabledByDefault": true,
+    "CanContainContent": true,
+    "Modules": [
+        {
+            "Name": "CodeForgeRuntime",
+            "Type": "Runtime",
+            "LoadingPhase": "Default"
+        },
+        {
+            "Name": "CodeForgeEditor",
+            "Type": "Editor",
+            "LoadingPhase": "PostEngineInit"
+        }
+    ]
+}

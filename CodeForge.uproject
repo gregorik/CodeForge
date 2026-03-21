@@ -1,0 +1,19 @@
+{
+    "FileVersion": 3,
+    "EngineAssociation": "5.7",
+    "Category": "",
+    "Description": "",
+    "Modules": [
+        {
+            "Name": "CodeForge",
+            "Type": "Runtime",
+            "LoadingPhase": "Default"
+        }
+    ],
+    "Plugins": [
+        {
+            "Name": "CodeForge",
+            "Enabled": true
+        }
+    ]
+}
