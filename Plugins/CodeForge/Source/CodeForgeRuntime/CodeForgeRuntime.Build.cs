@@ -12,5 +12,12 @@ public class CodeForgeRuntime : ModuleRules
             "CoreUObject",
             "Engine"
         });
+
+        // Automation test framework — available in editor and test builds only
+        if (Target.bBuildEditor || Target.Configuration == UnrealTargetConfiguration.Test
+            || Target.Configuration == UnrealTargetConfiguration.Development)
+        {
+            PrivateDependencyModuleNames.Add("AutomationController");
+        }
     }
 }
