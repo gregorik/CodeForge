@@ -51,7 +51,7 @@ namespace
     }
 
     /** Build an error result. */
-    FCodeForgeTemplateResult MakeError(
+    FCodeForgeTemplateResult MakeTemplateError(
         const FString& Message,
         int32 Line,
         const FString& TemplateName)
@@ -173,7 +173,7 @@ FCodeForgeTemplateResult FCodeForgeTemplateEngine::ProcessInternal(
 
         if (CloseBrace == INDEX_NONE)
         {
-            return MakeError(
+            return MakeTemplateError(
                 FString::Printf(TEXT("Unclosed '{{' at line %d"), CurLine),
                 CurLine, TemplateName);
         }
@@ -204,7 +204,7 @@ FCodeForgeTemplateResult FCodeForgeTemplateEngine::ProcessInternal(
 
             if (!bFound)
             {
-                return MakeError(
+                return MakeTemplateError(
                     FString::Printf(TEXT("Unclosed '{{#if %s}}' (no matching '{{/if}}') at line %d"),
                         *ConditionName, CurLine),
                     CurLine, TemplateName);
@@ -252,7 +252,7 @@ FCodeForgeTemplateResult FCodeForgeTemplateEngine::ProcessInternal(
 
             if (!bFound)
             {
-                return MakeError(
+                return MakeTemplateError(
                     FString::Printf(TEXT("Unclosed '{{#each %s}}' (no matching '{{/each}}') at line %d"),
                         *ArrayName, CurLine),
                     CurLine, TemplateName);
@@ -302,7 +302,7 @@ FCodeForgeTemplateResult FCodeForgeTemplateEngine::ProcessInternal(
 
             if (!TemplateResolver)
             {
-                return MakeError(
+                return MakeTemplateError(
                     FString::Printf(
                         TEXT("No template resolver set; cannot include '%s' at line %d"),
                         *IncludeName, CurLine),
@@ -311,7 +311,7 @@ FCodeForgeTemplateResult FCodeForgeTemplateEngine::ProcessInternal(
 
             if (Depth >= MaxIncludeDepth)
             {
-                return MakeError(
+                return MakeTemplateError(
                     FString::Printf(
                         TEXT("Maximum include depth (%d) exceeded while including '%s' at line %d"),
                         MaxIncludeDepth, *IncludeName, CurLine),
@@ -321,7 +321,7 @@ FCodeForgeTemplateResult FCodeForgeTemplateEngine::ProcessInternal(
             const FString IncludeContent = TemplateResolver(IncludeName);
             if (IncludeContent.IsEmpty())
             {
-                return MakeError(
+                return MakeTemplateError(
                     FString::Printf(
                         TEXT("Include template '%s' not found (resolver returned empty string) at line %d"),
                         *IncludeName, CurLine),
@@ -348,14 +348,14 @@ FCodeForgeTemplateResult FCodeForgeTemplateEngine::ProcessInternal(
         // ------------------------------------------------------------------
         if (Directive == TEXT("/if"))
         {
-            return MakeError(
+            return MakeTemplateError(
                 FString::Printf(TEXT("Unexpected '{{/if}}' without matching '{{#if}}' at line %d"),
                     CurLine),
                 CurLine, TemplateName);
         }
         if (Directive == TEXT("/each"))
         {
-            return MakeError(
+            return MakeTemplateError(
                 FString::Printf(TEXT("Unexpected '{{/each}}' without matching '{{#each}}' at line %d"),
                     CurLine),
                 CurLine, TemplateName);
@@ -370,7 +370,7 @@ FCodeForgeTemplateResult FCodeForgeTemplateEngine::ProcessInternal(
             const FString* ValuePtr = Context.Variables.Find(VarName);
             if (ValuePtr == nullptr)
             {
-                return MakeError(
+                return MakeTemplateError(
                     FString::Printf(
                         TEXT("Unknown variable '{{%s}}' referenced at line %d"),
                         *VarName, CurLine),

@@ -6,7 +6,7 @@
 #include "CodeForgeNode_Property.generated.h"
 
 UCLASS()
-class CODEFORGEDITOR_API UCodeForgeNode_Property : public UCodeForgeEdGraphNode
+class CODEFORGEEDITOR_API UCodeForgeNode_Property : public UCodeForgeEdGraphNode
 {
 	GENERATED_BODY()
 

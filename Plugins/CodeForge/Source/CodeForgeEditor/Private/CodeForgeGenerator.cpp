@@ -141,8 +141,8 @@ bool FCodeForgeGenerator::WriteToProject(
     FString SourcePath  = FPaths::Combine(PrivateDir, SubDir, ClassName + TEXT(".cpp"));
 
     // Normalize and ensure directories exist
-    FPaths::NormalizePath(HeaderPath);
-    FPaths::NormalizePath(SourcePath);
+    FPaths::NormalizeFilename(HeaderPath);
+    FPaths::NormalizeFilename(SourcePath);
 
     IFileManager& FM = IFileManager::Get();
     FM.MakeDirectory(*FPaths::GetPath(HeaderPath), /*Tree=*/true);
@@ -482,7 +482,7 @@ FString FCodeForgeGenerator::LoadTemplate(const FString& TemplateName) const
     {
         FString CandidatePath = FPaths::Combine(
             SearchRoot, SubDir, TemplateName + TEXT(".cft"));
-        FPaths::NormalizePath(CandidatePath);
+        FPaths::NormalizeFilename(CandidatePath);
 
         FString Content;
         if (FFileHelper::LoadFileToString(Content, *CandidatePath))

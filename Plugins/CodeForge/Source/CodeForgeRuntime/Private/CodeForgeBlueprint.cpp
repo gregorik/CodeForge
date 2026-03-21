@@ -312,7 +312,7 @@ namespace CodeForgeValidation
     }
 
     /** Helper: add an error result. */
-    static FCodeForgeValidationResult MakeError(const FString& Message, const FString& FieldName, const FString& AutoFixId = FString())
+    static FCodeForgeValidationResult MakeValidationError(const FString& Message, const FString& FieldName, const FString& AutoFixId = FString())
     {
         FCodeForgeValidationResult R;
         R.Severity = ECodeForgeValidationSeverity::Error;
@@ -323,7 +323,7 @@ namespace CodeForgeValidation
     }
 
     /** Helper: add a warning result. */
-    static FCodeForgeValidationResult MakeWarning(const FString& Message, const FString& FieldName, const FString& AutoFixId = FString())
+    static FCodeForgeValidationResult MakeValidationWarning(const FString& Message, const FString& FieldName, const FString& AutoFixId = FString())
     {
         FCodeForgeValidationResult R;
         R.Severity = ECodeForgeValidationSeverity::Warning;
@@ -344,7 +344,7 @@ namespace CodeForgeValidation
         {
             if (Name.Equals(Reserved, ESearchCase::CaseSensitive))
             {
-                Results.Add(MakeError(
+                Results.Add(MakeValidationError(
                     FString::Printf(TEXT("'%s' uses reserved name '%s'"), *Context, *Name),
                     Context));
                 return; // One error per name is enough
@@ -354,7 +354,7 @@ namespace CodeForgeValidation
         {
             if (Name.Equals(Keyword, ESearchCase::CaseSensitive))
             {
-                Results.Add(MakeError(
+                Results.Add(MakeValidationError(
                     FString::Printf(TEXT("'%s' uses C++ keyword '%s'"), *Context, *Name),
                     Context));
                 return;
@@ -378,7 +378,7 @@ TArray<FCodeForgeValidationResult> UCodeForgeBlueprint::Validate() const
     // ------------------------------------------------------------------
     if (ClassName.IsEmpty())
     {
-        Results.Add(MakeError(TEXT("Class name is required"), TEXT("ClassName")));
+        Results.Add(MakeValidationError(TEXT("Class name is required"), TEXT("ClassName")));
     }
 
     // ------------------------------------------------------------------
@@ -395,7 +395,7 @@ TArray<FCodeForgeValidationResult> UCodeForgeBlueprint::Validate() const
             // Rule 1: duplicate names
             if (AllNames.Contains(Prop.Name))
             {
-                Results.Add(MakeError(
+                Results.Add(MakeValidationError(
                     FString::Printf(TEXT("Duplicate name '%s' in class members"), *Prop.Name),
                     TEXT("Properties")));
             }
@@ -407,7 +407,7 @@ TArray<FCodeForgeValidationResult> UCodeForgeBlueprint::Validate() const
             // Rule 2: invalid specifier combo (bBlueprintReadWrite + bBlueprintReadOnly both true)
             if (Prop.bBlueprintReadWrite && Prop.bBlueprintReadOnly)
             {
-                Results.Add(MakeError(
+                Results.Add(MakeValidationError(
                     FString::Printf(TEXT("Property '%s' has both BlueprintReadWrite and BlueprintReadOnly set"), *Prop.Name),
                     FString::Printf(TEXT("Properties.%s"), *Prop.Name)));
             }
@@ -418,7 +418,7 @@ TArray<FCodeForgeValidationResult> UCodeForgeBlueprint::Validate() const
             // Rule 8: RepNotify without Replicated
             if (Prop.bRepNotify && !Prop.bReplicated)
             {
-                Results.Add(MakeError(
+                Results.Add(MakeValidationError(
                     FString::Printf(TEXT("Property '%s' has RepNotify set but Replicated is false"), *Prop.Name),
                     FString::Printf(TEXT("Properties.%s"), *Prop.Name),
                     FString::Printf(TEXT("EnableReplicated:%s"), *Prop.Name)));
@@ -433,7 +433,7 @@ TArray<FCodeForgeValidationResult> UCodeForgeBlueprint::Validate() const
                     && FChar::IsUpper(Prop.Name[1]);
                 if (!bCorrectPrefix)
                 {
-                    Results.Add(MakeWarning(
+                    Results.Add(MakeValidationWarning(
                         FString::Printf(TEXT("Bool property '%s' should be prefixed with 'b' followed by an uppercase letter"), *Prop.Name),
                         FString::Printf(TEXT("Properties.%s"), *Prop.Name),
                         FString::Printf(TEXT("FixBoolPrefix:%s"), *Prop.Name)));
@@ -443,7 +443,7 @@ TArray<FCodeForgeValidationResult> UCodeForgeBlueprint::Validate() const
             // Rule 11: replicated property on non-Actor class
             if (Prop.bReplicated && !IsActorDerived(ClassType))
             {
-                Results.Add(MakeWarning(
+                Results.Add(MakeValidationWarning(
                     FString::Printf(TEXT("Property '%s' is replicated but class type '%s' is not Actor-derived"), *Prop.Name, *GetParentClassName()),
                     FString::Printf(TEXT("Properties.%s"), *Prop.Name)));
             }
@@ -455,7 +455,7 @@ TArray<FCodeForgeValidationResult> UCodeForgeBlueprint::Validate() const
             // Rule 1: duplicate names
             if (AllNames.Contains(Func.Name))
             {
-                Results.Add(MakeError(
+                Results.Add(MakeValidationError(
                     FString::Printf(TEXT("Duplicate name '%s' in class members"), *Func.Name),
                     TEXT("Functions")));
             }
@@ -474,7 +474,7 @@ TArray<FCodeForgeValidationResult> UCodeForgeBlueprint::Validate() const
             // Rule 1: duplicate names
             if (AllNames.Contains(RPC.Name))
             {
-                Results.Add(MakeError(
+                Results.Add(MakeValidationError(
                     FString::Printf(TEXT("Duplicate name '%s' in class members"), *RPC.Name),
                     TEXT("RPCs")));
             }
@@ -490,7 +490,7 @@ TArray<FCodeForgeValidationResult> UCodeForgeBlueprint::Validate() const
         // Rule 3: RPC on non-Actor class
         if (RPCs.Num() > 0 && !IsActorDerived(ClassType))
         {
-            Results.Add(MakeError(
+            Results.Add(MakeValidationError(
                 FString::Printf(TEXT("RPCs are defined but class type '%s' is not Actor-derived"), *GetParentClassName()),
                 TEXT("RPCs")));
         }
@@ -501,7 +501,7 @@ TArray<FCodeForgeValidationResult> UCodeForgeBlueprint::Validate() const
         {
             if (RPC.Name.IsEmpty())
             {
-                Results.Add(MakeError(
+                Results.Add(MakeValidationError(
                     TEXT("An RPC has an empty name"),
                     TEXT("RPCs")));
             }
@@ -510,7 +510,7 @@ TArray<FCodeForgeValidationResult> UCodeForgeBlueprint::Validate() const
         // Rule 10: Empty class (BlueprintKind==Class, zero Properties + Functions + RPCs)
         if (Properties.Num() == 0 && Functions.Num() == 0 && RPCs.Num() == 0)
         {
-            Results.Add(MakeWarning(
+            Results.Add(MakeValidationWarning(
                 TEXT("Class has no properties, functions, or RPCs"),
                 TEXT("Class")));
         }
@@ -525,7 +525,7 @@ TArray<FCodeForgeValidationResult> UCodeForgeBlueprint::Validate() const
             // Rule 1: duplicate names within struct
             if (StructNames.Contains(Prop.Name))
             {
-                Results.Add(MakeError(
+                Results.Add(MakeValidationError(
                     FString::Printf(TEXT("Duplicate name '%s' in struct properties"), *Prop.Name),
                     TEXT("StructProperties")));
             }
@@ -537,7 +537,7 @@ TArray<FCodeForgeValidationResult> UCodeForgeBlueprint::Validate() const
             // Rule 2: invalid specifier combo
             if (Prop.bBlueprintReadWrite && Prop.bBlueprintReadOnly)
             {
-                Results.Add(MakeError(
+                Results.Add(MakeValidationError(
                     FString::Printf(TEXT("Struct property '%s' has both BlueprintReadWrite and BlueprintReadOnly set"), *Prop.Name),
                     FString::Printf(TEXT("StructProperties.%s"), *Prop.Name)));
             }
@@ -553,7 +553,7 @@ TArray<FCodeForgeValidationResult> UCodeForgeBlueprint::Validate() const
                     && FChar::IsUpper(Prop.Name[1]);
                 if (!bCorrectPrefix)
                 {
-                    Results.Add(MakeWarning(
+                    Results.Add(MakeValidationWarning(
                         FString::Printf(TEXT("Bool struct property '%s' should be prefixed with 'b' followed by an uppercase letter"), *Prop.Name),
                         FString::Printf(TEXT("StructProperties.%s"), *Prop.Name),
                         FString::Printf(TEXT("FixBoolPrefix:%s"), *Prop.Name)));
@@ -563,7 +563,7 @@ TArray<FCodeForgeValidationResult> UCodeForgeBlueprint::Validate() const
             // Rule 12: replication specifiers on Struct property
             if (Prop.bReplicated)
             {
-                Results.Add(MakeError(
+                Results.Add(MakeValidationError(
                     FString::Printf(TEXT("Struct property '%s' has replication flags set; structs cannot be replicated directly"), *Prop.Name),
                     FString::Printf(TEXT("StructProperties.%s"), *Prop.Name),
                     FString::Printf(TEXT("RemoveReplicationFlags:%s"), *Prop.Name)));

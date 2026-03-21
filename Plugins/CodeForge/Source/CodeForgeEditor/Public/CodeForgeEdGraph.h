@@ -7,7 +7,7 @@
 class UCodeForgeBlueprint;
 
 UCLASS()
-class CODEFORGEDITOR_API UCodeForgeEdGraph : public UEdGraph
+class CODEFORGEEDITOR_API UCodeForgeEdGraph : public UEdGraph
 {
 	GENERATED_BODY()
 

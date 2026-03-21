@@ -12,7 +12,7 @@
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeTemplateTest_VariableSubstitution,
     "CodeForge.TemplateEngine.VariableSubstitution",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeTemplateTest_VariableSubstitution::RunTest(const FString& Parameters)
 {
     FCodeForgeTemplateEngine Engine;
@@ -35,7 +35,7 @@ bool FCodeForgeTemplateTest_VariableSubstitution::RunTest(const FString& Paramet
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeTemplateTest_MultipleVariablesSameLine,
     "CodeForge.TemplateEngine.MultipleVariablesSameLine",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeTemplateTest_MultipleVariablesSameLine::RunTest(const FString& Parameters)
 {
     FCodeForgeTemplateEngine Engine;
@@ -59,7 +59,7 @@ bool FCodeForgeTemplateTest_MultipleVariablesSameLine::RunTest(const FString& Pa
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeTemplateTest_ConditionalTrue,
     "CodeForge.TemplateEngine.ConditionalTrue",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeTemplateTest_ConditionalTrue::RunTest(const FString& Parameters)
 {
     FCodeForgeTemplateEngine Engine;
@@ -81,7 +81,7 @@ bool FCodeForgeTemplateTest_ConditionalTrue::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeTemplateTest_ConditionalFalse,
     "CodeForge.TemplateEngine.ConditionalFalse",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeTemplateTest_ConditionalFalse::RunTest(const FString& Parameters)
 {
     FCodeForgeTemplateEngine Engine;
@@ -102,7 +102,7 @@ bool FCodeForgeTemplateTest_ConditionalFalse::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeTemplateTest_NegatedConditional,
     "CodeForge.TemplateEngine.NegatedConditional",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeTemplateTest_NegatedConditional::RunTest(const FString& Parameters)
 {
     FCodeForgeTemplateEngine Engine;
@@ -124,7 +124,7 @@ bool FCodeForgeTemplateTest_NegatedConditional::RunTest(const FString& Parameter
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeTemplateTest_Loop,
     "CodeForge.TemplateEngine.Loop",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeTemplateTest_Loop::RunTest(const FString& Parameters)
 {
     FCodeForgeTemplateEngine Engine;
@@ -155,7 +155,7 @@ bool FCodeForgeTemplateTest_Loop::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeTemplateTest_LoopParentFallback,
     "CodeForge.TemplateEngine.LoopParentFallback",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeTemplateTest_LoopParentFallback::RunTest(const FString& Parameters)
 {
     FCodeForgeTemplateEngine Engine;
@@ -186,7 +186,7 @@ bool FCodeForgeTemplateTest_LoopParentFallback::RunTest(const FString& Parameter
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeTemplateTest_Include,
     "CodeForge.TemplateEngine.Include",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeTemplateTest_Include::RunTest(const FString& Parameters)
 {
     FCodeForgeTemplateEngine Engine;
@@ -216,7 +216,7 @@ bool FCodeForgeTemplateTest_Include::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeTemplateTest_ConditionalWithVariables,
     "CodeForge.TemplateEngine.ConditionalWithVariables",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeTemplateTest_ConditionalWithVariables::RunTest(const FString& Parameters)
 {
     FCodeForgeTemplateEngine Engine;
@@ -240,7 +240,7 @@ bool FCodeForgeTemplateTest_ConditionalWithVariables::RunTest(const FString& Par
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeTemplateTest_ErrorUnknownVariable,
     "CodeForge.TemplateEngine.ErrorUnknownVariable",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeTemplateTest_ErrorUnknownVariable::RunTest(const FString& Parameters)
 {
     FCodeForgeTemplateEngine Engine;
@@ -261,7 +261,7 @@ bool FCodeForgeTemplateTest_ErrorUnknownVariable::RunTest(const FString& Paramet
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeTemplateTest_ErrorUnclosedIf,
     "CodeForge.TemplateEngine.ErrorUnclosedIf",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeTemplateTest_ErrorUnclosedIf::RunTest(const FString& Parameters)
 {
     FCodeForgeTemplateEngine Engine;
@@ -287,7 +287,7 @@ bool FCodeForgeTemplateTest_ErrorUnclosedIf::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeTemplateTest_ErrorUnclosedEach,
     "CodeForge.TemplateEngine.ErrorUnclosedEach",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeTemplateTest_ErrorUnclosedEach::RunTest(const FString& Parameters)
 {
     FCodeForgeTemplateEngine Engine;
@@ -306,7 +306,7 @@ bool FCodeForgeTemplateTest_ErrorUnclosedEach::RunTest(const FString& Parameters
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeTemplateTest_ErrorMissingInclude,
     "CodeForge.TemplateEngine.ErrorMissingInclude",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeTemplateTest_ErrorMissingInclude::RunTest(const FString& Parameters)
 {
     FCodeForgeTemplateEngine Engine;
@@ -328,7 +328,7 @@ bool FCodeForgeTemplateTest_ErrorMissingInclude::RunTest(const FString& Paramete
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeTemplateTest_EmptyTemplate,
     "CodeForge.TemplateEngine.EmptyTemplate",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeTemplateTest_EmptyTemplate::RunTest(const FString& Parameters)
 {
     FCodeForgeTemplateEngine Engine;
@@ -347,7 +347,7 @@ bool FCodeForgeTemplateTest_EmptyTemplate::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeTemplateTest_NoPlaceholders,
     "CodeForge.TemplateEngine.NoPlaceholders",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeTemplateTest_NoPlaceholders::RunTest(const FString& Parameters)
 {
     FCodeForgeTemplateEngine Engine;
@@ -367,7 +367,7 @@ bool FCodeForgeTemplateTest_NoPlaceholders::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeTemplateTest_SimpleAPI,
     "CodeForge.TemplateEngine.SimpleAPI",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeTemplateTest_SimpleAPI::RunTest(const FString& Parameters)
 {
     FCodeForgeTemplateEngine Engine;
@@ -388,7 +388,7 @@ bool FCodeForgeTemplateTest_SimpleAPI::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeTemplateTest_EmptyLoop,
     "CodeForge.TemplateEngine.EmptyLoop",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeTemplateTest_EmptyLoop::RunTest(const FString& Parameters)
 {
     FCodeForgeTemplateEngine Engine;
@@ -411,7 +411,7 @@ bool FCodeForgeTemplateTest_EmptyLoop::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeTemplateTest_LoopUnknownVar,
     "CodeForge.TemplateEngine.LoopUnknownVar",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeTemplateTest_LoopUnknownVar::RunTest(const FString& Parameters)
 {
     FCodeForgeTemplateEngine Engine;

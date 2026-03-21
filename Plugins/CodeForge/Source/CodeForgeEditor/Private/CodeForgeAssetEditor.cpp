@@ -222,7 +222,7 @@ TSharedRef<SDockTab> FCodeForgeAssetEditor::SpawnDetailsTab(const FSpawnTabArgs&
 	DetailsViewArgs.bAllowSearch = true;
 	DetailsViewArgs.bShowOptions = false;
 	DetailsViewArgs.bHideSelectionTip = true;
-	DetailsViewArgs.NotifyHook = this;
+
 
 	DetailsView = PropertyEditorModule.CreateDetailView(DetailsViewArgs);
 

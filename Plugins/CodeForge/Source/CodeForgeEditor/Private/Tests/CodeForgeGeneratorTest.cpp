@@ -28,7 +28,7 @@ static FString GetTemplatesPath()
     FString PluginContent = FPaths::Combine(
         FPaths::ProjectDir(),
         TEXT("Plugins/CodeForge/Content/Templates"));
-    FPaths::NormalizePath(PluginContent);
+    FPaths::NormalizeFilename(PluginContent);
     return PluginContent;
 }
 
@@ -48,7 +48,7 @@ static FCodeForgeGenerator MakeGenerator()
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeGeneratorTest_ActorClass,
     "CodeForge.Generator.ActorClass",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeGeneratorTest_ActorClass::RunTest(const FString& Parameters)
 {
     // Build a Blueprint with a replicated + RepNotify property
@@ -115,7 +115,7 @@ bool FCodeForgeGeneratorTest_ActorClass::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeGeneratorTest_Struct,
     "CodeForge.Generator.Struct",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeGeneratorTest_Struct::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
@@ -166,7 +166,7 @@ bool FCodeForgeGeneratorTest_Struct::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeGeneratorTest_Enum,
     "CodeForge.Generator.Enum",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeGeneratorTest_Enum::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
@@ -226,7 +226,7 @@ bool FCodeForgeGeneratorTest_Enum::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeGeneratorTest_RPCs,
     "CodeForge.Generator.RPCs",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeGeneratorTest_RPCs::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
@@ -276,7 +276,7 @@ bool FCodeForgeGeneratorTest_RPCs::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeGeneratorTest_Component,
     "CodeForge.Generator.Component",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeGeneratorTest_Component::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
@@ -329,7 +329,7 @@ bool FCodeForgeGeneratorTest_Component::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeGeneratorTest_ValidationFailure,
     "CodeForge.Generator.ValidationFailure",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeGeneratorTest_ValidationFailure::RunTest(const FString& Parameters)
 {
     // An empty ClassName should fail Validate() with an Error

@@ -13,7 +13,7 @@
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeTest_PropertySpec_BasicEditAndBlueprint,
     "CodeForge.Schema.Property.BasicEditAndBlueprint",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeTest_PropertySpec_BasicEditAndBlueprint::RunTest(const FString& Parameters)
 {
     FCodeForgePropertyDef Prop;
@@ -35,7 +35,7 @@ bool FCodeForgeTest_PropertySpec_BasicEditAndBlueprint::RunTest(const FString& P
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeTest_PropertySpec_ReplicatedWithRepNotify,
     "CodeForge.Schema.Property.ReplicatedWithRepNotify",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeTest_PropertySpec_ReplicatedWithRepNotify::RunTest(const FString& Parameters)
 {
     FCodeForgePropertyDef Prop;
@@ -59,7 +59,7 @@ bool FCodeForgeTest_PropertySpec_ReplicatedWithRepNotify::RunTest(const FString&
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeTest_PropertySpec_ReplicatedWithoutNotify,
     "CodeForge.Schema.Property.ReplicatedWithoutNotify",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeTest_PropertySpec_ReplicatedWithoutNotify::RunTest(const FString& Parameters)
 {
     FCodeForgePropertyDef Prop;
@@ -79,7 +79,7 @@ bool FCodeForgeTest_PropertySpec_ReplicatedWithoutNotify::RunTest(const FString&
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeTest_PropertySpec_MetaTags,
     "CodeForge.Schema.Property.MetaTags",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeTest_PropertySpec_MetaTags::RunTest(const FString& Parameters)
 {
     FCodeForgePropertyDef Prop;
@@ -100,7 +100,7 @@ bool FCodeForgeTest_PropertySpec_MetaTags::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeTest_PropertySpec_MutuallyExclusive,
     "CodeForge.Schema.Property.MutuallyExclusiveEditSpecifiers",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeTest_PropertySpec_MutuallyExclusive::RunTest(const FString& Parameters)
 {
     FCodeForgePropertyDef Prop;
@@ -124,7 +124,7 @@ bool FCodeForgeTest_PropertySpec_MutuallyExclusive::RunTest(const FString& Param
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeTest_DefaultValueSuffix,
     "CodeForge.Schema.Property.DefaultValueSuffix",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeTest_DefaultValueSuffix::RunTest(const FString& Parameters)
 {
     FCodeForgePropertyDef Prop;
@@ -152,7 +152,7 @@ bool FCodeForgeTest_DefaultValueSuffix::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeTest_FunctionSpec_BlueprintCallable,
     "CodeForge.Schema.Function.BlueprintCallable",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeTest_FunctionSpec_BlueprintCallable::RunTest(const FString& Parameters)
 {
     FCodeForgeFunctionDef Func;
@@ -172,7 +172,7 @@ bool FCodeForgeTest_FunctionSpec_BlueprintCallable::RunTest(const FString& Param
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeTest_FunctionSpec_BlueprintNativeEvent,
     "CodeForge.Schema.Function.BlueprintNativeEvent",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeTest_FunctionSpec_BlueprintNativeEvent::RunTest(const FString& Parameters)
 {
     FCodeForgeFunctionDef Func;
@@ -191,7 +191,7 @@ bool FCodeForgeTest_FunctionSpec_BlueprintNativeEvent::RunTest(const FString& Pa
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeTest_FunctionSpec_ParamList,
     "CodeForge.Schema.Function.ParamList",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeTest_FunctionSpec_ParamList::RunTest(const FString& Parameters)
 {
     FCodeForgeFunctionDef Func;
@@ -232,7 +232,7 @@ bool FCodeForgeTest_FunctionSpec_ParamList::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeTest_FunctionSpec_BlueprintPureMutualExclusion,
     "CodeForge.Schema.Function.BlueprintPureExcludesCallable",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeTest_FunctionSpec_BlueprintPureMutualExclusion::RunTest(const FString& Parameters)
 {
     FCodeForgeFunctionDef Func;
@@ -255,7 +255,7 @@ bool FCodeForgeTest_FunctionSpec_BlueprintPureMutualExclusion::RunTest(const FSt
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeTest_RPCSpec_ServerReliable,
     "CodeForge.Schema.RPC.ServerReliable",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeTest_RPCSpec_ServerReliable::RunTest(const FString& Parameters)
 {
     FCodeForgeRPCDef RPC;
@@ -275,7 +275,7 @@ bool FCodeForgeTest_RPCSpec_ServerReliable::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeTest_RPCSpec_ClientUnreliable,
     "CodeForge.Schema.RPC.ClientUnreliable",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeTest_RPCSpec_ClientUnreliable::RunTest(const FString& Parameters)
 {
     FCodeForgeRPCDef RPC;
@@ -298,7 +298,7 @@ bool FCodeForgeTest_RPCSpec_ClientUnreliable::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeTest_RPCSpec_NetMulticast,
     "CodeForge.Schema.RPC.NetMulticast",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeTest_RPCSpec_NetMulticast::RunTest(const FString& Parameters)
 {
     FCodeForgeRPCDef RPC;
@@ -321,7 +321,7 @@ bool FCodeForgeTest_RPCSpec_NetMulticast::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeTest_ParamDef_ConstRef,
     "CodeForge.Schema.Param.ConstRef",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeTest_ParamDef_ConstRef::RunTest(const FString& Parameters)
 {
     // const + ref
@@ -362,7 +362,7 @@ bool FCodeForgeTest_ParamDef_ConstRef::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeTest_ParentClassName_AllTypes,
     "CodeForge.Schema.Blueprint.ParentClassName",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeTest_ParentClassName_AllTypes::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
@@ -395,7 +395,7 @@ bool FCodeForgeTest_ParentClassName_AllTypes::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeTest_ParentInclude_AllTypes,
     "CodeForge.Schema.Blueprint.ParentIncludePath",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeTest_ParentInclude_AllTypes::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
@@ -428,7 +428,7 @@ bool FCodeForgeTest_ParentInclude_AllTypes::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeTest_ClassSpecifiers_Blueprintable,
     "CodeForge.Schema.Blueprint.ClassSpecifiers",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeTest_ClassSpecifiers_Blueprintable::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
@@ -451,7 +451,7 @@ bool FCodeForgeTest_ClassSpecifiers_Blueprintable::RunTest(const FString& Parame
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeTest_RPC_ParamList,
     "CodeForge.Schema.RPC.ParamList",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeTest_RPC_ParamList::RunTest(const FString& Parameters)
 {
     FCodeForgeRPCDef RPC;

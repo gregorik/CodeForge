@@ -88,9 +88,9 @@ TArray<FCodeForgeModuleInfo> FCodeForgeModuleScanner::ScanProject(const FString&
 		Info.APIMacro    = DeriveAPIMacro(ModuleName);
 
 		// Normalize all paths
-		FPaths::NormalizePath(Info.SourceDir);
-		FPaths::NormalizePath(Info.PublicDir);
-		FPaths::NormalizePath(Info.PrivateDir);
+		FPaths::NormalizeFilename(Info.SourceDir);
+		FPaths::NormalizeFilename(Info.PublicDir);
+		FPaths::NormalizeFilename(Info.PrivateDir);
 
 		// Discover existing subdirectories under Public/
 		if (FPaths::DirectoryExists(Info.PublicDir))

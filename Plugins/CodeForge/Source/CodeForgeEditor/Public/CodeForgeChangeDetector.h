@@ -29,7 +29,7 @@ struct FCodeForgeManifestEntry
  * against the stored one to classify the change as "structural"
  * (interface / layout changed) or "behavioral" (only bodies changed).
  */
-class CODEFORGEDITOR_API FCodeForgeChangeDetector
+class CODEFORGEEDITOR_API FCodeForgeChangeDetector
 {
 public:
 	/**

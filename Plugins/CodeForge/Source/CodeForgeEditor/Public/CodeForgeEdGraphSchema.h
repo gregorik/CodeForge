@@ -28,7 +28,7 @@ struct FCodeForgeSchemaAction_NewNode : public FEdGraphSchemaAction
 };
 
 UCLASS()
-class CODEFORGEDITOR_API UCodeForgeEdGraphSchema : public UEdGraphSchema
+class CODEFORGEEDITOR_API UCodeForgeEdGraphSchema : public UEdGraphSchema
 {
 	GENERATED_BODY()
 

@@ -6,7 +6,7 @@
 #include "CodeForgeNode_Enum.generated.h"
 
 UCLASS()
-class CODEFORGEDITOR_API UCodeForgeNode_Enum : public UCodeForgeEdGraphNode
+class CODEFORGEEDITOR_API UCodeForgeNode_Enum : public UCodeForgeEdGraphNode
 {
 	GENERATED_BODY()
 

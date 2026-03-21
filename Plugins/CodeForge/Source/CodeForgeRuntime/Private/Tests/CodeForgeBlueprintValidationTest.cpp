@@ -36,7 +36,7 @@ static UCodeForgeBlueprint* MakeValidActorBlueprint()
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FValidate_Rule01_DuplicatePropertyNames,
     "CodeForge.Validation.Rule01.DuplicatePropertyNames",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FValidate_Rule01_DuplicatePropertyNames::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
@@ -63,7 +63,7 @@ bool FValidate_Rule01_DuplicatePropertyNames::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FValidate_Rule01_DuplicateFunctionNames,
     "CodeForge.Validation.Rule01.DuplicateFunctionNames",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FValidate_Rule01_DuplicateFunctionNames::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
@@ -90,7 +90,7 @@ bool FValidate_Rule01_DuplicateFunctionNames::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FValidate_Rule01_DuplicateAcrossPropAndFunc,
     "CodeForge.Validation.Rule01.DuplicateAcrossPropertyAndFunction",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FValidate_Rule01_DuplicateAcrossPropAndFunc::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
@@ -121,7 +121,7 @@ bool FValidate_Rule01_DuplicateAcrossPropAndFunc::RunTest(const FString& Paramet
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FValidate_Rule02_InvalidSpecifierCombo,
     "CodeForge.Validation.Rule02.InvalidSpecifierCombo",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FValidate_Rule02_InvalidSpecifierCombo::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
@@ -154,7 +154,7 @@ bool FValidate_Rule02_InvalidSpecifierCombo::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FValidate_Rule03_RPCOnNonActorClass,
     "CodeForge.Validation.Rule03.RPCOnNonActorClass",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FValidate_Rule03_RPCOnNonActorClass::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
@@ -181,7 +181,7 @@ bool FValidate_Rule03_RPCOnNonActorClass::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FValidate_Rule03_RPCOnObjectClass,
     "CodeForge.Validation.Rule03.RPCOnObjectClass",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FValidate_Rule03_RPCOnObjectClass::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
@@ -208,7 +208,7 @@ bool FValidate_Rule03_RPCOnObjectClass::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FValidate_Rule03_RPCOnActorClassNoError,
     "CodeForge.Validation.Rule03.RPCOnActorClassIsValid",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FValidate_Rule03_RPCOnActorClassNoError::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
@@ -239,7 +239,7 @@ bool FValidate_Rule03_RPCOnActorClassNoError::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FValidate_Rule04_MissingClassName,
     "CodeForge.Validation.Rule04.MissingClassName",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FValidate_Rule04_MissingClassName::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
@@ -264,7 +264,7 @@ bool FValidate_Rule04_MissingClassName::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FValidate_Rule05_ReservedNameClass,
     "CodeForge.Validation.Rule05.ReservedNameClass",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FValidate_Rule05_ReservedNameClass::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
@@ -291,7 +291,7 @@ bool FValidate_Rule05_ReservedNameClass::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FValidate_Rule05_ReservedNameSuper,
     "CodeForge.Validation.Rule05.ReservedNameSuper",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FValidate_Rule05_ReservedNameSuper::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
@@ -317,7 +317,7 @@ bool FValidate_Rule05_ReservedNameSuper::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FValidate_Rule05_ReservedNameStaticClass,
     "CodeForge.Validation.Rule05.ReservedNameStaticClass",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FValidate_Rule05_ReservedNameStaticClass::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
@@ -348,7 +348,7 @@ bool FValidate_Rule05_ReservedNameStaticClass::RunTest(const FString& Parameters
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FValidate_Rule06_CppKeywordProperty,
     "CodeForge.Validation.Rule06.CppKeywordAsPropertyName",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FValidate_Rule06_CppKeywordProperty::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
@@ -375,7 +375,7 @@ bool FValidate_Rule06_CppKeywordProperty::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FValidate_Rule06_CppKeywordFunction,
     "CodeForge.Validation.Rule06.CppKeywordAsFunctionName",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FValidate_Rule06_CppKeywordFunction::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
@@ -401,7 +401,7 @@ bool FValidate_Rule06_CppKeywordFunction::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FValidate_Rule06_MultipleCppKeywords,
     "CodeForge.Validation.Rule06.MultipleCppKeywords",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FValidate_Rule06_MultipleCppKeywords::RunTest(const FString& Parameters)
 {
     // Spot-check several keywords to ensure the full set is covered
@@ -443,7 +443,7 @@ bool FValidate_Rule06_MultipleCppKeywords::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FValidate_Rule07_EmptyRPCName,
     "CodeForge.Validation.Rule07.EmptyRPCName",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FValidate_Rule07_EmptyRPCName::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
@@ -474,7 +474,7 @@ bool FValidate_Rule07_EmptyRPCName::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FValidate_Rule08_RepNotifyWithoutReplicated,
     "CodeForge.Validation.Rule08.RepNotifyWithoutReplicated",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FValidate_Rule08_RepNotifyWithoutReplicated::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
@@ -517,7 +517,7 @@ bool FValidate_Rule08_RepNotifyWithoutReplicated::RunTest(const FString& Paramet
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FValidate_Rule09_BoolMissingPrefix,
     "CodeForge.Validation.Rule09.BoolMissingBPrefix",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FValidate_Rule09_BoolMissingPrefix::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
@@ -553,7 +553,7 @@ bool FValidate_Rule09_BoolMissingPrefix::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FValidate_Rule09_BoolLowercaseSecondChar,
     "CodeForge.Validation.Rule09.BoolLowercaseAfterB",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FValidate_Rule09_BoolLowercaseSecondChar::RunTest(const FString& Parameters)
 {
     // "balive" starts with 'b' but second char is lowercase — still invalid
@@ -581,7 +581,7 @@ bool FValidate_Rule09_BoolLowercaseSecondChar::RunTest(const FString& Parameters
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FValidate_Rule09_BoolCorrectPrefix_NoWarning,
     "CodeForge.Validation.Rule09.BoolCorrectPrefixNoWarning",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FValidate_Rule09_BoolCorrectPrefix_NoWarning::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
@@ -612,7 +612,7 @@ bool FValidate_Rule09_BoolCorrectPrefix_NoWarning::RunTest(const FString& Parame
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FValidate_Rule10_EmptyClass,
     "CodeForge.Validation.Rule10.EmptyClass",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FValidate_Rule10_EmptyClass::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
@@ -636,7 +636,7 @@ bool FValidate_Rule10_EmptyClass::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FValidate_Rule10_NonEmptyClass_NoEmptyWarning,
     "CodeForge.Validation.Rule10.NonEmptyClassNoWarning",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FValidate_Rule10_NonEmptyClass_NoEmptyWarning::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = MakeValidActorBlueprint();
@@ -659,7 +659,7 @@ bool FValidate_Rule10_NonEmptyClass_NoEmptyWarning::RunTest(const FString& Param
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FValidate_Rule11_ReplicatedOnNonActor,
     "CodeForge.Validation.Rule11.ReplicatedPropertyOnNonActorClass",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FValidate_Rule11_ReplicatedOnNonActor::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
@@ -687,7 +687,7 @@ bool FValidate_Rule11_ReplicatedOnNonActor::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FValidate_Rule11_ReplicatedOnActorClass_NoWarning,
     "CodeForge.Validation.Rule11.ReplicatedPropertyOnActorClassOK",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FValidate_Rule11_ReplicatedOnActorClass_NoWarning::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
@@ -719,7 +719,7 @@ bool FValidate_Rule11_ReplicatedOnActorClass_NoWarning::RunTest(const FString& P
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FValidate_Rule12_ReplicationOnStructProperty,
     "CodeForge.Validation.Rule12.ReplicationFlagsOnStructProperty",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FValidate_Rule12_ReplicationOnStructProperty::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
@@ -755,7 +755,7 @@ bool FValidate_Rule12_ReplicationOnStructProperty::RunTest(const FString& Parame
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FValidate_Rule12_NoReplicationOnStruct_NoError,
     "CodeForge.Validation.Rule12.NoReplicationOnStructIsValid",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FValidate_Rule12_NoReplicationOnStruct_NoError::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
@@ -786,7 +786,7 @@ bool FValidate_Rule12_NoReplicationOnStruct_NoError::RunTest(const FString& Para
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FValidate_AutoFix_EnableReplicated,
     "CodeForge.Validation.AutoFix.EnableReplicated",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FValidate_AutoFix_EnableReplicated::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
@@ -826,7 +826,7 @@ bool FValidate_AutoFix_EnableReplicated::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FValidate_AutoFix_FixBoolPrefix,
     "CodeForge.Validation.AutoFix.FixBoolPrefix",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FValidate_AutoFix_FixBoolPrefix::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
@@ -851,7 +851,7 @@ bool FValidate_AutoFix_FixBoolPrefix::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FValidate_AutoFix_FixBoolPrefix_StructProperty,
     "CodeForge.Validation.AutoFix.FixBoolPrefixOnStructProperty",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FValidate_AutoFix_FixBoolPrefix_StructProperty::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
@@ -873,7 +873,7 @@ bool FValidate_AutoFix_FixBoolPrefix_StructProperty::RunTest(const FString& Para
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FValidate_AutoFix_RemoveReplicationFlags,
     "CodeForge.Validation.AutoFix.RemoveReplicationFlags",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FValidate_AutoFix_RemoveReplicationFlags::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
@@ -910,7 +910,7 @@ bool FValidate_AutoFix_RemoveReplicationFlags::RunTest(const FString& Parameters
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FValidate_ValidBlueprint_NoErrors,
     "CodeForge.Validation.ValidBlueprint.NoErrors",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FValidate_ValidBlueprint_NoErrors::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
@@ -961,7 +961,7 @@ bool FValidate_ValidBlueprint_NoErrors::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FValidate_ValidStruct_NoErrors,
     "CodeForge.Validation.ValidBlueprint.ValidStructNoErrors",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FValidate_ValidStruct_NoErrors::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
@@ -996,7 +996,7 @@ bool FValidate_ValidStruct_NoErrors::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FValidate_ValidEnum_NoErrors,
     "CodeForge.Validation.ValidBlueprint.ValidEnumNoErrors",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FValidate_ValidEnum_NoErrors::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
@@ -1028,7 +1028,7 @@ bool FValidate_ValidEnum_NoErrors::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FValidate_Edge_AllActorDerivedTypesAllowRPCs,
     "CodeForge.Validation.Edge.AllActorDerivedTypesAllowRPCs",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FValidate_Edge_AllActorDerivedTypesAllowRPCs::RunTest(const FString& Parameters)
 {
     const TArray<ECodeForgeClassType> ActorDerived = {
@@ -1070,7 +1070,7 @@ bool FValidate_Edge_AllActorDerivedTypesAllowRPCs::RunTest(const FString& Parame
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FValidate_Edge_NonActorDerivedTypesForbidRPCs,
     "CodeForge.Validation.Edge.NonActorDerivedTypesForbidRPCs",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FValidate_Edge_NonActorDerivedTypesForbidRPCs::RunTest(const FString& Parameters)
 {
     const TArray<ECodeForgeClassType> NotActorDerived = {
@@ -1107,7 +1107,7 @@ bool FValidate_Edge_NonActorDerivedTypesForbidRPCs::RunTest(const FString& Param
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FValidate_Edge_StructDuplicatePropertyNames,
     "CodeForge.Validation.Edge.StructDuplicatePropertyNames",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FValidate_Edge_StructDuplicatePropertyNames::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
@@ -1133,7 +1133,7 @@ bool FValidate_Edge_StructDuplicatePropertyNames::RunTest(const FString& Paramet
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FValidate_Edge_AutoFix_EnableReplicated_OnlyAffectsNamedProperty,
     "CodeForge.Validation.AutoFix.EnableReplicatedOnlyAffectsNamedProperty",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FValidate_Edge_AutoFix_EnableReplicated_OnlyAffectsNamedProperty::RunTest(const FString& Parameters)
 {
     UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();

@@ -20,7 +20,7 @@ void FCodeForgeChangeDetector::LoadManifest(const FString& ProjectDir)
 
 	ManifestPath = FPaths::Combine(
 		ProjectDir, TEXT("Saved"), TEXT("CodeForge"), TEXT("generation_manifest.json"));
-	FPaths::NormalizePath(ManifestPath);
+	FPaths::NormalizeFilename(ManifestPath);
 
 	FString JsonContent;
 	if (!FFileHelper::LoadFileToString(JsonContent, *ManifestPath))
@@ -119,7 +119,7 @@ void FCodeForgeChangeDetector::SaveManifest(const FString& ProjectDir)
 {
 	ManifestPath = FPaths::Combine(
 		ProjectDir, TEXT("Saved"), TEXT("CodeForge"), TEXT("generation_manifest.json"));
-	FPaths::NormalizePath(ManifestPath);
+	FPaths::NormalizeFilename(ManifestPath);
 
 	// Ensure directory exists
 	IFileManager& FM = IFileManager::Get();

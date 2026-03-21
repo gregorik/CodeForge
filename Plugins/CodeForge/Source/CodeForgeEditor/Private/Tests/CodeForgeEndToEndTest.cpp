@@ -28,7 +28,7 @@ static FString GetTemplatePath()
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
 	FCodeForgeEndToEndTest_ReplicatedActorFull,
 	"CodeForge.EndToEnd.ReplicatedActorFull",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeEndToEndTest_ReplicatedActorFull::RunTest(const FString& Parameters)
 {
 	// --- Build Blueprint ------------------------------------------------
@@ -186,7 +186,7 @@ bool FCodeForgeEndToEndTest_ReplicatedActorFull::RunTest(const FString& Paramete
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
 	FCodeForgeEndToEndTest_StructGeneration,
 	"CodeForge.EndToEnd.StructGeneration",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeEndToEndTest_StructGeneration::RunTest(const FString& Parameters)
 {
 	// --- Build Blueprint ------------------------------------------------
@@ -261,7 +261,7 @@ bool FCodeForgeEndToEndTest_StructGeneration::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
 	FCodeForgeEndToEndTest_EnumGeneration,
 	"CodeForge.EndToEnd.EnumGeneration",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeEndToEndTest_EnumGeneration::RunTest(const FString& Parameters)
 {
 	// --- Build Blueprint ------------------------------------------------
@@ -356,7 +356,7 @@ bool FCodeForgeEndToEndTest_EnumGeneration::RunTest(const FString& Parameters)
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
 	FCodeForgeEndToEndTest_ValidationCatchesErrors,
 	"CodeForge.EndToEnd.ValidationCatchesErrors",
-	EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+	EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeEndToEndTest_ValidationCatchesErrors::RunTest(const FString& Parameters)
 {
 	// --- Build an invalid Blueprint (empty ClassName) -------------------

@@ -22,7 +22,7 @@ UClass* FCodeForgeAssetTypeActions::GetSupportedClass() const
 	return UCodeForgeBlueprint::StaticClass();
 }
 
-uint32 FCodeForgeAssetTypeActions::GetCategories() const
+uint32 FCodeForgeAssetTypeActions::GetCategories()
 {
 	return EAssetTypeCategories::Misc;
 }

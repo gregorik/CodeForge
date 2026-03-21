@@ -20,12 +20,12 @@
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeModuleScannerTest_FindsModules,
     "CodeForge.ModuleScanner.FindsModules",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeModuleScannerTest_FindsModules::RunTest(const FString& Parameters)
 {
     FCodeForgeModuleScanner Scanner;
     FString ProjectDir = FPaths::ConvertRelativePathToFull(FPaths::ProjectDir());
-    FPaths::NormalizePath(ProjectDir);
+    FPaths::NormalizeFilename(ProjectDir);
 
     TArray<FCodeForgeModuleInfo> Modules = Scanner.ScanProject(ProjectDir);
 
@@ -39,12 +39,12 @@ bool FCodeForgeModuleScannerTest_FindsModules::RunTest(const FString& Parameters
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeModuleScannerTest_ModuleNamesNonEmpty,
     "CodeForge.ModuleScanner.ModuleNamesNonEmpty",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeModuleScannerTest_ModuleNamesNonEmpty::RunTest(const FString& Parameters)
 {
     FCodeForgeModuleScanner Scanner;
     FString ProjectDir = FPaths::ConvertRelativePathToFull(FPaths::ProjectDir());
-    FPaths::NormalizePath(ProjectDir);
+    FPaths::NormalizeFilename(ProjectDir);
 
     TArray<FCodeForgeModuleInfo> Modules = Scanner.ScanProject(ProjectDir);
 
@@ -63,12 +63,12 @@ bool FCodeForgeModuleScannerTest_ModuleNamesNonEmpty::RunTest(const FString& Par
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeModuleScannerTest_PublicDirNonEmpty,
     "CodeForge.ModuleScanner.PublicDirNonEmpty",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeModuleScannerTest_PublicDirNonEmpty::RunTest(const FString& Parameters)
 {
     FCodeForgeModuleScanner Scanner;
     FString ProjectDir = FPaths::ConvertRelativePathToFull(FPaths::ProjectDir());
-    FPaths::NormalizePath(ProjectDir);
+    FPaths::NormalizeFilename(ProjectDir);
 
     TArray<FCodeForgeModuleInfo> Modules = Scanner.ScanProject(ProjectDir);
 
@@ -87,12 +87,12 @@ bool FCodeForgeModuleScannerTest_PublicDirNonEmpty::RunTest(const FString& Param
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeModuleScannerTest_APIMacroNonEmpty,
     "CodeForge.ModuleScanner.APIMacroNonEmpty",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeModuleScannerTest_APIMacroNonEmpty::RunTest(const FString& Parameters)
 {
     FCodeForgeModuleScanner Scanner;
     FString ProjectDir = FPaths::ConvertRelativePathToFull(FPaths::ProjectDir());
-    FPaths::NormalizePath(ProjectDir);
+    FPaths::NormalizeFilename(ProjectDir);
 
     TArray<FCodeForgeModuleInfo> Modules = Scanner.ScanProject(ProjectDir);
 
@@ -111,12 +111,12 @@ bool FCodeForgeModuleScannerTest_APIMacroNonEmpty::RunTest(const FString& Parame
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeModuleScannerTest_APIMacroFormat,
     "CodeForge.ModuleScanner.APIMacroFormat",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeModuleScannerTest_APIMacroFormat::RunTest(const FString& Parameters)
 {
     FCodeForgeModuleScanner Scanner;
     FString ProjectDir = FPaths::ConvertRelativePathToFull(FPaths::ProjectDir());
-    FPaths::NormalizePath(ProjectDir);
+    FPaths::NormalizeFilename(ProjectDir);
 
     TArray<FCodeForgeModuleInfo> Modules = Scanner.ScanProject(ProjectDir);
 
@@ -144,14 +144,14 @@ bool FCodeForgeModuleScannerTest_APIMacroFormat::RunTest(const FString& Paramete
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeModuleScannerTest_DeriveAPIMacro,
     "CodeForge.ModuleScanner.DeriveAPIMacro",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeModuleScannerTest_DeriveAPIMacro::RunTest(const FString& Parameters)
 {
     // We exercise DeriveAPIMacro indirectly by scanning the known project
     // and checking the CodeForge module entry specifically.
     FCodeForgeModuleScanner Scanner;
     FString ProjectDir = FPaths::ConvertRelativePathToFull(FPaths::ProjectDir());
-    FPaths::NormalizePath(ProjectDir);
+    FPaths::NormalizeFilename(ProjectDir);
 
     TArray<FCodeForgeModuleInfo> Modules = Scanner.ScanProject(ProjectDir);
 
@@ -177,12 +177,12 @@ bool FCodeForgeModuleScannerTest_DeriveAPIMacro::RunTest(const FString& Paramete
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeModuleScannerTest_DirConsistency,
     "CodeForge.ModuleScanner.DirConsistency",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeModuleScannerTest_DirConsistency::RunTest(const FString& Parameters)
 {
     FCodeForgeModuleScanner Scanner;
     FString ProjectDir = FPaths::ConvertRelativePathToFull(FPaths::ProjectDir());
-    FPaths::NormalizePath(ProjectDir);
+    FPaths::NormalizeFilename(ProjectDir);
 
     TArray<FCodeForgeModuleInfo> Modules = Scanner.ScanProject(ProjectDir);
 
@@ -216,7 +216,7 @@ bool FCodeForgeModuleScannerTest_DirConsistency::RunTest(const FString& Paramete
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
     FCodeForgeModuleScannerTest_EmptyOnMissingDir,
     "CodeForge.ModuleScanner.EmptyOnMissingDir",
-    EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
 bool FCodeForgeModuleScannerTest_EmptyOnMissingDir::RunTest(const FString& Parameters)
 {
     FCodeForgeModuleScanner Scanner;

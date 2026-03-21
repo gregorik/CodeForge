@@ -28,7 +28,7 @@ struct FCodeForgeModuleInfo
  * subdirectories.  The scanner also derives the MODULE_API export
  * macro from the module name.
  */
-class CODEFORGEDITOR_API FCodeForgeModuleScanner
+class CODEFORGEEDITOR_API FCodeForgeModuleScanner
 {
 public:
 	/**

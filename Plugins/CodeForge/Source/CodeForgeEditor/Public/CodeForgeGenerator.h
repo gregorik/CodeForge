@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CodeForgeTypes.h"
 #include "CodeForgeTemplateEngine.h"
 #include "CodeForgeChangeDetector.h"
 
@@ -34,7 +35,7 @@ struct FCodeForgeGeneratorResult
  *
  * This class lives in the Editor module and is never shipped with a game.
  */
-class CODEFORGEDITOR_API FCodeForgeGenerator
+class CODEFORGEEDITOR_API FCodeForgeGenerator
 {
 public:
 
