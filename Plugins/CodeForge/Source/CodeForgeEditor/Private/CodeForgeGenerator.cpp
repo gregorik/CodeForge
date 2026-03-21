@@ -5,6 +5,7 @@
 
 #include "CodeForgeGenerator.h"
 #include "CodeForgeBlueprint.h"
+#include "CodeForgeModuleScanner.h"
 #include "CodeForgePropertyDef.h"
 #include "CodeForgeFunctionDef.h"
 #include "CodeForgeRPCDef.h"
@@ -520,4 +521,97 @@ FString FCodeForgeGenerator::RepConditionToString(ECodeForgeRepCondition Conditi
     case ECodeForgeRepCondition::Never:                     return TEXT("COND_Never");
     default:                                                return TEXT("COND_None");
     }
+}
+
+// ---------------------------------------------------------------------------
+// GenerateAndIntegrate
+// ---------------------------------------------------------------------------
+
+FCodeForgeGeneratorResult FCodeForgeGenerator::GenerateAndIntegrate(
+    const UCodeForgeBlueprint* Blueprint, const FString& ProjectDir)
+{
+    // 1. Generate header + source content
+    FCodeForgeGeneratorResult Result = Generate(Blueprint);
+    if (!Result.bSuccess)
+    {
+        return Result;
+    }
+
+    // 2. Locate the target module via module scanner
+    FCodeForgeModuleScanner Scanner;
+    TArray<FCodeForgeModuleInfo> Modules = Scanner.ScanProject(ProjectDir);
+
+    FString PublicDir;
+    FString PrivateDir;
+
+    for (const FCodeForgeModuleInfo& Module : Modules)
+    {
+        if (Module.ModuleName == Blueprint->ModuleTarget)
+        {
+            PublicDir  = Module.PublicDir;
+            PrivateDir = Module.PrivateDir;
+            break;
+        }
+    }
+
+    if (PublicDir.IsEmpty() || PrivateDir.IsEmpty())
+    {
+        Result.bSuccess = false;
+        Result.ErrorMessage = FString::Printf(
+            TEXT("Could not find module '%s' in project '%s'."),
+            *Blueprint->ModuleTarget, *ProjectDir);
+        return Result;
+    }
+
+    // 3. Write generated files to the project
+    if (!WriteToProject(Result, PublicDir, PrivateDir, Blueprint->SubDirectory))
+    {
+        Result.bSuccess = false;
+        Result.ErrorMessage = TEXT("Failed to write generated files to project.");
+        return Result;
+    }
+
+    // 4. Build manifest entry from the blueprint
+    FCodeForgeManifestEntry ManifestEntry;
+    ManifestEntry.ClassName = Blueprint->ClassName;
+
+    if (Blueprint->BlueprintKind == ECodeForgeBlueprintKind::Class)
+    {
+        ManifestEntry.ParentClassName = Blueprint->GetParentClassName();
+
+        for (const FCodeForgePropertyDef& Prop : Blueprint->Properties)
+        {
+            ManifestEntry.PropertyNames.Add(Prop.Name);
+            ManifestEntry.PropertyTypes.Add(Prop.Type);
+        }
+
+        for (const FCodeForgeFunctionDef& Func : Blueprint->Functions)
+        {
+            ManifestEntry.FunctionNames.Add(Func.Name);
+        }
+
+        for (const FCodeForgeRPCDef& RPC : Blueprint->RPCs)
+        {
+            ManifestEntry.RPCNames.Add(RPC.Name);
+        }
+    }
+    else if (Blueprint->BlueprintKind == ECodeForgeBlueprintKind::Struct)
+    {
+        for (const FCodeForgePropertyDef& Prop : Blueprint->StructProperties)
+        {
+            ManifestEntry.PropertyNames.Add(Prop.Name);
+            ManifestEntry.PropertyTypes.Add(Prop.Type);
+        }
+    }
+
+    // 5. Load manifest, detect change type, update, save
+    ChangeDetector.LoadManifest(ProjectDir);
+
+    bool bStructural = ChangeDetector.IsStructuralChange(Blueprint->ClassName, ManifestEntry);
+    Result.bIsStructuralChange = bStructural;
+
+    ChangeDetector.UpdateEntry(Blueprint->ClassName, ManifestEntry);
+    ChangeDetector.SaveManifest(ProjectDir);
+
+    return Result;
 }

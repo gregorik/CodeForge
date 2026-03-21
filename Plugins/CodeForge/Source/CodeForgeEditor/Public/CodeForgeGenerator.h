@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "CodeForgeTemplateEngine.h"
+#include "CodeForgeChangeDetector.h"
 
 // Forward declarations
 class UCodeForgeBlueprint;
@@ -52,6 +53,16 @@ public:
     FCodeForgeGeneratorResult Generate(const UCodeForgeBlueprint* Blueprint) const;
 
     /**
+     * Generate, write to project, and run change-detection in one call.
+     *
+     * @param Blueprint   Must not be nullptr; must pass Validate().
+     * @param ProjectDir  Absolute path to the project root (containing .uproject).
+     * @return            FCodeForgeGeneratorResult with bSuccess, file texts,
+     *                    and bIsStructuralChange set.
+     */
+    FCodeForgeGeneratorResult GenerateAndIntegrate(const UCodeForgeBlueprint* Blueprint, const FString& ProjectDir);
+
+    /**
      * Write a previously generated result to disk.
      *
      * @param Result      Successful result from Generate().
@@ -68,6 +79,9 @@ private:
 
     /** Root path that contains Common/, Class/, Struct/, Enum/, Replication/ sub-folders. */
     FString TemplatePath;
+
+    /** Change detector that tracks structural signatures across generations. */
+    FCodeForgeChangeDetector ChangeDetector;
 
     // -----------------------------------------------------------------------
     // Internal helpers
