@@ -62,7 +62,7 @@ public:
      */
     bool WriteToProject(const FCodeForgeGeneratorResult& Result,
         const FString& PublicDir, const FString& PrivateDir,
-        const FString& SubDir = FString());
+        const FString& SubDir = FString()) const;
 
 private:
 

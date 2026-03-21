@@ -103,6 +103,8 @@ bool FCodeForgeGeneratorTest_ActorClass::RunTest(const FString& Parameters)
         Result.SourceContent.Contains(TEXT("OnRep_Health")));
     TestTrue(TEXT("Source includes UnrealNetwork.h"),
         Result.SourceContent.Contains(TEXT("UnrealNetwork.h")));
+    TestTrue(TEXT("Source contains bReplicates = true"),
+        Result.SourceContent.Contains(TEXT("bReplicates = true")));
 
     return true;
 }
@@ -262,6 +264,8 @@ bool FCodeForgeGeneratorTest_RPCs::RunTest(const FString& Parameters)
         Result.SourceContent.Contains(TEXT("ServerFire_Implementation")));
     TestTrue(TEXT("Source contains TODO comment for RPC"),
         Result.SourceContent.Contains(TEXT("TODO")));
+    TestFalse(TEXT("Source does NOT contain GetLifetimeReplicatedProps (bReplicated=false)"),
+        Result.SourceContent.Contains(TEXT("GetLifetimeReplicatedProps")));
 
     return true;
 }

@@ -9,7 +9,8 @@
 {{#each NativeEventFunctions}}
 {{FunctionReturnType}} {{OwnerClassName}}::{{FunctionName}}_Implementation({{FunctionParams}})
 {
-    // TODO: Implement {{FunctionName}} logic{{FunctionReturnStatement}}
+    // TODO: Implement {{FunctionName}} logic
+{{FunctionReturnStatement}}
 }
 
 {{/each}}

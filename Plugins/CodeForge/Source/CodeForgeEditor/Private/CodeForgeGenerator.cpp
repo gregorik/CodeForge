@@ -125,7 +125,7 @@ FCodeForgeGeneratorResult FCodeForgeGenerator::Generate(const UCodeForgeBlueprin
 bool FCodeForgeGenerator::WriteToProject(
     const FCodeForgeGeneratorResult& Result,
     const FString& PublicDir, const FString& PrivateDir,
-    const FString& SubDir)
+    const FString& SubDir) const
 {
     if (!Result.bSuccess)
     {
@@ -157,6 +157,7 @@ bool FCodeForgeGenerator::WriteToProject(
     {
         if (!FFileHelper::SaveStringToFile(Result.SourceContent, *SourcePath))
         {
+            IFileManager::Get().Delete(*HeaderPath);
             return false;
         }
     }
@@ -241,7 +242,7 @@ FCodeForgeTemplateContext FCodeForgeGenerator::BuildContext(const UCodeForgeBlue
             PropertiesArray.Add(Item);
 
             // RepNotify filtered set
-            if (Prop.bRepNotify)
+            if (Prop.bRepNotify && Prop.bReplicated)
             {
                 FCodeForgeTemplateArrayItem RepNotifyItem;
                 RepNotifyItem.Values.Add(TEXT("PropertyName"),   Prop.Name);
@@ -293,7 +294,7 @@ FCodeForgeTemplateContext FCodeForgeGenerator::BuildContext(const UCodeForgeBlue
                     TEXT("void"), ESearchCase::IgnoreCase);
                 NEItem.Values.Add(TEXT("FunctionReturnStatement"),
                     bReturnsVoid ? TEXT("") :
-                    TEXT("\n    return ") + Func.ReturnType + TEXT("();"));
+                    TEXT("    return {};"));
                 NativeEventArray.Add(NEItem);
             }
         }
