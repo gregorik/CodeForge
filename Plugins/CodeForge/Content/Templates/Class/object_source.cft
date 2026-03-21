@@ -1,0 +1,15 @@
+{{> copyright_header}}
+
+#include "{{ClassName}}.h"
+
+{{ClassName}}::{{ClassName}}()
+{
+}
+
+{{#each NativeEventFunctions}}
+{{FunctionReturnType}} {{OwnerClassName}}::{{FunctionName}}_Implementation({{FunctionParams}})
+{
+    // TODO: Implement {{FunctionName}} logic
+}
+
+{{/each}}

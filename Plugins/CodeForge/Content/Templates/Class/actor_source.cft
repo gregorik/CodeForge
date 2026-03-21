@@ -1,0 +1,46 @@
+{{> copyright_header}}
+
+#include "{{ClassName}}.h"
+{{#if Replicated}}
+#include "Net/UnrealNetwork.h"
+{{/if}}
+
+{{ClassName}}::{{ClassName}}()
+{
+{{#if Replicated}}
+    bReplicates = true;
+{{/if}}
+}
+
+{{#if Replicated}}
+void {{ClassName}}::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+    Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+{{#each ReplicatedProperties}}
+    DOREPLIFETIME_CONDITION({{OwnerClassName}}, {{PropertyName}}, {{ReplicationCondition}});
+{{/each}}
+}
+
+{{/if}}
+{{#each RepNotifyProperties}}
+void {{OwnerClassName}}::OnRep_{{PropertyName}}()
+{
+    // TODO: Implement replication notify logic
+}
+
+{{/each}}
+{{#each RPCs}}
+void {{OwnerClassName}}::{{RPCName}}_Implementation({{RPCParams}})
+{
+    // TODO: Implement {{RPCName}} logic
+}
+
+{{/each}}
+{{#each NativeEventFunctions}}
+void {{OwnerClassName}}::{{FunctionName}}_Implementation({{FunctionParams}})
+{
+    // TODO: Implement {{FunctionName}} logic
+}
+
+{{/each}}

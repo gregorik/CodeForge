@@ -1,0 +1,4 @@
+void {{OwnerClassName}}::OnRep_{{PropertyName}}()
+{
+    // TODO: Implement replication notify logic
+}
