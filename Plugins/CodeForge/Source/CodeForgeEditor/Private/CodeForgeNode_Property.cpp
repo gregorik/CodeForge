@@ -47,4 +47,38 @@ void UCodeForgeNode_Property::SyncToBlueprint(UCodeForgeBlueprint* Blueprint) co
 
 void UCodeForgeNode_Property::SyncFromBlueprint(const UCodeForgeBlueprint* Blueprint)
 {
+	if (!Blueprint)
+	{
+		return;
+	}
+
+	// Determine which array to pull from based on pin connection
+	UEdGraphPin* InputPin = FindPin(TEXT("Owner"), EGPD_Input);
+	if (InputPin && InputPin->LinkedTo.Num() > 0)
+	{
+		UEdGraphNode* ConnectedNode = InputPin->LinkedTo[0]->GetOwningNode();
+		if (ConnectedNode->IsA<UCodeForgeNode_Struct>())
+		{
+			// Pull from StructProperties by matching Name
+			for (const FCodeForgePropertyDef& Prop : Blueprint->StructProperties)
+			{
+				if (Prop.Name == PropertyDef.Name)
+				{
+					PropertyDef = Prop;
+					return;
+				}
+			}
+			return;
+		}
+	}
+
+	// Default: pull from class Properties
+	for (const FCodeForgePropertyDef& Prop : Blueprint->Properties)
+	{
+		if (Prop.Name == PropertyDef.Name)
+		{
+			PropertyDef = Prop;
+			return;
+		}
+	}
 }

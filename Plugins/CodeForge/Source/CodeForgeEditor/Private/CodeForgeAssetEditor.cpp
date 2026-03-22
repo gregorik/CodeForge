@@ -39,6 +39,7 @@ void FCodeForgeAssetEditor::InitEditor(
 	check(Blueprint);
 
 	CreateEdGraphIfNeeded();
+	EdGraph->SyncAllNodesFromBlueprint();
 
 	// Set up graph editor commands
 	GraphEditorCommands = MakeShared<FUICommandList>();

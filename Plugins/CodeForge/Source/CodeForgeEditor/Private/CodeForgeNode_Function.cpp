@@ -37,4 +37,17 @@ void UCodeForgeNode_Function::SyncToBlueprint(UCodeForgeBlueprint* Blueprint) co
 
 void UCodeForgeNode_Function::SyncFromBlueprint(const UCodeForgeBlueprint* Blueprint)
 {
+	if (!Blueprint)
+	{
+		return;
+	}
+
+	for (const FCodeForgeFunctionDef& Func : Blueprint->Functions)
+	{
+		if (Func.Name == FunctionDef.Name)
+		{
+			FunctionDef = Func;
+			return;
+		}
+	}
 }

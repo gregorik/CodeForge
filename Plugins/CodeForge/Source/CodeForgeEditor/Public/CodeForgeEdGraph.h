@@ -16,4 +16,5 @@ public:
 	UCodeForgeBlueprint* CodeForgeBlueprint = nullptr;
 
 	void SyncAllNodesToBlueprint();
+	void SyncAllNodesFromBlueprint();
 };

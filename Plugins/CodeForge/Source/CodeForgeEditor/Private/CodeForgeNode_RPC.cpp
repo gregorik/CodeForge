@@ -37,4 +37,17 @@ void UCodeForgeNode_RPC::SyncToBlueprint(UCodeForgeBlueprint* Blueprint) const
 
 void UCodeForgeNode_RPC::SyncFromBlueprint(const UCodeForgeBlueprint* Blueprint)
 {
+	if (!Blueprint)
+	{
+		return;
+	}
+
+	for (const FCodeForgeRPCDef& RPC : Blueprint->RPCs)
+	{
+		if (RPC.Name == RPCDef.Name)
+		{
+			RPCDef = RPC;
+			return;
+		}
+	}
 }

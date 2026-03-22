@@ -24,3 +24,20 @@ void UCodeForgeEdGraph::SyncAllNodesToBlueprint()
 		}
 	}
 }
+
+void UCodeForgeEdGraph::SyncAllNodesFromBlueprint()
+{
+	if (!CodeForgeBlueprint)
+	{
+		return;
+	}
+
+	for (UEdGraphNode* Node : Nodes)
+	{
+		UCodeForgeEdGraphNode* CFNode = Cast<UCodeForgeEdGraphNode>(Node);
+		if (CFNode)
+		{
+			CFNode->SyncFromBlueprint(CodeForgeBlueprint);
+		}
+	}
+}
