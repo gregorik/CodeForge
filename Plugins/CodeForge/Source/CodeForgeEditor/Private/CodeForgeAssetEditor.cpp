@@ -10,6 +10,7 @@
 #include "GraphEditor.h"
 #include "IDetailsView.h"
 #include "PropertyEditorModule.h"
+#include "ScopedTransaction.h"
 #include "Misc/MessageDialog.h"
 #include "Misc/Paths.h"
 #include "Framework/MultiBox/MultiBoxBuilder.h"
@@ -49,6 +50,7 @@ void FCodeForgeAssetEditor::InitEditor(
 		{
 			if (GraphEditorWidget.IsValid())
 			{
+				const FScopedTransaction Transaction(FText::FromString(TEXT("Delete CodeForge Node")));
 				GraphEditorWidget->GetCurrentGraph()->Modify();
 				const FGraphPanelSelectionSet SelectedNodes = GraphEditorWidget->GetSelectedNodes();
 				for (UObject* NodeObj : SelectedNodes)
@@ -301,7 +303,11 @@ void FCodeForgeAssetEditor::OnGenerateClicked()
 	}
 
 	// 1. Sync graph nodes to the blueprint data
-	EdGraph->SyncAllNodesToBlueprint();
+	{
+		const FScopedTransaction Transaction(FText::FromString(TEXT("Sync Graph to Blueprint")));
+		Blueprint->Modify();
+		EdGraph->SyncAllNodesToBlueprint();
+	}
 
 	// 2. Run the code generator
 	FCodeForgeGenerator Generator;

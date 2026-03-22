@@ -1,5 +1,6 @@
 #include "CodeForgeEdGraphSchema.h"
 #include "CodeForgeEdGraphNode.h"
+#include "ScopedTransaction.h"
 #include "CodeForgeNode_Class.h"
 #include "CodeForgeNode_Struct.h"
 #include "CodeForgeNode_Enum.h"
@@ -20,7 +21,11 @@ UEdGraphNode* FCodeForgeSchemaAction_NewNode::PerformAction(
 		return nullptr;
 	}
 
+	const FScopedTransaction Transaction(FText::FromString(TEXT("Add CodeForge Node")));
+	ParentGraph->Modify();
+
 	UEdGraphNode* NewNode = DuplicateObject<UEdGraphNode>(NodeTemplate, ParentGraph);
+	NewNode->Modify();
 
 	NewNode->CreateNewGuid();
 	NewNode->NodePosX = static_cast<int32>(Location.X);
