@@ -1,7 +1,9 @@
 #include "CodeForgeEditor.h"
 #include "CodeForgeAssetTypeActions.h"
+#include "CodeForgeNodeFactory.h"
 #include "AssetToolsModule.h"
 #include "IAssetTools.h"
+#include "EdGraphUtilities.h"
 
 #define LOCTEXT_NAMESPACE "FCodeForgeEditorModule"
 
@@ -11,10 +13,19 @@ void FCodeForgeEditorModule::StartupModule()
 		FModuleManager::LoadModuleChecked<FAssetToolsModule>("AssetTools").Get();
 	CreatedAssetTypeActions = MakeShared<FCodeForgeAssetTypeActions>();
 	AssetTools.RegisterAssetTypeActions(CreatedAssetTypeActions.ToSharedRef());
+
+	NodeFactory = MakeShared<FCodeForgeNodeFactory>();
+	FEdGraphUtilities::RegisterVisualNodeFactory(NodeFactory);
 }
 
 void FCodeForgeEditorModule::ShutdownModule()
 {
+	if (NodeFactory.IsValid())
+	{
+		FEdGraphUtilities::UnregisterVisualNodeFactory(NodeFactory);
+		NodeFactory.Reset();
+	}
+
 	if (FModuleManager::Get().IsModuleLoaded("AssetTools") && CreatedAssetTypeActions.IsValid())
 	{
 		IAssetTools& AssetTools =

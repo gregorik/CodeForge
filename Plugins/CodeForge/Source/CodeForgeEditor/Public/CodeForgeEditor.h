@@ -3,6 +3,7 @@
 #include "Modules/ModuleManager.h"
 
 class FCodeForgeAssetTypeActions;
+class FCodeForgeNodeFactory;
 
 class FCodeForgeEditorModule : public IModuleInterface
 {
@@ -12,4 +13,5 @@ public:
 
 private:
 	TSharedPtr<FCodeForgeAssetTypeActions> CreatedAssetTypeActions;
+	TSharedPtr<FCodeForgeNodeFactory> NodeFactory;
 };
