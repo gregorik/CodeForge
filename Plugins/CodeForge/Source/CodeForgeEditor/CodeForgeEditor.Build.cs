@@ -26,7 +26,9 @@ public class CodeForgeEditor : ModuleRules
             "ToolMenus",
             "Projects",
             "Json",
-            "JsonUtilities"
+            "JsonUtilities",
+            "DeveloperSettings",
+            "AssetRegistry"
         });
     }
 }

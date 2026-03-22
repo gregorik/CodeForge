@@ -6,8 +6,14 @@
     "Description": "Visual C++ code generator with node-based class definition and UBT-compliant boilerplate generation.",
     "Category": "Editor",
     "CreatedBy": "CodeForge",
+    "CreatedByURL": "",
+    "DocsURL": "",
+    "SupportURL": "",
+    "EngineVersion": "5.7.0",
     "EnabledByDefault": true,
     "CanContainContent": true,
+    "IsBetaVersion": true,
+    "Installed": false,
     "Modules": [
         {
             "Name": "CodeForgeRuntime",

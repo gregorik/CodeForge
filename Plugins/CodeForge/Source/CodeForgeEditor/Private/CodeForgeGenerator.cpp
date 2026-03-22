@@ -15,6 +15,7 @@
 #include "Misc/Paths.h"
 #include "HAL/FileManager.h"
 #include "Interfaces/IPluginManager.h"
+#include "CodeForgeSettings.h"
 
 // ---------------------------------------------------------------------------
 // SetTemplatePath
@@ -505,6 +506,15 @@ FString FCodeForgeGenerator::LoadTemplate(const FString& TemplateName) const
 {
     // Resolve root search path
     FString SearchRoot = TemplatePath;
+    if (SearchRoot.IsEmpty())
+    {
+        // Check settings for custom template path
+        const UCodeForgeSettings* Settings = GetDefault<UCodeForgeSettings>();
+        if (Settings && !Settings->CustomTemplatePath.Path.IsEmpty())
+        {
+            SearchRoot = Settings->CustomTemplatePath.Path;
+        }
+    }
     if (SearchRoot.IsEmpty())
     {
         // Default: plugin Content/Templates directory — use IPluginManager for robust path resolution
