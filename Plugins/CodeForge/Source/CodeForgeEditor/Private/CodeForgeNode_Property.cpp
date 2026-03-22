@@ -27,8 +27,8 @@ void UCodeForgeNode_Property::SyncToBlueprint(UCodeForgeBlueprint* Blueprint) co
 		return;
 	}
 
-	UEdGraphPin* InputPin = FindPinChecked(TEXT("Owner"), EGPD_Input);
-	if (InputPin->LinkedTo.Num() == 0)
+	UEdGraphPin* InputPin = FindPin(TEXT("Owner"), EGPD_Input);
+	if (!InputPin || InputPin->LinkedTo.Num() == 0)
 	{
 		return;
 	}

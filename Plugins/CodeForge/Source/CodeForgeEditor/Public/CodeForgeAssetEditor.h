@@ -41,6 +41,9 @@ private:
 	/** The details panel widget. */
 	TSharedPtr<IDetailsView> DetailsView;
 
+	/** Commands bound to the graph editor (Delete, etc.). */
+	TSharedPtr<FUICommandList> GraphEditorCommands;
+
 	/** Tab identifiers. */
 	static const FName GraphTabId;
 	static const FName DetailsTabId;

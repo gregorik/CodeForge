@@ -3,6 +3,7 @@
 
 #include "CodeForgeAssetFactory.h"
 #include "CodeForgeBlueprint.h"
+#include "Misc/App.h"
 
 UCodeForgeAssetFactory::UCodeForgeAssetFactory()
 {
@@ -25,6 +26,12 @@ UObject* UCodeForgeAssetFactory::FactoryCreateNew(
 	if (NewBlueprint)
 	{
 		NewBlueprint->ClassName = InName.ToString();
+
+		// Default ModuleTarget to the project's game module name
+		if (NewBlueprint->ModuleTarget.IsEmpty())
+		{
+			NewBlueprint->ModuleTarget = FApp::GetProjectName();
+		}
 	}
 
 	return NewBlueprint;

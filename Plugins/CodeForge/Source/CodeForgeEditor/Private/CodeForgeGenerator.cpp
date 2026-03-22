@@ -14,6 +14,7 @@
 #include "Misc/FileHelper.h"
 #include "Misc/Paths.h"
 #include "HAL/FileManager.h"
+#include "Interfaces/IPluginManager.h"
 
 // ---------------------------------------------------------------------------
 // SetTemplatePath
@@ -464,9 +465,18 @@ FString FCodeForgeGenerator::LoadTemplate(const FString& TemplateName) const
     FString SearchRoot = TemplatePath;
     if (SearchRoot.IsEmpty())
     {
-        // Default: plugin Content/Templates directory
-        SearchRoot = FPaths::Combine(
-            FPaths::ProjectPluginsDir(), TEXT("CodeForge/Content/Templates"));
+        // Default: plugin Content/Templates directory — use IPluginManager for robust path resolution
+        TSharedPtr<IPlugin> Plugin = IPluginManager::Get().FindPlugin(TEXT("CodeForge"));
+        if (Plugin.IsValid())
+        {
+            SearchRoot = FPaths::Combine(Plugin->GetBaseDir(), TEXT("Content/Templates"));
+        }
+        else
+        {
+            // Fallback to well-known path
+            SearchRoot = FPaths::Combine(
+                FPaths::ProjectPluginsDir(), TEXT("CodeForge/Content/Templates"));
+        }
     }
 
     // Sub-directories to search (order matters — prefer exact match in common first)

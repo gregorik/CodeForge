@@ -83,9 +83,13 @@ TArray<FCodeForgeModuleInfo> FCodeForgeModuleScanner::ScanProject(const FString&
 		FCodeForgeModuleInfo Info;
 		Info.ModuleName = ModuleName;
 		Info.SourceDir  = FPaths::Combine(SourceRoot, ModuleName);
-		Info.PublicDir   = FPaths::Combine(Info.SourceDir, TEXT("Public"));
-		Info.PrivateDir  = FPaths::Combine(Info.SourceDir, TEXT("Private"));
 		Info.APIMacro    = DeriveAPIMacro(ModuleName);
+
+		// Determine Public/Private dirs — fall back to SourceDir if they don't exist on disk
+		FString CandidatePublic  = FPaths::Combine(Info.SourceDir, TEXT("Public"));
+		FString CandidatePrivate = FPaths::Combine(Info.SourceDir, TEXT("Private"));
+		Info.PublicDir  = FPaths::DirectoryExists(CandidatePublic)  ? CandidatePublic  : Info.SourceDir;
+		Info.PrivateDir = FPaths::DirectoryExists(CandidatePrivate) ? CandidatePrivate : Info.SourceDir;
 
 		// Normalize all paths
 		FPaths::NormalizeFilename(Info.SourceDir);

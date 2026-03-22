@@ -290,7 +290,7 @@ bool FCodeForgeTest_RPCSpec_ClientUnreliable::RunTest(const FString& Parameters)
     TestFalse(TEXT("Does not contain WithValidation for Client"), Result.Contains(TEXT("WithValidation")));
     // "Unreliable" contains "Reliable" as a substring; make sure there is no standalone "Reliable"
     FString StrippedReliable = Result.Replace(TEXT("Unreliable"), TEXT("UNRELIABLE"));
-    TestFalse(TEXT("Does not contain standalone Reliable"), StrippedReliable.Contains(TEXT("Reliable")));
+    TestFalse(TEXT("Does not contain standalone Reliable"), StrippedReliable.Contains(TEXT("Reliable"), ESearchCase::CaseSensitive));
 
     return true;
 }

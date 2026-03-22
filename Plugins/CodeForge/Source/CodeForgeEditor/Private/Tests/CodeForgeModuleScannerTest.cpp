@@ -188,17 +188,20 @@ bool FCodeForgeModuleScannerTest_DirConsistency::RunTest(const FString& Paramete
 
     for (const FCodeForgeModuleInfo& Info : Modules)
     {
-        // PublicDir must be SourceDir/Public
-        FString ExpectedPublic = FPaths::Combine(Info.SourceDir, TEXT("Public"));
+        FString CandidatePublic  = FPaths::Combine(Info.SourceDir, TEXT("Public"));
+        FString CandidatePrivate = FPaths::Combine(Info.SourceDir, TEXT("Private"));
+
+        // PublicDir must be SourceDir/Public if that directory exists, else SourceDir (fallback)
+        FString ExpectedPublic = FPaths::DirectoryExists(CandidatePublic) ? CandidatePublic : Info.SourceDir;
         TestEqual(
-            FString::Printf(TEXT("PublicDir for '%s' must be SourceDir/Public"), *Info.ModuleName),
+            FString::Printf(TEXT("PublicDir for '%s' must match expected path"), *Info.ModuleName),
             Info.PublicDir,
             ExpectedPublic);
 
-        // PrivateDir must be SourceDir/Private
-        FString ExpectedPrivate = FPaths::Combine(Info.SourceDir, TEXT("Private"));
+        // PrivateDir must be SourceDir/Private if that directory exists, else SourceDir (fallback)
+        FString ExpectedPrivate = FPaths::DirectoryExists(CandidatePrivate) ? CandidatePrivate : Info.SourceDir;
         TestEqual(
-            FString::Printf(TEXT("PrivateDir for '%s' must be SourceDir/Private"), *Info.ModuleName),
+            FString::Printf(TEXT("PrivateDir for '%s' must match expected path"), *Info.ModuleName),
             Info.PrivateDir,
             ExpectedPrivate);
 

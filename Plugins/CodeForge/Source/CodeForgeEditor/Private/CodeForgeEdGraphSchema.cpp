@@ -21,12 +21,13 @@ UEdGraphNode* FCodeForgeSchemaAction_NewNode::PerformAction(
 	}
 
 	UEdGraphNode* NewNode = DuplicateObject<UEdGraphNode>(NodeTemplate, ParentGraph);
-	ParentGraph->AddNode(NewNode, /*bUserAction=*/true, bSelectNewNode);
 
 	NewNode->CreateNewGuid();
-	NewNode->PostPlacedNewNode();
 	NewNode->NodePosX = static_cast<int32>(Location.X);
 	NewNode->NodePosY = static_cast<int32>(Location.Y);
+
+	ParentGraph->AddNode(NewNode, /*bUserAction=*/true, bSelectNewNode);
+	NewNode->PostPlacedNewNode();
 	NewNode->AllocateDefaultPins();
 
 	if (FromPin)

@@ -25,6 +25,13 @@ void UCodeForgeNode_RPC::SyncToBlueprint(UCodeForgeBlueprint* Blueprint) const
 		return;
 	}
 
+	// Only add if connected to a Class node
+	UEdGraphPin* InputPin = FindPin(TEXT("Owner"), EGPD_Input);
+	if (!InputPin || InputPin->LinkedTo.Num() == 0)
+	{
+		return;
+	}
+
 	Blueprint->RPCs.Add(RPCDef);
 }
 

@@ -13,6 +13,8 @@
 #include "Misc/MessageDialog.h"
 #include "Misc/Paths.h"
 #include "Framework/MultiBox/MultiBoxBuilder.h"
+#include "Framework/Commands/GenericCommands.h"
+#include "GraphEditorActions.h"
 #include "Widgets/Docking/SDockTab.h"
 
 #define LOCTEXT_NAMESPACE "CodeForgeAssetEditor"
@@ -37,6 +39,31 @@ void FCodeForgeAssetEditor::InitEditor(
 	check(Blueprint);
 
 	CreateEdGraphIfNeeded();
+
+	// Set up graph editor commands
+	GraphEditorCommands = MakeShared<FUICommandList>();
+	GraphEditorCommands->MapAction(
+		FGenericCommands::Get().Delete,
+		FExecuteAction::CreateLambda([this]()
+		{
+			if (GraphEditorWidget.IsValid())
+			{
+				GraphEditorWidget->GetCurrentGraph()->Modify();
+				const FGraphPanelSelectionSet SelectedNodes = GraphEditorWidget->GetSelectedNodes();
+				for (UObject* NodeObj : SelectedNodes)
+				{
+					if (UEdGraphNode* Node = Cast<UEdGraphNode>(NodeObj))
+					{
+						if (Node->CanUserDeleteNode())
+						{
+							Node->DestroyNode();
+						}
+					}
+				}
+			}
+		}),
+		FCanExecuteAction::CreateLambda([]() { return true; })
+	);
 
 	// Define the editor layout: graph on left (70%), details on right (30%)
 	const TSharedRef<FTabManager::FLayout> Layout =
@@ -89,6 +116,8 @@ void FCodeForgeAssetEditor::InitEditor(
 		/*bCreateDefaultStandaloneMenu=*/ true,
 		/*bCreateDefaultToolbar=*/ true,
 		InBlueprint);
+
+	RegenerateMenusAndToolbars();
 }
 
 // ---------------------------------------------------------------------------
@@ -97,20 +126,7 @@ void FCodeForgeAssetEditor::InitEditor(
 
 void FCodeForgeAssetEditor::CreateEdGraphIfNeeded()
 {
-	// Look for an existing editor graph subobject on the blueprint
-	TArray<UObject*> SubObjects;
-	Blueprint->GetDefaultSubobjects(SubObjects);
-	for (UObject* SubObj : SubObjects)
-	{
-		UCodeForgeEdGraph* ExistingGraph = Cast<UCodeForgeEdGraph>(SubObj);
-		if (ExistingGraph)
-		{
-			EdGraph = ExistingGraph;
-			return;
-		}
-	}
-
-	// Also check via ForEachObjectWithOuter for any graph already owned by the blueprint
+	// Check if the blueprint already has a graph subobject
 	ForEachObjectWithOuter(Blueprint, [this](UObject* Obj)
 	{
 		if (UCodeForgeEdGraph* ExistingGraph = Cast<UCodeForgeEdGraph>(Obj))
@@ -121,13 +137,15 @@ void FCodeForgeAssetEditor::CreateEdGraphIfNeeded()
 
 	if (EdGraph)
 	{
+		EdGraph->CodeForgeBlueprint = Blueprint;
 		return;
 	}
 
-	// No existing graph found -- create a new one
+	// No existing graph found -- create a new one as a subobject of the blueprint
 	EdGraph = NewObject<UCodeForgeEdGraph>(Blueprint, NAME_None, RF_Transactional);
 	EdGraph->Schema = UCodeForgeEdGraphSchema::StaticClass();
 	EdGraph->CodeForgeBlueprint = Blueprint;
+	Blueprint->MarkPackageDirty();
 }
 
 // ---------------------------------------------------------------------------
@@ -197,6 +215,7 @@ TSharedRef<SDockTab> FCodeForgeAssetEditor::SpawnGraphTab(const FSpawnTabArgs& A
 		this, &FCodeForgeAssetEditor::OnGraphSelectionChanged);
 
 	GraphEditorWidget = SNew(SGraphEditor)
+		.AdditionalCommands(GraphEditorCommands)
 		.GraphToEdit(EdGraph)
 		.GraphEvents(Events)
 		.IsEditable(true);
@@ -222,7 +241,6 @@ TSharedRef<SDockTab> FCodeForgeAssetEditor::SpawnDetailsTab(const FSpawnTabArgs&
 	DetailsViewArgs.bAllowSearch = true;
 	DetailsViewArgs.bShowOptions = false;
 	DetailsViewArgs.bHideSelectionTip = true;
-
 
 	DetailsView = PropertyEditorModule.CreateDetailView(DetailsViewArgs);
 
@@ -313,9 +331,8 @@ void FCodeForgeAssetEditor::OnGenerateClicked()
 		{
 			IModuleInterface* LiveCodingModule =
 				FModuleManager::Get().GetModule(TEXT("LiveCoding"));
-			if (LiveCodingModule)
+			if (LiveCodingModule && GEngine)
 			{
-				// Trigger a Live Coding compile via console command
 				GEngine->Exec(nullptr, TEXT("LiveCoding.Compile"));
 			}
 			else
@@ -332,7 +349,7 @@ void FCodeForgeAssetEditor::OnGenerateClicked()
 		// Behavioral change only -- try Live Coding automatically
 		IModuleInterface* LiveCodingModule =
 			FModuleManager::Get().GetModule(TEXT("LiveCoding"));
-		if (LiveCodingModule)
+		if (LiveCodingModule && GEngine)
 		{
 			GEngine->Exec(nullptr, TEXT("LiveCoding.Compile"));
 		}

@@ -18,7 +18,7 @@ void FCodeForgeEditorModule::ShutdownModule()
 	if (FModuleManager::Get().IsModuleLoaded("AssetTools") && CreatedAssetTypeActions.IsValid())
 	{
 		IAssetTools& AssetTools =
-			FModuleManager::LoadModuleChecked<FAssetToolsModule>("AssetTools").Get();
+			FModuleManager::GetModuleChecked<FAssetToolsModule>("AssetTools").Get();
 		AssetTools.UnregisterAssetTypeActions(CreatedAssetTypeActions.ToSharedRef());
 	}
 }

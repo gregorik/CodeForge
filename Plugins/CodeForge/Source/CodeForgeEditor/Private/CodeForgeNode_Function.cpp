@@ -25,6 +25,13 @@ void UCodeForgeNode_Function::SyncToBlueprint(UCodeForgeBlueprint* Blueprint) co
 		return;
 	}
 
+	// Only add if connected to a Class node
+	UEdGraphPin* InputPin = FindPin(TEXT("Owner"), EGPD_Input);
+	if (!InputPin || InputPin->LinkedTo.Num() == 0)
+	{
+		return;
+	}
+
 	Blueprint->Functions.Add(FunctionDef);
 }
 
