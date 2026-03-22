@@ -4,6 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "{{ParentInclude}}"
+{{#each AdditionalIncludes}}
+#include "{{IncludePath}}"
+{{/each}}
 #include "{{ClassName}}.generated.h"
 
 UCLASS({{ClassSpecifiers}})

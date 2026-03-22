@@ -317,6 +317,27 @@ FCodeForgeTemplateContext FCodeForgeGenerator::BuildContext(const UCodeForgeBlue
         }
         Context.Arrays.Add(TEXT("RPCs"), RPCsArray);
 
+        // ---- Additional includes for custom types ----
+        {
+            TSet<FString> UniqueIncludes;
+            for (const FCodeForgePropertyDef& Prop : Blueprint->Properties)
+            {
+                if (!Prop.IncludePath.IsEmpty())
+                {
+                    UniqueIncludes.Add(Prop.IncludePath);
+                }
+            }
+
+            TArray<FCodeForgeTemplateArrayItem> IncludesArray;
+            for (const FString& Inc : UniqueIncludes)
+            {
+                FCodeForgeTemplateArrayItem Item;
+                Item.Values.Add(TEXT("IncludePath"), Inc);
+                IncludesArray.Add(Item);
+            }
+            Context.Arrays.Add(TEXT("AdditionalIncludes"), IncludesArray);
+        }
+
         break;
     }
 
@@ -339,6 +360,27 @@ FCodeForgeTemplateContext FCodeForgeGenerator::BuildContext(const UCodeForgeBlue
             PropertiesArray.Add(Item);
         }
         Context.Arrays.Add(TEXT("Properties"), PropertiesArray);
+
+        // ---- Additional includes for custom types ----
+        {
+            TSet<FString> UniqueIncludes;
+            for (const FCodeForgePropertyDef& Prop : Blueprint->StructProperties)
+            {
+                if (!Prop.IncludePath.IsEmpty())
+                {
+                    UniqueIncludes.Add(Prop.IncludePath);
+                }
+            }
+
+            TArray<FCodeForgeTemplateArrayItem> IncludesArray;
+            for (const FString& Inc : UniqueIncludes)
+            {
+                FCodeForgeTemplateArrayItem Item;
+                Item.Values.Add(TEXT("IncludePath"), Inc);
+                IncludesArray.Add(Item);
+            }
+            Context.Arrays.Add(TEXT("AdditionalIncludes"), IncludesArray);
+        }
 
         break;
     }

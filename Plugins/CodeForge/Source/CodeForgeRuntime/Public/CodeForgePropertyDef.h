@@ -49,6 +49,9 @@ struct CODEFORGERUNTIME_API FCodeForgePropertyDef
     // Meta tags
     UPROPERTY(EditAnywhere) TMap<FString, FString> Meta;
 
+    /** Optional #include path for custom types (e.g. "MyStruct.h"). Empty for built-in types. */
+    UPROPERTY(EditAnywhere) FString IncludePath;
+
     /**
      * Builds the UPROPERTY specifier string, e.g.
      * "EditAnywhere, BlueprintReadWrite, Replicated, Category=\"Foo\", meta=(ClampMin=0)"

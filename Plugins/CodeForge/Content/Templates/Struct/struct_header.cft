@@ -3,6 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+{{#each AdditionalIncludes}}
+#include "{{IncludePath}}"
+{{/each}}
 #include "{{ClassName}}.generated.h"
 
 USTRUCT({{StructSpecifiers}})

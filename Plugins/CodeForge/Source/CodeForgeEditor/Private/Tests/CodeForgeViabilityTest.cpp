@@ -8,6 +8,9 @@
 #include "CodeForgeNode_RPC.h"
 #include "CodeForgeEdGraph.h"
 #include "CodeForgeEdGraphSchema.h"
+#include "CodeForgeGenerator.h"
+#include "CodeForgeTypes.h"
+#include "Misc/Paths.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -83,6 +86,49 @@ bool FCodeForgeTest_SyncFromBlueprint_RPC::RunTest(const FString& Parameters)
 
 	TestEqual(TEXT("RPCDef.Name"), Node->RPCDef.Name, TEXT("ServerFire"));
 	TestTrue(TEXT("RPCDef.bReliable"), Node->RPCDef.bReliable);
+	return true;
+}
+
+// ===========================================================================
+// Include Paths in Generated Code
+// ===========================================================================
+static FString GetTemplatePath_Viability()
+{
+	return FPaths::Combine(FPaths::ProjectPluginsDir(), TEXT("CodeForge/Content/Templates"));
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FCodeForgeTest_IncludePathInContext,
+	"CodeForge.Viability.IncludePaths",
+	EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+bool FCodeForgeTest_IncludePathInContext::RunTest(const FString& Parameters)
+{
+	UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
+	BP->ClassName = TEXT("AMyActor");
+	BP->BlueprintKind = ECodeForgeBlueprintKind::Class;
+	BP->ClassType = ECodeForgeClassType::Actor;
+
+	FCodeForgePropertyDef Prop;
+	Prop.Name = TEXT("Inventory");
+	Prop.Type = TEXT("FInventoryData");
+	Prop.IncludePath = TEXT("InventoryData.h");
+	BP->Properties.Add(Prop);
+
+	FCodeForgePropertyDef Prop2;
+	Prop2.Name = TEXT("Health");
+	Prop2.Type = TEXT("float");
+	// No IncludePath — built-in type
+	BP->Properties.Add(Prop2);
+
+	FCodeForgeGenerator Generator;
+	Generator.SetTemplatePath(GetTemplatePath_Viability());
+	FCodeForgeGeneratorResult Result = Generator.Generate(BP);
+
+	TestTrue(TEXT("Generation succeeded"), Result.bSuccess);
+	TestTrue(TEXT("Header contains InventoryData.h include"),
+		Result.HeaderContent.Contains(TEXT("#include \"InventoryData.h\"")));
+	TestFalse(TEXT("Header does NOT contain empty include"),
+		Result.HeaderContent.Contains(TEXT("#include \"\"")));
 	return true;
 }
 
