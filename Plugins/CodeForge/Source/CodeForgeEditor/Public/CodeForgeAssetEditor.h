@@ -10,6 +10,8 @@ class UCodeForgeBlueprint;
 class UCodeForgeEdGraph;
 class SGraphEditor;
 class IDetailsView;
+class SMultiLineEditableTextBox;
+class SSearchBox;
 
 class FCodeForgeAssetEditor : public FAssetEditorToolkit
 {
@@ -47,6 +49,7 @@ private:
 	/** Tab identifiers. */
 	static const FName GraphTabId;
 	static const FName DetailsTabId;
+	static const FName PreviewTabId;
 
 	/** Spawn the graph editor tab. */
 	TSharedRef<SDockTab> SpawnGraphTab(const FSpawnTabArgs& Args);
@@ -62,4 +65,18 @@ private:
 
 	/** Creates the editor graph if the blueprint does not already have one. */
 	void CreateEdGraphIfNeeded();
+
+	/** Preview panel widgets. */
+	TSharedPtr<SMultiLineEditableTextBox> PreviewHeaderText;
+	TSharedPtr<SMultiLineEditableTextBox> PreviewSourceText;
+	TSharedRef<SDockTab> SpawnPreviewTab(const FSpawnTabArgs& Args);
+	void RefreshPreview();
+
+	/** Search/filter bar. */
+	TSharedPtr<SSearchBox> SearchBox;
+	void OnSearchTextChanged(const FText& NewText);
+	FReply OnAutoLayoutClicked();
+
+	/** Create example blueprints for learning. */
+	static void CreateExampleBlueprints();
 };

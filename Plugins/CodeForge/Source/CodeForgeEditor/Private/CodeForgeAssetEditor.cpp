@@ -17,6 +17,8 @@
 #include "Framework/Commands/GenericCommands.h"
 #include "GraphEditorActions.h"
 #include "Widgets/Docking/SDockTab.h"
+#include "Widgets/Input/SMultiLineEditableTextBox.h"
+#include "Widgets/Text/STextBlock.h"
 
 #define LOCTEXT_NAMESPACE "CodeForgeAssetEditor"
 
@@ -26,6 +28,7 @@
 
 const FName FCodeForgeAssetEditor::GraphTabId(TEXT("CodeForgeGraphTab"));
 const FName FCodeForgeAssetEditor::DetailsTabId(TEXT("CodeForgeDetailsTab"));
+const FName FCodeForgeAssetEditor::PreviewTabId(TEXT("CodeForgePreviewTab"));
 
 // ---------------------------------------------------------------------------
 // InitEditor
@@ -68,9 +71,9 @@ void FCodeForgeAssetEditor::InitEditor(
 		FCanExecuteAction::CreateLambda([]() { return true; })
 	);
 
-	// Define the editor layout: graph on left (70%), details on right (30%)
+	// Define the editor layout: graph (50%), details (25%), preview (25%)
 	const TSharedRef<FTabManager::FLayout> Layout =
-		FTabManager::NewLayout("CodeForgeAssetEditorLayout_v1")
+		FTabManager::NewLayout("CodeForgeAssetEditorLayout_v2")
 		->AddArea
 		(
 			FTabManager::NewPrimaryArea()
@@ -78,14 +81,20 @@ void FCodeForgeAssetEditor::InitEditor(
 			->Split
 			(
 				FTabManager::NewStack()
-				->SetSizeCoefficient(0.7f)
+				->SetSizeCoefficient(0.5f)
 				->AddTab(GraphTabId, ETabState::OpenedTab)
 			)
 			->Split
 			(
 				FTabManager::NewStack()
-				->SetSizeCoefficient(0.3f)
+				->SetSizeCoefficient(0.25f)
 				->AddTab(DetailsTabId, ETabState::OpenedTab)
+			)
+			->Split
+			(
+				FTabManager::NewStack()
+				->SetSizeCoefficient(0.25f)
+				->AddTab(PreviewTabId, ETabState::OpenedTab)
 			)
 		);
 
@@ -121,6 +130,7 @@ void FCodeForgeAssetEditor::InitEditor(
 		InBlueprint);
 
 	RegenerateMenusAndToolbars();
+	RefreshPreview();
 }
 
 // ---------------------------------------------------------------------------
@@ -197,12 +207,19 @@ void FCodeForgeAssetEditor::RegisterTabSpawners(const TSharedRef<FTabManager>& I
 		FOnSpawnTab::CreateRaw(this, &FCodeForgeAssetEditor::SpawnDetailsTab))
 		.SetDisplayName(LOCTEXT("DetailsTab", "Details"))
 		.SetGroup(WorkspaceMenuCategory.ToSharedRef());
+
+	InTabManager->RegisterTabSpawner(
+		PreviewTabId,
+		FOnSpawnTab::CreateRaw(this, &FCodeForgeAssetEditor::SpawnPreviewTab))
+		.SetDisplayName(LOCTEXT("PreviewTab", "Preview"))
+		.SetGroup(WorkspaceMenuCategory.ToSharedRef());
 }
 
 void FCodeForgeAssetEditor::UnregisterTabSpawners(const TSharedRef<FTabManager>& InTabManager)
 {
 	InTabManager->UnregisterTabSpawner(GraphTabId);
 	InTabManager->UnregisterTabSpawner(DetailsTabId);
+	InTabManager->UnregisterTabSpawner(PreviewTabId);
 
 	FAssetEditorToolkit::UnregisterTabSpawners(InTabManager);
 }
@@ -262,33 +279,110 @@ TSharedRef<SDockTab> FCodeForgeAssetEditor::SpawnDetailsTab(const FSpawnTabArgs&
 }
 
 // ---------------------------------------------------------------------------
+// SpawnPreviewTab
+// ---------------------------------------------------------------------------
+
+TSharedRef<SDockTab> FCodeForgeAssetEditor::SpawnPreviewTab(const FSpawnTabArgs& Args)
+{
+	return SNew(SDockTab)
+		.Label(LOCTEXT("PreviewTabLabel", "Code Preview"))
+		.TabColorScale(GetTabColorScale())
+		[
+			SNew(SVerticalBox)
+
+			+ SVerticalBox::Slot()
+			.AutoHeight()
+			.Padding(4.f)
+			[
+				SNew(STextBlock)
+				.Text(LOCTEXT("HeaderLabel", "Header (.h)"))
+				.Font(FCoreStyle::GetDefaultFontStyle("Bold", 10))
+			]
+
+			+ SVerticalBox::Slot()
+			.FillHeight(0.5f)
+			.Padding(4.f)
+			[
+				SAssignNew(PreviewHeaderText, SMultiLineEditableTextBox)
+				.IsReadOnly(true)
+				.Font(FCoreStyle::GetDefaultFontStyle("Mono", 9))
+			]
+
+			+ SVerticalBox::Slot()
+			.AutoHeight()
+			.Padding(4.f)
+			[
+				SNew(STextBlock)
+				.Text(LOCTEXT("SourceLabel", "Source (.cpp)"))
+				.Font(FCoreStyle::GetDefaultFontStyle("Bold", 10))
+			]
+
+			+ SVerticalBox::Slot()
+			.FillHeight(0.5f)
+			.Padding(4.f)
+			[
+				SAssignNew(PreviewSourceText, SMultiLineEditableTextBox)
+				.IsReadOnly(true)
+				.Font(FCoreStyle::GetDefaultFontStyle("Mono", 9))
+			]
+		];
+}
+
+// ---------------------------------------------------------------------------
+// RefreshPreview
+// ---------------------------------------------------------------------------
+
+void FCodeForgeAssetEditor::RefreshPreview()
+{
+	if (!Blueprint || !EdGraph) return;
+
+	EdGraph->SyncAllNodesToBlueprint();
+
+	FCodeForgeGenerator Generator;
+	FCodeForgeGeneratorResult Result = Generator.Generate(Blueprint);
+
+	if (PreviewHeaderText.IsValid())
+	{
+		PreviewHeaderText->SetText(Result.bSuccess
+			? FText::FromString(Result.HeaderContent)
+			: FText::FromString(FString::Printf(TEXT("// Error: %s"), *Result.ErrorMessage)));
+	}
+
+	if (PreviewSourceText.IsValid())
+	{
+		PreviewSourceText->SetText(Result.bSuccess
+			? FText::FromString(Result.SourceContent)
+			: FText::GetEmpty());
+	}
+}
+
+// ---------------------------------------------------------------------------
 // OnGraphSelectionChanged
 // ---------------------------------------------------------------------------
 
 void FCodeForgeAssetEditor::OnGraphSelectionChanged(const TSet<UObject*>& SelectedNodes)
 {
-	if (!DetailsView.IsValid())
+	if (DetailsView.IsValid())
 	{
-		return;
-	}
-
-	if (SelectedNodes.Num() == 1)
-	{
-		for (UObject* Node : SelectedNodes)
+		if (SelectedNodes.Num() == 1)
 		{
-			DetailsView->SetObject(Node);
-			return;
+			for (UObject* Node : SelectedNodes)
+			{
+				DetailsView->SetObject(Node);
+			}
+		}
+		else if (SelectedNodes.Num() == 0 && Blueprint)
+		{
+			// Nothing selected -- show the blueprint itself
+			DetailsView->SetObject(Blueprint);
+		}
+		else
+		{
+			DetailsView->SetObject(nullptr);
 		}
 	}
-	else if (SelectedNodes.Num() == 0 && Blueprint)
-	{
-		// Nothing selected -- show the blueprint itself
-		DetailsView->SetObject(Blueprint);
-	}
-	else
-	{
-		DetailsView->SetObject(nullptr);
-	}
+
+	RefreshPreview();
 }
 
 // ---------------------------------------------------------------------------
