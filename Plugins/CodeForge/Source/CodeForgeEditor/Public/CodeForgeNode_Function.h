@@ -20,4 +20,5 @@ public:
 
 	virtual void SyncToBlueprint(class UCodeForgeBlueprint* Blueprint) const override;
 	virtual void SyncFromBlueprint(const class UCodeForgeBlueprint* Blueprint) override;
+	virtual bool OwnsField(const FString& FieldName) const override { return FieldName == FunctionDef.Name; }
 };

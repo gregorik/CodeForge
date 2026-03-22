@@ -16,4 +16,7 @@ public:
 
 	virtual void SyncToBlueprint(class UCodeForgeBlueprint* Blueprint) const {}
 	virtual void SyncFromBlueprint(const class UCodeForgeBlueprint* Blueprint) {}
+
+	/** Returns true if this node "owns" the given field name for validation error mapping. */
+	virtual bool OwnsField(const FString& FieldName) const { return false; }
 };

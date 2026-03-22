@@ -17,4 +17,5 @@ public:
 
 	void SyncAllNodesToBlueprint();
 	void SyncAllNodesFromBlueprint();
+	void RunValidationOnNodes();
 };

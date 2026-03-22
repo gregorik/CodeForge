@@ -382,6 +382,11 @@ void FCodeForgeAssetEditor::OnGraphSelectionChanged(const TSet<UObject*>& Select
 		}
 	}
 
+	if (EdGraph)
+	{
+		EdGraph->RunValidationOnNodes();
+	}
+
 	RefreshPreview();
 }
 
