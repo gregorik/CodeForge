@@ -232,7 +232,7 @@ FString UCodeForgeBlueprint::GetClassSpecifiers() const
 
 namespace CodeForgeValidation
 {
-    /** Returns true if this class type is Actor-derived (allowed to have RPCs). */
+    /** Returns true if this class type is Actor-derived. */
     static bool IsActorDerived(ECodeForgeClassType ClassType)
     {
         switch (ClassType)

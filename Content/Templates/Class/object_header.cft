@@ -13,12 +13,12 @@
 
 
 UCLASS({{ClassSpecifiers}})
-class {{ModuleAPI}} {{ClassName}} : public {{ParentClassName}}
+class {{ModuleAPI}} {{ClassPrefix}}{{ClassName}} : public {{ParentClassName}}
 {
     GENERATED_BODY()
 
 public:
-    {{ClassName}}();
+    {{ClassPrefix}}{{ClassName}}();
 
 {{#each Properties}}
     UPROPERTY({{PropertySpecifiers}})
