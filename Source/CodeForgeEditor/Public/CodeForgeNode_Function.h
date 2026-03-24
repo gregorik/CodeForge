@@ -1,0 +1,25 @@
+#pragma once
+
+#include "CoreMinimal.h"
+#include "CodeForgeEdGraphNode.h"
+#include "CodeForgeFunctionDef.h"
+#include "CodeForgeNode_Function.generated.h"
+
+UCLASS()
+class CODEFORGEEDITOR_API UCodeForgeNode_Function : public UCodeForgeEdGraphNode
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, Category = "CodeForge")
+	FCodeForgeFunctionDef FunctionDef;
+
+	virtual FText GetNodeTitle(ENodeTitleType::Type TitleType) const override;
+	virtual FLinearColor GetNodeTitleColor() const override;
+	virtual void AllocateDefaultPins() override;
+
+	virtual void SyncToBlueprint(class UCodeForgeBlueprint* Blueprint) const override;
+	virtual void SyncFromBlueprint(const class UCodeForgeBlueprint* Blueprint) override;
+	virtual bool OwnsField(const FString& FieldName) const override { return FieldName == FunctionDef.Name; }
+};
+

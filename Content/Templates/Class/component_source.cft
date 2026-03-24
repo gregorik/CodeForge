@@ -1,0 +1,44 @@
+{{> copyright_header}}
+
+#include "{{ClassName}}.h"
+
+
+{{ClassName}}::{{ClassName}}()
+{
+
+{{ConstructorBody}}
+}
+
+
+{{#each RepNotifyProperties}}
+void {{OwnerClassName}}::OnRep_{{PropertyName}}()
+{
+{{OnRepBody}}
+}
+
+{{/each}}
+
+{{#each ServerRPCValidations}}
+bool {{OwnerClassName}}::{{RPCName}}_Validate({{RPCParams}})
+{
+	return true;
+}
+
+{{/each}}
+{{#each NativeEventFunctions}}
+{{FunctionReturnType}} {{OwnerClassName}}::{{FunctionName}}_Implementation({{FunctionParams}}){{ConstQualifier}}
+{
+{{FunctionBody}}
+}
+
+{{/each}}
+{{#each ImplementedFunctions}}
+{{FunctionReturnType}} {{OwnerClassName}}::{{FunctionName}}({{FunctionParams}}){{ConstQualifier}}
+{
+{{FunctionBody}}
+}
+
+{{/each}}
+
+
+
