@@ -2,7 +2,7 @@
 
 #include "{{ClassName}}.h"
 
-{{ClassName}}::{{ClassName}}()
+{{ClassPrefix}}{{ClassName}}::{{ClassPrefix}}{{ClassName}}()
 {
 {{ConstructorBody}}
 }

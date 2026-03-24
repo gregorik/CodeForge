@@ -13,12 +13,12 @@
 
 
 UCLASS({{ClassSpecifiers}})
-class {{ModuleAPI}} {{ClassName}} : public {{ParentClassName}}
+class {{ModuleAPI}} {{ClassPrefix}}{{ClassName}} : public {{ParentClassName}}
 {
     GENERATED_BODY()
 
 public:
-    {{ClassName}}();
+    {{ClassPrefix}}{{ClassName}}();
 
 {{#each Properties}}
     UPROPERTY({{PropertySpecifiers}})
@@ -30,9 +30,10 @@ public:
     {{FunctionReturnType}} {{FunctionName}}({{FunctionParams}}){{ConstQualifier}};
 
 {{/each}}
+{{#if Replicated}}
+    virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
-
-
+{{/if}}
 {{#if HasRepNotifyProperties}}
 protected:
 {{#each RepNotifyProperties}}

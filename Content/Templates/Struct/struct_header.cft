@@ -9,7 +9,7 @@
 #include "{{ClassName}}.generated.h"
 
 USTRUCT({{StructSpecifiers}})
-struct {{ModuleAPI}} {{ClassName}}
+struct {{ModuleAPI}} {{ClassPrefix}}{{ClassName}}
 {
     GENERATED_BODY()
 

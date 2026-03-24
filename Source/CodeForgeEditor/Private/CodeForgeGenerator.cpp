@@ -195,11 +195,40 @@ FCodeForgeTemplateContext FCodeForgeGenerator::BuildContext(const UCodeForgeBlue
     {
     case ECodeForgeBlueprintKind::Class:
     {
+        // Determine Unreal class prefix (A for Actor-family, U for UObject-family)
+        TCHAR ExpectedPrefix;
+        switch (Blueprint->ClassType)
+        {
+        case ECodeForgeClassType::Actor:
+        case ECodeForgeClassType::Pawn:
+        case ECodeForgeClassType::Character:
+        case ECodeForgeClassType::GameModeBase:
+        case ECodeForgeClassType::GameStateBase:
+        case ECodeForgeClassType::PlayerController:
+        case ECodeForgeClassType::PlayerState:
+        case ECodeForgeClassType::HUD:
+            ExpectedPrefix = TEXT('A');
+            break;
+        default:
+            ExpectedPrefix = TEXT('U');
+            break;
+        }
+
+        // If ClassName already starts with the expected prefix (e.g. "ARPGCharacter"),
+        // don't double it. Convention: prefix char + uppercase letter.
+        bool bAlreadyHasPrefix = Blueprint->ClassName.Len() >= 2
+            && Blueprint->ClassName[0] == ExpectedPrefix
+            && FChar::IsUpper(Blueprint->ClassName[1]);
+
+        FString ClassPrefix = bAlreadyHasPrefix ? TEXT("") : FString(1, &ExpectedPrefix);
+        Context.Variables.Add(TEXT("ClassPrefix"), ClassPrefix);
+        FString PrefixedClassName = ClassPrefix + Blueprint->ClassName;
+
         // Class-level variables
         Context.Variables.Add(TEXT("ParentClassName"), Blueprint->GetParentClassName());
         Context.Variables.Add(TEXT("ParentInclude"),   Blueprint->GetParentIncludePath());
         Context.Variables.Add(TEXT("ClassSpecifiers"), Blueprint->GetClassSpecifiers());
-        Context.Variables.Add(TEXT("OwnerClassName"),  Blueprint->ClassName);
+        Context.Variables.Add(TEXT("OwnerClassName"),  PrefixedClassName);
 
         // Conditions
         Context.Conditions.Add(TEXT("Replicated"), Blueprint->bReplicated);
@@ -251,7 +280,7 @@ FCodeForgeTemplateContext FCodeForgeGenerator::BuildContext(const UCodeForgeBlue
             {
                 FCodeForgeTemplateArrayItem RepNotifyItem;
                 RepNotifyItem.Values.Add(TEXT("PropertyName"),   Prop.Name);
-                RepNotifyItem.Values.Add(TEXT("OwnerClassName"), Blueprint->ClassName);
+                RepNotifyItem.Values.Add(TEXT("OwnerClassName"), PrefixedClassName);
                 // OnRepBody: custom body or fallback TODO
                 RepNotifyItem.Values.Add(TEXT("OnRepBody"),
                     Prop.OnRepBody.IsEmpty()
@@ -265,7 +294,7 @@ FCodeForgeTemplateContext FCodeForgeGenerator::BuildContext(const UCodeForgeBlue
             {
                 FCodeForgeTemplateArrayItem ReplicatedItem;
                 ReplicatedItem.Values.Add(TEXT("PropertyName"),        Prop.Name);
-                ReplicatedItem.Values.Add(TEXT("OwnerClassName"),      Blueprint->ClassName);
+                ReplicatedItem.Values.Add(TEXT("OwnerClassName"),      PrefixedClassName);
                 ReplicatedItem.Values.Add(TEXT("ReplicationCondition"),
                     RepConditionToString(Prop.ReplicationCondition));
                 ReplicatedArray.Add(ReplicatedItem);
@@ -298,7 +327,7 @@ FCodeForgeTemplateContext FCodeForgeGenerator::BuildContext(const UCodeForgeBlue
                 NEItem.Values.Add(TEXT("FunctionName"),       Func.Name);
                 NEItem.Values.Add(TEXT("FunctionParams"),     Func.BuildParamListString());
                 NEItem.Values.Add(TEXT("ConstQualifier"),     Func.bConst ? TEXT(" const") : TEXT(""));
-                NEItem.Values.Add(TEXT("OwnerClassName"),     Blueprint->ClassName);
+                NEItem.Values.Add(TEXT("OwnerClassName"),     PrefixedClassName);
 
                 bool bReturnsVoid = Func.ReturnType.TrimStartAndEnd().Equals(
                     TEXT("void"), ESearchCase::IgnoreCase);
@@ -330,7 +359,7 @@ FCodeForgeTemplateContext FCodeForgeGenerator::BuildContext(const UCodeForgeBlue
                 ImplItem.Values.Add(TEXT("FunctionName"),       Func.Name);
                 ImplItem.Values.Add(TEXT("FunctionParams"),     Func.BuildParamListString());
                 ImplItem.Values.Add(TEXT("ConstQualifier"),     Func.bConst ? TEXT(" const") : TEXT(""));
-                ImplItem.Values.Add(TEXT("OwnerClassName"),     Blueprint->ClassName);
+                ImplItem.Values.Add(TEXT("OwnerClassName"),     PrefixedClassName);
                 ImplItem.Values.Add(TEXT("FunctionBody"),       Func.FunctionBody);
                 ImplementedFunctionsArray.Add(ImplItem);
             }
@@ -373,6 +402,15 @@ FCodeForgeTemplateContext FCodeForgeGenerator::BuildContext(const UCodeForgeBlue
 
     case ECodeForgeBlueprintKind::Struct:
     {
+        // Add F prefix only if ClassName doesn't already have it
+        {
+            bool bAlreadyHasPrefix = Blueprint->ClassName.Len() >= 2
+                && Blueprint->ClassName[0] == TEXT('F')
+                && FChar::IsUpper(Blueprint->ClassName[1]);
+            Context.Variables.Add(TEXT("ClassPrefix"),
+                bAlreadyHasPrefix ? TEXT("") : TEXT("F"));
+        }
+
         // Struct specifiers
         FString StructSpecifiers = Blueprint->bBlueprintType
             ? TEXT("BlueprintType") : TEXT("");
@@ -417,6 +455,15 @@ FCodeForgeTemplateContext FCodeForgeGenerator::BuildContext(const UCodeForgeBlue
 
     case ECodeForgeBlueprintKind::Enum:
     {
+        // Add E prefix only if ClassName doesn't already have it
+        {
+            bool bAlreadyHasPrefix = Blueprint->ClassName.Len() >= 2
+                && Blueprint->ClassName[0] == TEXT('E')
+                && FChar::IsUpper(Blueprint->ClassName[1]);
+            Context.Variables.Add(TEXT("ClassPrefix"),
+                bAlreadyHasPrefix ? TEXT("") : TEXT("E"));
+        }
+
         // Enum specifiers
         FString EnumSpecifiers = Blueprint->bBlueprintType
             ? TEXT("BlueprintType") : TEXT("");

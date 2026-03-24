@@ -502,7 +502,7 @@ bool FValidate_Rule10_EmptyClass::RunTest(const FString& Parameters)
     BP->BlueprintKind = ECodeForgeBlueprintKind::Class;
     BP->ClassName     = TEXT("AMyActor");
     BP->ClassType     = ECodeForgeClassType::Actor;
-    // No properties, functions, or RPCs added
+    // No properties or functions added
 
     TArray<FCodeForgeValidationResult> Results = BP->Validate();
 
