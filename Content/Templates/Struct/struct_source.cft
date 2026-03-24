@@ -1,0 +1,5 @@
+{{> copyright_header}}
+
+#include "{{ClassName}}.h"
+
+

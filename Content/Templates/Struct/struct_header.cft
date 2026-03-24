@@ -1,0 +1,23 @@
+{{> copyright_header}}
+
+#pragma once
+
+#include "CoreMinimal.h"
+{{#each AdditionalIncludes}}
+#include "{{IncludePath}}"
+{{/each}}
+#include "{{ClassName}}.generated.h"
+
+USTRUCT({{StructSpecifiers}})
+struct {{ModuleAPI}} {{ClassName}}
+{
+    GENERATED_BODY()
+
+{{#each Properties}}
+    UPROPERTY({{PropertySpecifiers}})
+    {{PropertyType}} {{PropertyName}}{{PropertyDefault}};
+
+{{/each}}
+};
+
+
