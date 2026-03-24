@@ -1,4 +1,4 @@
-CodeForge Core is an experimental, node-based visual programming toolkit for Unreal Engine 5.6+.
+CodeForge (Core) is an experimental, node-based visual programming toolkit for Unreal Engine 5.6+.
 Its core features are the following:
  
  * Visual Data Modeling: Provides a native UEdGraph UI where users can visually define Classes (UCLASS), Structs
@@ -38,3 +38,5 @@ Its core features are the following:
  * The Playable Showcase: The inclusion of the "RPG Starter Kit" Example (which generates a playable Character with
      health, damage, and inventory using console commands) gives the product immediate street cred. This isn't just
      a toy: it outputs real, compiling gameplay logic out of the box.
+
+More info to come.
