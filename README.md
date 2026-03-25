@@ -1,3 +1,5 @@
+[Discord support](https://discord.gg/nqYQ5mtmHb)
+
 CodeForge (Core) is an experimental, node-based visual programming toolkit for Unreal Engine 5.6+.
 Its core features are the following:
  
