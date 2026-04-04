@@ -1,0 +1,36 @@
+{{> copyright_header}}
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "{{ParentInclude}}"
+{{#each AdditionalIncludes}}
+#include "{{IncludePath}}"
+{{/each}}
+
+#include "{{ClassName}}.generated.h"
+
+
+
+UCLASS({{ClassSpecifiers}})
+class {{ModuleAPI}} {{ClassPrefix}}{{ClassName}} : public {{ParentClassName}}
+{
+    GENERATED_BODY()
+
+public:
+    {{ClassPrefix}}{{ClassName}}();
+
+{{#each Properties}}
+    UPROPERTY({{PropertySpecifiers}})
+    {{PropertyType}} {{PropertyName}}{{PropertyDefault}};
+
+{{/each}}
+{{#each Functions}}
+    UFUNCTION({{FunctionSpecifiers}})
+    {{FunctionReturnType}} {{FunctionName}}({{FunctionParams}}){{ConstQualifier}};
+
+{{/each}}
+
+};
+
+

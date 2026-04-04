@@ -1,0 +1,10 @@
+void {{ClassName}}::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+    Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+{{#each ReplicatedProperties}}
+    DOREPLIFETIME_CONDITION({{OwnerClassName}}, {{PropertyName}}, {{ReplicationCondition}});
+{{/each}}
+}
+
+

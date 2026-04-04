@@ -1,0 +1,54 @@
+{{> copyright_header}}
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "{{ParentInclude}}"
+{{#each AdditionalIncludes}}
+#include "{{IncludePath}}"
+{{/each}}
+
+#include "{{ClassName}}.generated.h"
+
+
+
+UCLASS({{ClassSpecifiers}})
+class {{ModuleAPI}} {{ClassPrefix}}{{ClassName}} : public {{ParentClassName}}
+{
+    GENERATED_BODY()
+
+public:
+    {{ClassPrefix}}{{ClassName}}();
+
+{{#each Properties}}
+    UPROPERTY({{PropertySpecifiers}})
+    {{PropertyType}} {{PropertyName}}{{PropertyDefault}};
+
+{{/each}}
+{{#each Functions}}
+    UFUNCTION({{FunctionSpecifiers}})
+    {{FunctionReturnType}} {{FunctionName}}({{FunctionParams}}){{ConstQualifier}};
+
+{{/each}}
+{{#if Replicated}}
+    virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+{{/if}}
+{{#if HasRepNotifyProperties}}
+protected:
+{{#each RepNotifyProperties}}
+    UFUNCTION()
+    void OnRep_{{PropertyName}}();
+
+{{/each}}
+{{/if}}
+{{#if HasNativeEventFunctions}}
+protected:
+{{#each NativeEventFunctions}}
+    virtual {{FunctionReturnType}} {{FunctionName}}_Implementation({{FunctionParams}}){{ConstQualifier}};
+
+{{/each}}
+{{/if}}
+};
+
+
