@@ -1,0 +1,15 @@
+# Unreal Engine Plugin .gitignore
+Binaries/*
+Intermediate/*
+DerivedDataCache/*
+Saved/*
+*.log
+*.pdb
+*.obj
+*.suo
+*.user
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+.vs/*

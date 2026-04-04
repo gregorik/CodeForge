@@ -1,0 +1,25 @@
+{{> copyright_header}}
+
+#include "{{ClassName}}.h"
+
+{{ClassPrefix}}{{ClassName}}::{{ClassPrefix}}{{ClassName}}()
+{
+{{ConstructorBody}}
+}
+
+{{#each NativeEventFunctions}}
+{{FunctionReturnType}} {{OwnerClassName}}::{{FunctionName}}_Implementation({{FunctionParams}}){{ConstQualifier}}
+{
+{{FunctionBody}}
+}
+
+{{/each}}
+{{#each ImplementedFunctions}}
+{{FunctionReturnType}} {{OwnerClassName}}::{{FunctionName}}({{FunctionParams}}){{ConstQualifier}}
+{
+{{FunctionBody}}
+}
+
+{{/each}}
+
+
