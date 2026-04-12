@@ -2,6 +2,8 @@
 
 [Read the manual](https://gregorigin.com/CodeForge/)
 
+[Read the docs of the RPG Kit Example Project](https://gregorigin.com/CodeForge_RPG_Starter_Kit/)
+
 [Get the more advanced Pro version.](https://www.fab.com/listings/14bcc805-1ed2-42f3-8d52-406b9f97b8e9)
 
 [Discord support](https://discord.gg/nqYQ5mtmHb) <br><br>
