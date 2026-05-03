@@ -32,7 +32,7 @@ Why it exists:
 
 If you have consulting and/or custom pipeline integration in mind: I offer dedicated architecture consulting. 📬 Please [contact me](https://gregorigin.com/contact.html) or see my [extended portfolio](https://www.gregorigin.com/Portfolio/). 👨‍💻 
 
-CodeForge (Core) is a node-based visual programming toolkit for Unreal Engine 5.6+.
+CodeForge (Core) is a node-based visual programming toolkit for Unreal Engine 5.
 Its core features are the following:
  
  * Visual Data Modeling: Provides a native UEdGraph UI where users can visually define Classes (UCLASS), Structs
