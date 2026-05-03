@@ -1,3 +1,16 @@
+Design Unreal C++ architecture visually. Generate clean native code. No cloud, no AI guesswork, no Blueprint runtime dependency. <br>
+CodeForge is a structured C++ architecture/codegen tool for developers who want predictable Unreal boilerplate, not natural-language generation. <br>
+Why it exists:
+- Clear pain point: Unreal C++ macros, includes, replication, RPCs, delegates, and UHT boilerplate are tedious and
+    error-prone.
+- Offline/deterministic is a real differentiator in a market getting crowded with AI assistants.
+- Visual graph plus live preview is great for speed and productivity.
+- The RPG Starter Kit gives a concrete proof path: generated/preserved runtime files, demo map, automation proof,
+    and working gameplay loop.
+- It can appeal to solo devs, technical designers, educators, Blueprint users learning C++, and teams standardizing
+    class scaffolding.
+  
+
 [Watch it in action](https://www.youtube.com/watch?v=PeYbQVEmiRo)
 
 [Read the manual](https://gregorigin.com/CodeForge/)
@@ -19,7 +32,7 @@
 
 If you have consulting and/or custom pipeline integration in mind: I offer dedicated architecture consulting. 📬 Please [contact me](https://gregorigin.com/contact.html) or see my [extended portfolio](https://www.gregorigin.com/Portfolio/). 👨‍💻 
 
-CodeForge (Core) is an experimental, node-based visual programming toolkit for Unreal Engine 5.6+.
+CodeForge (Core) is a node-based visual programming toolkit for Unreal Engine 5.6+.
 Its core features are the following:
  
  * Visual Data Modeling: Provides a native UEdGraph UI where users can visually define Classes (UCLASS), Structs
