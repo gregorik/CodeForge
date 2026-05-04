@@ -11,7 +11,9 @@ Why it exists:
     class scaffolding.
   
 
-[Watch it in action](https://www.youtube.com/watch?v=PeYbQVEmiRo)
+[Watch it in action: v0.1](https://www.youtube.com/watch?v=PeYbQVEmiRo)
+
+[Update video: v0.2](https://www.youtube.com/watch?v=L5tblZUiljM)
 
 [Read the manual](https://gregorigin.com/CodeForge/)
 
