@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CodeForge — User Manual</title>
+<style>
+/* ═══════════════════════════════════════════════════════════════════════
+   CodeForge Manual — Dark Blue & Cyan Palette + CSS Illustrations
+   ═══════════════════════════════════════════════════════════════════════ */
+:root {
+  --bg-deep:      #080b14;
+  --bg-panel:     #0d111d;
+  --bg-card:      #121826;
+  --bg-sidebar:   #0b0e18;
+  --bg-code:      #090d16;
+  --border:       #1e2943;
+  --border-light: #2a3a60;
+  --cyan:         #00d4ff;
+  --cyan-dim:     #009ebf;
+  --cyan-glow:    rgba(0, 212, 255, 0.15);
+  --blue:         #337aff;
+  --blue-light:   #5c95ff;
+  --purple:       #a76cff;
+  --green:        #20c955;
+  --orange:       #fa9532;
+  --red:          #fa4646;
+  --yellow:       #ebd035;
+  --text:         #c2cbde;
+  --text-bright:  #ebf0fc;
+  --text-dim:     #7485a8;
+  --text-heading: #ffffff;
+  --sidebar-w:    280px;
+  --header-h:     64px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + 30px); }
+body {
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg-deep);
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(0, 212, 255, 0.03), transparent 25%),
+    radial-gradient(circle at 85% 30%, rgba(51, 122, 255, 0.03), transparent 25%);
+  background-attachment: fixed;
+  color: var(--text);
+  line-height: 1.7;
+  font-size: 15px;
+}
+
+/* ── Header Bar ─────────────────────────────────────────────────────── */
+.header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: var(--header-h);
+  background: rgba(11, 14, 24, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 30px;
+  box-shadow: 0 4px 30px rgba(0,0,0,0.5);
+}
+.header-logo {
+  display: flex; align-items: center; gap: 12px;
+  text-decoration: none; color: var(--text-heading);
+  font-weight: 800; font-size: 18px; letter-spacing: 0.5px;
+}
+.header-logo svg { flex-shrink: 0; }
+.header-logo:hover { color: var(--cyan); }
+.header-fab {
+  display: flex; align-items: center; gap: 8px;
+  text-decoration: none; color: var(--cyan);
+  font-size: 13px; font-weight: 700; letter-spacing: 1px;
+  padding: 8px 18px; border-radius: 8px;
+  background: rgba(0, 212, 255, 0.1);
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.header-fab:hover {
+  background: rgba(0, 212, 255, 0.2);
+  border-color: var(--cyan);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--cyan-glow);
+}
+
+/* ── Sidebar ────────────────────────────────────────────────────────── */
+.sidebar {
+  position: fixed; top: var(--header-h); left: 0; bottom: 0;
+  width: var(--sidebar-w);
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border);
+  overflow-y: auto; padding: 25px 0;
+  scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+}
+.sidebar::-webkit-scrollbar { width: 6px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+
+.nav-section { margin-bottom: 12px; }
+.nav-section-title {
+  font-size: 11px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 1.5px;
+  color: var(--text-dim);
+  padding: 10px 24px 8px;
+}
+.nav-link {
+  display: block;
+  padding: 8px 24px 8px 28px;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 14px;
+  border-left: 3px solid transparent;
+  transition: all 0.2s;
+  position: relative;
+}
+.nav-link::before {
+  content: ''; position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+  width: 4px; height: 4px; border-radius: 50%; background: var(--border-light);
+  transition: all 0.2s;
+}
+.nav-link:hover {
+  color: var(--text-bright);
+  background: rgba(0,212,255,0.05);
+  border-left-color: var(--border-light);
+}
+.nav-link:hover::before { background: var(--text-bright); }
+.nav-link.active {
+  color: var(--cyan);
+  background: var(--cyan-glow);
+  border-left-color: var(--cyan);
+  font-weight: 600;
+}
+.nav-link.active::before { background: var(--cyan); box-shadow: 0 0 8px var(--cyan); }
+.nav-link.sub {
+  padding-left: 44px;
+  font-size: 13px;
+}
+.nav-link.sub::before { left: 30px; width: 3px; height: 3px; }
+
+/* ── Main Content ───────────────────────────────────────────────────── */
+.main {
+  margin-left: var(--sidebar-w);
+  margin-top: var(--header-h);
+  padding: 50px 60px 100px;
+  max-width: 1000px;
+}
+
+/* ── Typography ─────────────────────────────────────────────────────── */
+h1, h2, h3, h4 { color: var(--text-heading); font-weight: 800; letter-spacing: -0.5px; }
+h1 {
+  font-size: 40px; margin-bottom: 12px; line-height: 1.2;
+  background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+h1 + .subtitle {
+  color: var(--cyan); font-size: 18px; font-weight: 600; margin-bottom: 40px; letter-spacing: 0.5px;
+}
+h2 {
+  font-size: 26px; margin: 60px 0 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center;
+}
+h2 .section-number {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; border-radius: 6px;
+  background: rgba(0, 212, 255, 0.1);
+  color: var(--cyan); font-size: 14px; margin-right: 12px;
+  border: 1px solid rgba(0, 212, 255, 0.3);
+}
+h3 { font-size: 20px; margin: 36px 0 12px; color: var(--text-bright); display: flex; align-items: center; gap: 8px;}
+h3::before { content: ''; display: block; width: 12px; height: 4px; background: var(--cyan); border-radius: 2px; }
+h4 { font-size: 16px; margin: 24px 0 8px; color: var(--blue-light); }
+p { margin-bottom: 18px; font-size: 15.5px; }
+a { color: var(--cyan); text-decoration: none; transition: color 0.2s; }
+a:hover { color: #ffffff; text-decoration: underline; }
+strong { color: var(--text-bright); font-weight: 600; }
+
+/* ── Cards & CSS Illustrations ──────────────────────────────────────── */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px 30px;
+  margin: 20px 0;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  position: relative; overflow: hidden;
+}
+.card::before {
+  content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+}
+.card.blue-edge::before { background: var(--blue); }
+.card.red-edge::before { background: var(--red); }
+.card.orange-edge::before { background: var(--orange); }
+.card.cyan-edge::before { background: var(--cyan); }
+
+.card-header {
+  display: flex; align-items: center; gap: 12px;
+  font-weight: 700; font-size: 16px; color: var(--text-heading);
+  margin-bottom: 16px;
+}
+.card-header .dot {
+  width: 12px; height: 12px; border-radius: 50%;
+  flex-shrink: 0; box-shadow: 0 0 10px currentColor;
+}
+
+/* CSS Node Illustration */
+.css-node-container {
+  display: flex; gap: 20px; justify-content: center; margin: 30px 0; flex-wrap: wrap;
+}
+.css-node {
+  background: #111520; border: 1px solid #1e2943; border-radius: 8px; width: 220px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5); overflow: hidden;
+  font-family: 'Inter', sans-serif;
+}
+.css-node-header {
+  padding: 8px 12px; font-size: 12px; font-weight: 700; color: white;
+  display: flex; align-items: center; gap: 8px;
+}
+.css-node-header.class { background: linear-gradient(90deg, #1f47d9, #2b5df2); }
+.css-node-header.struct { background: linear-gradient(90deg, #1ab340, #26cf51); }
+.css-node-header.enum { background: linear-gradient(90deg, #d9a600, #f2bd0d); }
+.css-node-body { padding: 10px; }
+.css-node-pin {
+  display: flex; align-items: center; gap: 8px; font-size: 12px; color: #c2cbde; margin-bottom: 8px;
+}
+.css-node-pin:last-child { margin-bottom: 0; }
+.css-pin-icon {
+  width: 10px; height: 10px; border-radius: 50%; border: 2px solid;
+}
+.css-pin-icon.prop { border-color: #40cc5a; }
+.css-pin-icon.func { border-color: #e68000; }
+.css-pin-icon.rpc { border-color: #e62626; }
+.css-pin-icon.del { border-color: #9940e6; }
+
+/* CSS Folder Structure Illustration */
+.css-folder-tree {
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px;
+  padding: 20px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--text-dim);
+  margin: 20px 0;
+}
+.css-folder { color: var(--text-bright); display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.css-folder::before { content: '📁'; font-size: 14px; }
+.css-file { color: var(--cyan); display: flex; align-items: center; gap: 8px; margin-bottom: 6px; padding-left: 24px; position: relative; }
+.css-file::before { content: '📄'; font-size: 14px; }
+.css-file::after { content: ''; position: absolute; left: 8px; top: -10px; bottom: 12px; width: 1px; background: var(--border); }
+.css-file-leaf::after { border-bottom: 1px solid var(--border); width: 10px; height: 1px; top: auto; bottom: auto; left: 8px; }
+
+/* CSS IDE Preview */
+.css-ide {
+  background: #090d16; border: 1px solid var(--border); border-radius: 10px;
+  overflow: hidden; margin: 24px 0; box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+.css-ide-header {
+  background: #111624; border-bottom: 1px solid var(--border);
+  display: flex; padding: 0 12px; gap: 4px;
+}
+.css-ide-tab {
+  padding: 10px 20px; font-size: 13px; font-family: 'Inter', sans-serif;
+  color: var(--text-dim); cursor: pointer; border-bottom: 2px solid transparent;
+  display: flex; align-items: center; gap: 8px;
+}
+.css-ide-tab::before { content: '📄'; font-size: 12px; opacity: 0.7; }
+.css-ide-tab.active {
+  color: var(--text-bright); border-bottom-color: var(--cyan); background: rgba(0, 212, 255, 0.05);
+}
+.css-ide-body { padding: 0; }
+.css-ide-body pre { margin: 0; border: none; border-radius: 0; box-shadow: none; background: transparent; }
+
+/* CSS Node Badge */
+.css-node-badge {
+  position: absolute; top: -8px; right: -8px;
+  width: 24px; height: 24px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 900; color: white;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5); z-index: 10;
+}
+.css-node-badge.error { background: var(--red); border: 2px solid #111520; }
+.css-node-badge.warning { background: var(--orange); border: 2px solid #111520; }
+.css-node-header.func { background: linear-gradient(90deg, #d97300, #f28b0d); }
+
+/* ── Feature Grid ───────────────────────────────────────────────────── */
+.feature-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 20px; margin: 30px 0;
+}
+.feature-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative; overflow: hidden;
+}
+.feature-item::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--border-light); transition: background 0.3s;
+}
+.feature-item:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.3); border-color: var(--border-light); }
+.feature-item:hover::before { background: var(--cyan); }
+.feature-item .fi-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; margin-bottom: 16px;
+}
+.feature-item .fi-title { font-weight: 800; color: var(--text-heading); font-size: 16px; margin-bottom: 8px; }
+.feature-item .fi-desc { font-size: 14px; color: var(--text-dim); line-height: 1.6; }
+
+/* ── Code Blocks ────────────────────────────────────────────────────── */
+code {
+  font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  background: var(--bg-code);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 13.5px;
+  color: var(--cyan);
+  border: 1px solid rgba(255,255,255,0.05);
+}
+pre {
+  background: var(--bg-code);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 24px;
+  overflow-x: auto;
+  margin: 16px 0 24px;
+  font-size: 13.5px; line-height: 1.7;
+  box-shadow: inset 0 2px 10px rgba(0,0,0,0.2);
+}
+pre code {
+  background: none; border: none; padding: 0;
+  color: #e6edf3;
+}
+.code-label {
+  display: inline-block; font-size: 11px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 1.5px;
+  color: var(--text-dim); margin-bottom: 8px;
+  background: var(--bg-card); padding: 4px 10px; border-radius: 6px; border: 1px solid var(--border);
+}
+/* Syntax colors inside pre */
+.kw { color: #ff7b72; }      /* keywords */
+.ty { color: #79c0ff; }        /* types */
+.fn { color: #d2a8ff; }  /* functions */
+.st { color: #a5d6ff; }       /* strings */
+.cm { color: #8b949e; font-style: italic; } /* comments */
+.mc { color: #d2a8ff; font-weight: bold; }      /* macros */
+.nu { color: #f2cc60; }      /* numbers */
+.tpl { color: #56d364; }       /* template tags */
+
+/* ── Tables ─────────────────────────────────────────────────────────── */
+table {
+  width: 100%; border-collapse: separate; border-spacing: 0;
+  margin: 24px 0; font-size: 14px;
+  border: 1px solid var(--border); border-radius: 10px; overflow: hidden;
+}
+th {
+  text-align: left; padding: 14px 18px;
+  background: var(--bg-card);
+  color: var(--text-bright);
+  font-size: 12px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 1px;
+  border-bottom: 2px solid var(--border);
+}
+td {
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(18, 24, 38, 0.4);
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(0,212,255,0.04); }
+
+/* ── Callout Boxes ──────────────────────────────────────────────────── */
+.callout {
+  border-radius: 10px; padding: 18px 24px;
+  margin: 24px 0; font-size: 14.5px;
+  display: flex; gap: 16px; align-items: flex-start;
+  line-height: 1.6;
+}
+.callout-icon {
+  flex-shrink: 0; width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 8px; font-size: 16px; font-weight: 900;
+}
+.callout.tip {
+  background: rgba(32, 201, 85, 0.05);
+  border: 1px solid rgba(32, 201, 85, 0.2);
+}
+.callout.tip .callout-icon { background: rgba(32, 201, 85, 0.15); color: var(--green); }
+.callout.warn {
+  background: rgba(250, 149, 50, 0.05);
+  border: 1px solid rgba(250, 149, 50, 0.2);
+}
+.callout.warn .callout-icon { background: rgba(250, 149, 50, 0.15); color: var(--orange); }
+.callout.note {
+  background: rgba(0, 212, 255, 0.05);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+}
+.callout.note .callout-icon { background: rgba(0, 212, 255, 0.15); color: var(--cyan); }
+.callout.error {
+  background: rgba(250, 70, 70, 0.05);
+  border: 1px solid rgba(250, 70, 70, 0.2);
+}
+.callout.error .callout-icon { background: rgba(250, 70, 70, 0.15); color: var(--red); }
+
+/* ── Badge pills ────────────────────────────────────────────────────── */
+.badge {
+  display: inline-block; font-size: 11px; font-weight: 800;
+  padding: 4px 10px; border-radius: 20px;
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+.badge-cyan  { background: rgba(0,212,255,0.15); color: var(--cyan); border: 1px solid rgba(0,212,255,0.3); }
+.badge-blue  { background: rgba(92,149,255,0.15); color: var(--blue-light); border: 1px solid rgba(92,149,255,0.3); }
+.badge-green { background: rgba(32,201,85,0.15); color: var(--green); border: 1px solid rgba(32,201,85,0.3); }
+.badge-orange{ background: rgba(250,149,50,0.15); color: var(--orange); border: 1px solid rgba(250,149,50,0.3); }
+.badge-red   { background: rgba(250,70,70,0.15);  color: var(--red); border: 1px solid rgba(250,70,70,0.3); }
+.badge-purple{ background: rgba(167,108,255,0.15); color: var(--purple); border: 1px solid rgba(167,108,255,0.3); }
+
+/* ── Node Color Chips ───────────────────────────────────────────────── */
+.node-colors {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px; margin: 24px 0;
+}
+.node-chip {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px; border-radius: 8px;
+  background: var(--bg-card); border: 1px solid var(--border);
+  font-size: 13px; font-weight: 700; color: var(--text-bright);
+}
+.node-chip .swatch {
+  width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0;
+  box-shadow: inset 0 2px 4px rgba(255,255,255,0.3), 0 2px 8px rgba(0,0,0,0.5);
+}
+
+/* ── Validation Rules Table ─────────────────────────────────────────── */
+.rule-id {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 24px; height: 24px;
+  font-size: 12px; font-weight: 800;
+  background: rgba(0,212,255,0.1);
+  color: var(--cyan); border-radius: 6px;
+}
+
+/* ── Hero Section ───────────────────────────────────────────────────── */
+.hero-image {
+  width: 100%; height: auto; border-radius: 16px; margin-bottom: 40px;
+  border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  display: block;
+}
+.hero {
+  text-align: center; padding: 40px 0 50px;
+}
+.hero-logo {
+  margin-bottom: 24px; display: inline-block;
+  padding: 16px; border-radius: 20px;
+  background: linear-gradient(135deg, rgba(20,28,46,0.8), rgba(11,14,24,0.8));
+  border: 1px solid var(--border);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+.hero p { max-width: 640px; margin: 0 auto 24px; color: var(--text-dim); font-size: 16px; }
+.version-pill {
+  display: inline-block; font-size: 13px; font-weight: 800;
+  padding: 6px 18px; border-radius: 24px;
+  background: rgba(0,212,255,0.08);
+  color: var(--cyan); border: 1px solid rgba(0,212,255,0.2);
+  box-shadow: 0 4px 12px rgba(0,212,255,0.1);
+}
+
+/* CSS Flow Diagram */
+.css-flow {
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px;
+  padding: 30px; margin: 30px 0; overflow-x: auto;
+}
+.css-flow-box {
+  flex: 1; min-width: 120px; text-align: center; padding: 16px;
+  background: #111520; border: 1px solid #1e2943; border-radius: 8px;
+  font-size: 13px; font-weight: 700; color: #e4eaf5;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+.css-flow-box.highlight { border-color: var(--cyan); background: rgba(0,212,255,0.05); color: var(--cyan); }
+.css-flow-arrow {
+  color: var(--cyan-dim); font-size: 20px; margin: 0 15px; font-weight: bold;
+}
+
+/* ── Responsive ─────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .sidebar { display: none; }
+  .main { margin-left: 0; padding: 30px 24px 80px; }
+  .feature-grid { grid-template-columns: 1fr; }
+  .css-flow { flex-direction: column; gap: 15px; }
+  .css-flow-arrow { transform: rotate(90deg); margin: 5px 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     HEADER
+     ═══════════════════════════════════════════════════════════════════════ -->
+<header class="header">
+  <a href="https://www.gregorigin.com/Portfolio/" target="_blank" class="header-logo" title="GregOrigin Portfolio">
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+      <rect x="1" y="1" width="30" height="30" rx="8" stroke="currentColor" stroke-width="2" fill="rgba(0,212,255,0.08)"/>
+      <text x="16" y="23" text-anchor="middle" fill="currentColor" font-size="18" font-weight="900" font-family="'Inter', sans-serif">G</text>
+    </svg>
+    GregOrigin
+  </a>
+  <a href="https://www.fab.com/listings/14bcc805-1ed2-42f3-8d52-406b9f97b8e9" target="_blank" class="header-fab" title="Get CodeForge on Fab">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
+    </svg>
+    GET ON FAB
+  </a>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     SIDEBAR NAVIGATION
+     ═══════════════════════════════════════════════════════════════════════ -->
+<nav class="sidebar" id="sidebar">
+  <div class="nav-section">
+    <div class="nav-section-title">Getting Started</div>
+    <a class="nav-link" href="#overview">Overview</a>
+    <a class="nav-link" href="#installation">Installation</a>
+    <a class="nav-link" href="#quickstart">Quick Start</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">Core Concepts</div>
+    <a class="nav-link" href="#architecture">Architecture</a>
+    <a class="nav-link" href="#blueprints">CodeForge Blueprints</a>
+    <a class="nav-link" href="#node-graph">The Node Graph</a>
+    <a class="nav-link" href="#code-gen">Code Generation</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">Blueprint Kinds</div>
+    <a class="nav-link" href="#kind-class">Classes</a>
+    <a class="nav-link sub" href="#class-types">Class Types</a>
+    <a class="nav-link sub" href="#properties">Properties</a>
+    <a class="nav-link sub" href="#functions">Functions</a>
+    <a class="nav-link sub" href="#rpcs">RPCs</a>
+    <a class="nav-link sub" href="#delegates">Delegates</a>
+    <a class="nav-link sub" href="#replication">Replication</a>
+    <a class="nav-link" href="#kind-struct">Structs</a>
+    <a class="nav-link" href="#kind-enum">Enums</a>
+    <a class="nav-link" href="#kind-interface">Interfaces</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">Editor</div>
+    <a class="nav-link" href="#asset-editor">Asset Editor</a>
+    <a class="nav-link" href="#code-preview">Code Preview Panel</a>
+    <a class="nav-link" href="#node-visuals">Node Visuals</a>
+    <a class="nav-link" href="#settings">Plugin Settings</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">Advanced</div>
+    <a class="nav-link" href="#template-engine">Template Engine</a>
+    <a class="nav-link" href="#templates-ref">Template Reference</a>
+    <a class="nav-link" href="#validation">Validation Rules</a>
+    <a class="nav-link" href="#module-scanner">Module Scanner</a>
+    <a class="nav-link" href="#autofix">Auto-Fix System</a>
+  </div>
+  <div class="nav-section">
+    <div class="nav-section-title">Reference</div>
+    <a class="nav-link" href="#enums-ref">Enums Reference</a>
+    <a class="nav-link" href="#specifiers-ref">Specifier Builder</a>
+    <a class="nav-link" href="#troubleshooting">Troubleshooting</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     MAIN CONTENT
+     ═══════════════════════════════════════════════════════════════════════ -->
+<main class="main">
+
+<!-- ── Hero ──────────────────────────────────────────────────────────── -->
+<div class="hero">
+  <img src="https://www.gregorigin.com/CodeForge/CodeForge0.jpg" alt="CodeForge Cover" class="hero-image">
+  <div class="hero-logo">
+    <svg width="84" height="84" viewBox="0 0 72 72" fill="none">
+      <rect x="2" y="2" width="68" height="68" rx="16" fill="#0f1525" stroke="#1e2943" stroke-width="2"/>
+      <path d="M22 28L14 36L22 44" stroke="#00d4ff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M50 28L58 36L50 44" stroke="#00d4ff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <line x1="40" y1="22" x2="32" y2="50" stroke="#337aff" stroke-width="4" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <h1>CodeForge</h1>
+  <p class="subtitle">Visual C++ Code Generator for Unreal Engine 5</p>
+  <p>Design classes, structs, enums, and interfaces in a node-based editor. CodeForge generates UHT-compliant C++ boilerplate instantly &mdash; with replication, RPCs, delegates, and more.</p>
+  <span class="version-pill">v0.2.0 &middot; UE 5.7</span>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<h2 id="overview"><span class="section-number">1</span> Overview</h2>
+
+<p><strong>CodeForge</strong> is an editor plugin that lets you define Unreal Engine C++ classes, structs, enums, and interfaces visually &mdash; then generates complete, compile-ready header and source files. Instead of hand-writing UPROPERTY/UFUNCTION macros, specifier strings, and replication boilerplate, you configure them through a node graph and a details panel, and CodeForge emits correct C++ instantly.</p>
+
+<div class="feature-grid">
+  <div class="feature-item">
+    <div class="fi-icon" style="background:rgba(0,212,255,0.1); color:var(--cyan); border: 1px solid rgba(0,212,255,0.2);">✦</div>
+    <div class="fi-title">Node-Based Design</div>
+    <div class="fi-desc">Visual graph editor with typed nodes for classes, properties, functions, RPCs, delegates, and more.</div>
+  </div>
+  <div class="feature-item">
+    <div class="fi-icon" style="background:rgba(92,149,255,0.1); color:var(--blue-light); border: 1px solid rgba(92,149,255,0.2);">➤</div>
+    <div class="fi-title">Instant Code Generation</div>
+    <div class="fi-desc">Generates .h and .cpp files with correct UHT macros, class prefixes, includes, and GENERATED_BODY().</div>
+  </div>
+  <div class="feature-item">
+    <div class="fi-icon" style="background:rgba(32,201,85,0.1); color:var(--green); border: 1px solid rgba(32,201,85,0.2);">✔</div>
+    <div class="fi-title">Real-Time Validation</div>
+    <div class="fi-desc">13+ validation rules catch errors before you compile &mdash; duplicate names, bad types, missing prefixes, and more.</div>
+  </div>
+  <div class="feature-item">
+    <div class="fi-icon" style="background:rgba(167,108,255,0.1); color:var(--purple); border: 1px solid rgba(167,108,255,0.2);">⚙</div>
+    <div class="fi-title">Full UE5 Feature Coverage</div>
+    <div class="fi-desc">Replication, RepNotify, RPCs, delegates, interfaces, Exec commands, meta specifiers, and custom templates.</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<h2 id="installation"><span class="section-number">2</span> Installation</h2>
+
+<h3>From Source or Fab</h3>
+<p>Once you acquire CodeForge, ensure it is placed in your project's <code>Plugins/</code> directory. Here is the expected structure:</p>
+
+<div class="css-folder-tree">
+  <div class="css-folder">YourProject</div>
+  <div class="css-folder" style="padding-left: 20px;">Plugins</div>
+  <div class="css-folder" style="padding-left: 40px; color: var(--cyan);">CodeForge</div>
+  <div class="css-file" style="padding-left: 64px;">CodeForge.uplugin</div>
+  <div class="css-folder" style="padding-left: 60px;">Content</div>
+  <div class="css-folder" style="padding-left: 60px;">Source</div>
+  <div class="css-folder" style="padding-left: 80px;">CodeForgeRuntime <span style="color:#7485a8; font-size:11px;">(Default phase)</span></div>
+  <div class="css-folder" style="padding-left: 80px;">CodeForgeEditor &nbsp;<span style="color:#7485a8; font-size:11px;">(PostEngineInit phase)</span></div>
+</div>
+
+<ol style="margin-left: 20px; margin-bottom: 20px;">
+  <li>Regenerate project files (right-click your <code>.uproject</code> &rarr; <em>Generate Visual Studio project files</em>).</li>
+  <li>Compile and open the editor. CodeForge loads automatically &mdash; check <em>Edit &rarr; Plugins</em> to verify.</li>
+</ol>
+
+<div class="callout note">
+  <div class="callout-icon">i</div>
+  <div><strong>Engine Version:</strong> CodeForge targets Unreal Engine 5.7. The plugin sets <code>"EngineVersion": "5.7.0"</code> in its descriptor and uses <code>BuildSettingsVersion.V6</code>.</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<h2 id="quickstart"><span class="section-number">3</span> Quick Start</h2>
+
+<p>Generating your first class takes less than a minute:</p>
+
+<ol style="margin-left: 20px; margin-bottom: 24px; line-height: 1.8;">
+  <li><strong>Create Asset:</strong> In Content Browser, right-click &rarr; <em>CodeForge &rarr; CodeForge Blueprint</em>.</li>
+  <li><strong>Wizard:</strong> The <em>Create CodeForge Class</em> wizard appears. Enter your class name and pick a visual archetype card (Actor, Component, Object, Interface, Struct, Enum) and a parent class.</li>
+  <li><strong>Open Editor:</strong> Double-click the newly created asset to open the visual graph.</li>
+  <li><strong>Design:</strong> Right-click the graph to add Properties, Functions, or RPC nodes and connect them.</li>
+  <li><strong>Generate:</strong> Click the <span class="badge badge-cyan">Generate Code</span> toolbar button.</li>
+</ol>
+
+<p>To explore the complete RPG Starter Kit instead of starting from a blank asset, click <span class="badge badge-cyan">RPG Setup</span> in the CodeForge toolbar. The wizard creates the example assets, checks generated C++ and runtime status, opens the demo map, and links to the manual and proof bundle.</p>
+
+<div class="css-flow">
+  <div class="css-flow-box">Create Asset</div>
+  <div class="css-flow-arrow">&rarr;</div>
+  <div class="css-flow-box">Design in Graph</div>
+  <div class="css-flow-arrow">&rarr;</div>
+  <div class="css-flow-box">Validate</div>
+  <div class="css-flow-arrow" style="color:var(--cyan);">&rarr;</div>
+  <div class="css-flow-box highlight">Generate C++</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<h2 id="architecture"><span class="section-number">4</span> Architecture</h2>
+
+<p>CodeForge is organized into distinct layers, ensuring that data, templates, and UI remain fully decoupled:</p>
+
+<table>
+  <tr><th>Layer</th><th>Module</th><th>Key Classes</th></tr>
+  <tr>
+    <td><strong style="color:var(--green)">1. Data Model</strong></td>
+    <td>CodeForgeRuntime</td>
+    <td><code>UCodeForgeBlueprint</code>, <code>FCodeForgePropertyDef</code>, etc.</td>
+  </tr>
+  <tr>
+    <td><strong style="color:var(--cyan)">2. Template Engine</strong></td>
+    <td>CodeForgeRuntime</td>
+    <td><code>FCodeForgeTemplateEngine</code>, <code>FCodeForgeTemplateContext</code></td>
+  </tr>
+  <tr>
+    <td><strong style="color:var(--blue-light)">3. Code Generator</strong></td>
+    <td>CodeForgeEditor</td>
+    <td><code>FCodeForgeGenerator</code>, Template file loading</td>
+  </tr>
+  <tr>
+    <td><strong style="color:var(--purple)">4. Editor UI</strong></td>
+    <td>CodeForgeEditor</td>
+    <td><code>FCodeForgeAssetEditor</code>, <code>SGraphNode_CodeForge</code></td>
+  </tr>
+</table>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<h2 id="blueprints"><span class="section-number">5</span> CodeForge Blueprints</h2>
+
+<p>A <strong>CodeForge Blueprint</strong> (<code>UCodeForgeBlueprint</code>) is the root data asset that stores your entire type definition. It lives in the Runtime module and is a pure data object.</p>
+
+<h3>Class Prefix System</h3>
+<p>CodeForge automatically prepends the correct UE prefix based on the type. If you accidentally type <code>ARPGCharacter</code>, the heuristic prevents double-prefixing it to <code>AARPGCharacter</code>.</p>
+
+<table>
+  <tr><th>Kind</th><th>Prefix</th><th>Example Input</th><th>Generated Name</th></tr>
+  <tr><td>Actor-derived Class</td><td><code><strong style="color:var(--cyan)">A</strong></code></td><td><code>MyCharacter</code></td><td><code>AMyCharacter</code></td></tr>
+  <tr><td>UObject-derived Class</td><td><code><strong style="color:var(--cyan)">U</strong></code></td><td><code>MySubsystem</code></td><td><code>UMySubsystem</code></td></tr>
+  <tr><td>Struct</td><td><code><strong style="color:var(--cyan)">F</strong></code></td><td><code>ItemData</code></td><td><code>FItemData</code></td></tr>
+  <tr><td>Enum</td><td><code><strong style="color:var(--cyan)">E</strong></code></td><td><code>ItemRarity</code></td><td><code>EItemRarity</code></td></tr>
+  <tr><td>Interface</td><td><code><strong style="color:var(--cyan)">U / I</strong></code></td><td><code>Damageable</code></td><td><code>UDamageable</code> / <code>IDamageable</code></td></tr>
+</table>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<h2 id="node-graph"><span class="section-number">6</span> The Node Graph</h2>
+
+<p>CodeForge utilizes a heavily customized visual node graph. The central type node connects to various member nodes.</p>
+
+<div class="css-node-container">
+  <!-- Class Node -->
+  <div class="css-node">
+    <div class="css-node-header class">Class: AMyCharacter</div>
+    <div class="css-node-body">
+      <div class="css-node-pin"><div class="css-pin-icon prop"></div> Health</div>
+      <div class="css-node-pin"><div class="css-pin-icon func"></div> GetHealth()</div>
+      <div class="css-node-pin"><div class="css-pin-icon rpc"></div> ServerAttack()</div>
+      <div class="css-node-pin"><div class="css-pin-icon del"></div> OnDeath</div>
+    </div>
+  </div>
+  <!-- Struct Node -->
+  <div class="css-node">
+    <div class="css-node-header struct">Struct: FItemData</div>
+    <div class="css-node-body">
+      <div class="css-node-pin"><div class="css-pin-icon prop"></div> ItemName</div>
+      <div class="css-node-pin"><div class="css-pin-icon prop"></div> StackCount</div>
+    </div>
+  </div>
+</div>
+
+<div class="node-colors">
+  <div class="node-chip"><div class="swatch" style="background:rgb(31,71,217)"></div> Class</div>
+  <div class="node-chip"><div class="swatch" style="background:rgb(26,179,64)"></div> Struct</div>
+  <div class="node-chip"><div class="swatch" style="background:rgb(217,166,0)"></div> Enum</div>
+  <div class="node-chip"><div class="swatch" style="background:rgb(0,191,217)"></div> Interface</div>
+  <div class="node-chip"><div class="swatch" style="background:rgb(64,204,90)"></div> Property</div>
+  <div class="node-chip"><div class="swatch" style="background:rgb(230,128,0)"></div> Function</div>
+  <div class="node-chip"><div class="swatch" style="background:rgb(230,38,38)"></div> RPC</div>
+  <div class="node-chip"><div class="swatch" style="background:rgb(153,64,230)"></div> Delegate</div>
+</div>
+
+<ul style="margin-left: 20px; margin-bottom: 24px; line-height: 1.8;">
+  <li><strong>Undo/Redo Transactions:</strong> All graph operations (creating nodes, moving nodes, modifying properties) are fully wrapped in Unreal's transaction system, allowing for complete undo/redo support.</li>
+  <li><strong>Two-Way Sync:</strong> Graph nodes maintain two-way synchronization (<code>SyncToBlueprint</code> and <code>SyncFromBlueprint</code>) with the underlying data asset, ensuring data integrity.</li>
+</ul>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<h2 id="code-gen"><span class="section-number">7</span> Code Generation</h2>
+
+<p>The code generation pipeline converts your node graph into a structured context dictionary, which is then fed into Handlebars-style templates (<code>.cft</code> files) to produce the final C++ strings.</p>
+
+<div class="css-flow">
+  <div class="css-flow-box" style="border-color:var(--green); color:var(--green)">1. BuildContext()</div>
+  <div class="css-flow-arrow">&rarr;</div>
+  <div class="css-flow-box" style="border-color:var(--cyan); color:var(--cyan)">2. Load Templates</div>
+  <div class="css-flow-arrow">&rarr;</div>
+  <div class="css-flow-box" style="border-color:var(--blue-light); color:var(--blue-light)">3. Process Strings</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<h2 id="kind-class"><span class="section-number">8</span> Classes</h2>
+
+<p>The most feature-rich blueprint kind. Supports properties, functions, RPCs, delegates, and replication.</p>
+
+<h3 id="properties">Properties</h3>
+<p>Each <code>Property</code> node generates a <code>UPROPERTY()</code> macro. Specifiers like <code>EditAnywhere</code>, <code>BlueprintReadWrite</code>, and <code>ReplicatedUsing</code> are automatically derived from checkboxes.</p>
+
+<p>You can also specify an optional <code>IncludePath</code> in the Property's details to automatically inject a <code>#include "..."</code> at the top of the generated header file if your property uses a custom type.</p>
+
+<div class="code-label">Example Generated UPROPERTY</div>
+<pre><code><span class="mc">UPROPERTY</span>(<span class="st">EditAnywhere</span>, <span class="st">BlueprintReadWrite</span>, <span class="st">ReplicatedUsing=OnRep_Health</span>)
+<span class="ty">float</span> Health = <span class="nu">100.0f</span>;</code></pre>
+
+<h3 id="functions">Functions & RPCs</h3>
+<p>Generate pure getters, callable events, and full client/server/multicast RPCs complete with <code>_Implementation</code> and <code>_Validate</code> stubs where required by UE5 conventions.</p>
+
+<div class="code-label">Example Generated Server RPC</div>
+<pre><code><span class="cm">// Header</span>
+<span class="mc">UFUNCTION</span>(<span class="st">Server</span>, <span class="st">Reliable</span>, <span class="st">WithValidation</span>)
+<span class="kw">void</span> <span class="fn">ServerRequestAttack</span>();
+
+<span class="cm">// Source — _Implementation</span>
+<span class="kw">void</span> <span class="ty">AMyCharacter</span>::<span class="fn">ServerRequestAttack_Implementation</span>()
+{
+    <span class="cm">// TODO</span>
+}
+
+<span class="cm">// Source — _Validate</span>
+<span class="ty">bool</span> <span class="ty">AMyCharacter</span>::<span class="fn">ServerRequestAttack_Validate</span>()
+{
+    <span class="kw">return</span> <span class="nu">true</span>;
+}</code></pre>
+
+<h3 id="replication">Replication</h3>
+<p>Checking <code>bReplicated</code> on the root node auto-generates the <code>GetLifetimeReplicatedProps</code> override, network includes, and constructor flags (differentiating between Actor <code>bReplicates</code> and Component <code>SetIsReplicatedByDefault</code>).</p>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<h2 id="kind-struct"><span class="section-number">9</span> Structs, Enums & Interfaces</h2>
+
+<div class="card blue-edge">
+  <div class="card-header"><div class="dot"></div>Structs</div>
+  <p>Generates a <code>USTRUCT(BlueprintType)</code>. Struct properties cannot have replication flags (caught by Validator Rule 12).</p>
+</div>
+
+<div class="card orange-edge">
+  <div class="card-header"><div class="dot"></div>Enums</div>
+  <p>Generates a <code>UENUM(BlueprintType)</code> with <code>uint8</code> backing type and optional <code>UMETA(DisplayName)</code> metadata.</p>
+</div>
+
+<div class="card cyan-edge">
+  <div class="card-header"><div class="dot"></div>Interfaces</div>
+  <p>Generates the standard UE5 dual-class pattern: a <code>UINTERFACE</code> stub and an <code>I</code>-prefixed abstract class filled with <code>BlueprintNativeEvent</code> functions.</p>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<h2 id="asset-editor"><span class="section-number">10</span> Asset Editor</h2>
+
+<p>Double-clicking a CodeForge Blueprint opens the <strong>CodeForge Asset Editor</strong> (<code>FCodeForgeAssetEditor</code>), a custom standalone editor with:</p>
+
+<ul style="margin-left: 20px; margin-bottom: 24px; line-height: 1.8;">
+  <li><strong>Node Graph Panel</strong> (left): The visual node graph for designing your type.</li>
+  <li><strong>Code Preview Panel</strong> (right): Real-time display of the generated <code>.h</code> and <code>.cpp</code> code.</li>
+  <li><strong>Details Panel</strong> (bottom-right): Standard UE5 property editor for the selected node or blueprint.</li>
+  <li><strong>Toolbar</strong>: Buttons for Generate Code, Validate, and toggling the code preview.</li>
+</ul>
+
+<h3 id="code-preview">Code Preview</h3>
+<p>The code preview panel updates in real time as you modify properties in the Details panel. It shows two tabs:</p>
+
+<div class="css-ide">
+  <div class="css-ide-header">
+    <div class="css-ide-tab active">MyCharacter.h</div>
+    <div class="css-ide-tab">MyCharacter.cpp</div>
+  </div>
+  <div class="css-ide-body">
+    <pre><code><span class="mc">UCLASS</span>()
+<span class="kw">class</span> <span class="ty">MYGAME_API</span> <span class="ty">AMyCharacter</span> : <span class="kw">public</span> <span class="ty">ACharacter</span>
+{
+    <span class="mc">GENERATED_BODY</span>()
+    <span class="cm">// Updates live as nodes change!</span>
+};</code></pre>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<h2 id="node-visuals"><span class="section-number">11</span> Node Visuals</h2>
+
+<p>CodeForge uses a custom <code>SGraphNode_CodeForge</code> widget with enhanced visual features:</p>
+
+<div class="css-node-container" style="justify-content: flex-start; margin: 20px 0 30px;">
+  <div class="css-node" style="position: relative;">
+    <div class="css-node-badge warning">!</div>
+    <div class="css-node-header func">Function: Attack</div>
+    <div class="css-node-body">
+      <div class="css-node-pin"><div class="css-pin-icon prop"></div> Damage (float)</div>
+    </div>
+  </div>
+</div>
+
+<ul style="margin-left: 20px; margin-bottom: 24px; line-height: 1.8;">
+  <li><strong>Color-coded title bars</strong> &mdash; each node type has a distinct color.</li>
+  <li><strong>Validation badges</strong> &mdash; error and warning indicators appear directly on nodes in real time.</li>
+  <li><strong>Body tinting</strong> &mdash; type nodes get a subtle color tint.</li>
+  <li><strong>Configurable font sizes</strong> &mdash; separate sizes for type nodes and member nodes.</li>
+</ul>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<h2 id="validation"><span class="section-number">12</span> Validation & Auto-Fix</h2>
+
+<p>CodeForge validates your design in real time to prevent C++ compilation errors.</p>
+
+<table>
+  <tr><th>Rule</th><th>Severity</th><th>Description</th><th>Auto-Fix</th></tr>
+  <tr><td><span class="rule-id">1</span></td><td><span class="badge badge-red">Error</span></td><td>Duplicate member names within the same class/struct</td><td>&mdash;</td></tr>
+  <tr><td><span class="rule-id">2</span></td><td><span class="badge badge-red">Error</span></td><td>Conflicting specifiers: <code>BlueprintReadWrite</code> + <code>BlueprintReadOnly</code></td><td>&mdash;</td></tr>
+  <tr><td><span class="rule-id">5</span></td><td><span class="badge badge-red">Error</span></td><td>Member name uses a reserved UE name (<code>Class</code>, <code>Super</code>)</td><td>&mdash;</td></tr>
+  <tr><td><span class="rule-id">8</span></td><td><span class="badge badge-red">Error</span></td><td>RepNotify set but Replicated is false</td><td><span class="badge badge-green">Yes</span></td></tr>
+  <tr><td><span class="rule-id">9</span></td><td><span class="badge badge-orange">Warning</span></td><td>Bool property not prefixed with <code>b</code> (e.g., <code>bIsAlive</code>)</td><td><span class="badge badge-green">Yes</span></td></tr>
+  <tr><td><span class="rule-id">12</span></td><td><span class="badge badge-red">Error</span></td><td>Replication flags set on a struct property</td><td><span class="badge badge-green">Yes</span></td></tr>
+</table>
+
+<div class="callout tip">
+  <div class="callout-icon">✦</div>
+  <div><strong>Auto-Fix:</strong> If a warning has an auto-fix available, you can right-click the node and select "Apply Fix" to automatically resolve the issue (e.g. capitalizing and adding 'b' to a boolean variable).</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<h2 id="template-engine"><span class="section-number">13</span> Template Engine & Customization</h2>
+
+<p>CodeForge uses <code>.cft</code> files located in <code>Plugins/CodeForge/Content/Templates/</code>. It uses a Handlebars-like syntax.</p>
+
+<table>
+  <tr><th>Syntax</th><th>Description</th></tr>
+  <tr><td><code><span class="tpl">{{Var}}</span></code></td><td>Replaced with variable</td></tr>
+  <tr><td><code><span class="tpl">{{#if Cond}}...{{/if}}</span></code></td><td>Renders if true</td></tr>
+  <tr><td><code><span class="tpl">{{#each Array}}...{{/each}}</span></code></td><td>Loops over items</td></tr>
+  <tr><td><code><span class="tpl">{{&gt; partial}}</span></code></td><td>Includes another template</td></tr>
+</table>
+
+<div class="callout note">
+  <div class="callout-icon">i</div>
+  <div><strong>Overrides:</strong> You can define a <code>CustomTemplatePath</code> in Project Settings to use your own templates without modifying the plugin files.</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<h2 id="module-scanner"><span class="section-number">14</span> Module Scanner</h2>
+
+<p><code>FCodeForgeModuleScanner</code> automatically discovers all C++ modules in your project by scanning for <code>.Build.cs</code> files. For each module it determines:</p>
+
+<ul style="margin-left: 20px; margin-bottom: 24px; line-height: 1.8;">
+  <li><strong>ModuleName</strong> &mdash; parsed from the <code>.Build.cs</code> filename</li>
+  <li><strong>APIMacro</strong> &mdash; derived as <code>MODULENAME_API</code> (uppercase module name + <code>_API</code>)</li>
+  <li><strong>SourceDir, PublicDir, PrivateDir</strong> &mdash; standard UE module directory layout</li>
+</ul>
+
+<p>This powers the <strong>ModuleTarget</strong> dropdown in the blueprint editor, letting you pick any module in your project as the output target without manual configuration.</p>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<h2 id="autofix"><span class="section-number">15</span> Auto-Fix System</h2>
+
+<p>Several validation rules offer automatic fixes via <code>ApplyAutoFix(AutoFixId)</code>. When a validation result has a non-empty <code>AutoFixId</code>, the editor can apply the fix with one click.</p>
+
+<table>
+  <tr><th>AutoFixId Pattern</th><th>Action</th></tr>
+  <tr><td><code>FixClassPrefix:X</code></td><td>Prepend the correct prefix character to ClassName</td></tr>
+  <tr><td><code>FixBoolPrefix:PropName</code></td><td>Rename property to <code>bPropName</code> (with capitalized first letter)</td></tr>
+  <tr><td><code>EnableReplicated:PropName</code></td><td>Set <code>bReplicated = true</code> on the property</td></tr>
+  <tr><td><code>RemoveReplicationFlags:PropName</code></td><td>Clear replication flags from struct property</td></tr>
+  <tr><td><code>FixType:Field:CorrectedType</code></td><td>Replace a miscapitalized type (e.g., <code>Float</code> &rarr; <code>float</code>)</td></tr>
+</table>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<h2 id="enums-ref"><span class="section-number">16</span> Enums Reference</h2>
+
+<div class="feature-grid">
+  <div class="feature-item" style="padding: 18px;">
+    <h3 style="margin-top:0; font-size: 16px;">ECodeForgeBlueprintKind</h3>
+    <ul style="margin-left: 20px; line-height: 1.8;">
+      <li><code>Class</code></li><li><code>Struct</code></li><li><code>Enum</code></li><li><code>Interface</code></li>
+    </ul>
+  </div>
+  <div class="feature-item" style="padding: 18px;">
+    <h3 style="margin-top:0; font-size: 16px;">ECodeForgeRPCMode</h3>
+    <ul style="margin-left: 20px; line-height: 1.8;">
+      <li><code>Server</code></li><li><code>Client</code></li><li><code>NetMulticast</code></li>
+    </ul>
+  </div>
+  <div class="feature-item" style="padding: 18px;">
+    <h3 style="margin-top:0; font-size: 16px;">ECodeForgeDelegateType</h3>
+    <ul style="margin-left: 20px; line-height: 1.8;">
+      <li><code>DynamicMulticast</code></li><li><code>Dynamic</code></li><li><code>Multicast</code></li><li><code>Simple</code></li>
+    </ul>
+  </div>
+  <div class="feature-item" style="padding: 18px;">
+    <h3 style="margin-top:0; font-size: 16px;">ECodeForgeValidationSeverity</h3>
+    <ul style="margin-left: 20px; line-height: 1.8;">
+      <li><code>Error</code></li><li><code>Warning</code></li>
+    </ul>
+  </div>
+</div>
+
+<h3 style="font-size: 18px;">ECodeForgeClassType</h3>
+<table>
+  <tr><td><code>Actor</code></td><td><code>Pawn</code></td><td><code>Character</code></td><td><code>ActorComponent</code></td></tr>
+  <tr><td><code>SceneComponent</code></td><td><code>Object</code></td><td><code>GameModeBase</code></td><td><code>GameStateBase</code></td></tr>
+  <tr><td><code>PlayerController</code></td><td><code>PlayerState</code></td><td><code>HUD</code></td><td></td></tr>
+</table>
+
+<h3 style="font-size: 18px;">ECodeForgeRepCondition</h3>
+<table>
+  <tr><td><code>None</code></td><td><code>InitialOnly</code></td><td><code>OwnerOnly</code></td><td><code>SkipOwner</code></td></tr>
+  <tr><td><code>SimulatedOnly</code></td><td><code>AutonomousOnly</code></td><td><code>SimulatedOrPhysics</code></td><td><code>InitialOrOwner</code></td></tr>
+  <tr><td><code>Custom</code></td><td><code>ReplayOrOwner</code></td><td><code>ReplayOnly</code></td><td><code>SimulatedOnlyNoReplay</code></td></tr>
+  <tr><td><code>SimulatedOrPhysicsNoReplay</code></td><td><code>SkipReplay</code></td><td><code>Dynamic</code></td><td><code>Never</code></td></tr>
+</table>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<h2 id="specifiers-ref"><span class="section-number">17</span> Specifier Builder Reference</h2>
+
+<p>Each definition type has a <code>BuildSpecifierString()</code> method that generates the correct UE5 macro arguments. Here's how specifiers combine:</p>
+
+<h3>Property Specifier Priority</h3>
+<p>Edit specifiers are <strong>mutually exclusive</strong> (first true wins):</p>
+<pre><code>VisibleAnywhere > EditAnywhere > EditDefaultsOnly > EditInstanceOnly</code></pre>
+<p>Blueprint specifiers are <strong>mutually exclusive</strong>:</p>
+<pre><code>BlueprintReadWrite > BlueprintReadOnly</code></pre>
+<p>Replication: <code>RepNotify</code> takes priority over plain <code>Replicated</code> &mdash; generates <code>ReplicatedUsing=OnRep_Name</code>.</p>
+
+<h3>Function Specifier Priority</h3>
+<pre><code>Exec > BlueprintPure > BlueprintCallable</code></pre>
+<p><code>BlueprintNativeEvent</code> is additive (can combine with the above). <code>Category</code> is appended when non-empty.</p>
+
+<h3>Type Correction Map</h3>
+<p>The validator recognizes common miscapitalizations and suggests corrections:</p>
+<table>
+  <tr><th>Input</th><th>Corrected</th><th>Input</th><th>Corrected</th></tr>
+  <tr><td><code>Float</code></td><td><code>float</code></td><td><code>String</code></td><td><code>FString</code></td></tr>
+  <tr><td><code>Bool</code></td><td><code>bool</code></td><td><code>Vector</code></td><td><code>FVector</code></td></tr>
+  <tr><td><code>Int</code></td><td><code>int</code></td><td><code>fstring</code></td><td><code>FString</code></td></tr>
+  <tr><td><code>Int32</code></td><td><code>int32</code></td><td><code>fvector</code></td><td><code>FVector</code></td></tr>
+  <tr><td><code>Double</code></td><td><code>double</code></td><td><code>frotator</code></td><td><code>FRotator</code></td></tr>
+</table>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<h2 id="settings"><span class="section-number">18</span> Plugin Settings</h2>
+
+<p>You can configure CodeForge defaults globally in <strong>Project Settings &rarr; Plugins &rarr; CodeForge</strong>. Key options include:</p>
+
+<ul style="margin-left: 20px; margin-bottom: 24px; line-height: 1.8;">
+  <li><strong>Brand Colors:</strong> Customize the accent and secondary colors used in the graph nodes and Code Preview panel.</li>
+  <li><strong>Default Prefix/Includes:</strong> Change default assumptions for generated files.</li>
+  <li><strong>Live Coding:</strong> Toggle the <code>bAutoLiveCodingOnBehavioralChange</code> flag to automatically trigger Live Coding when relevant graph changes occur.</li>
+  <li><strong>Preview Default:</strong> Choose whether the Code Preview panel opens by default in new windows.</li>
+</ul>
+
+<!-- ════════════════════════════════════════════════════════════════════ -->
+<h2 id="troubleshooting"><span class="section-number">19</span> Troubleshooting</h2>
+
+<div class="card error">
+  <div class="card-header"><div class="dot" style="background:var(--red)"></div> UHT "Class name must start with A/U"</div>
+  <p>CodeForge prepends prefixes automatically. If you see this on an old file, regenerate it to pick up the updated logic. Ensure the ClassName field doesn't already contain a double-prefix.</p>
+</div>
+
+<div class="card error">
+  <div class="card-header"><div class="dot" style="background:var(--orange)"></div> DLL lock prevents rebuild</div>
+  <p>If <code>UnrealEditor-Cmd.exe</code> holds DLLs, kill it or close the editor. If <code>bAutoLiveCodingOnBehavioralChange</code> is enabled, CodeForge will attempt to trigger Live Coding directly.</p>
+</div>
+
+<!-- ── Footer ─────────────────────────────────────────────────────── -->
+<div style="margin-top:80px; padding-top:30px; border-top:1px solid var(--border); text-align:center; color:var(--text-dim); font-size:13px; padding-bottom:40px;">
+  <p style="font-weight:700; color:var(--text-bright); margin-bottom: 8px;">CodeForge v0.2.0 &middot; Unreal Engine 5.7</p>
+  <p>Copyright &copy; 2026 <a href="https://www.gregorigin.com/Portfolio/" target="_blank">GregOrigin</a>. All Rights Reserved. <br> Toolbar icons &copy; <a href="https://www.magnific.com/author/pop-vectors/icons" target="Pop Vectors">Pop Vectors</a>, <a href="https://www.magnific.com/author/amirabce8/icons" target="Iconic Panda">Iconic Panda</a></p>
+</div>
+
+</main>
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     SIDEBAR SCROLL HIGHLIGHTING
+     ═══════════════════════════════════════════════════════════════════════ -->
+<script>
+(function() {
+  const links = document.querySelectorAll('.nav-link');
+  const sections = [];
+  links.forEach(link => {
+    const id = link.getAttribute('href');
+    if (id && id.startsWith('#')) {
+      const el = document.querySelector(id);
+      if (el) sections.push({ el, link });
+    }
+  });
+
+  function update() {
+    const scrollY = window.scrollY + 120;
+    let current = sections[0];
+    for (const s of sections) {
+      if (s.el.offsetTop <= scrollY) current = s;
+    }
+    links.forEach(l => l.classList.remove('active'));
+    if (current) current.link.classList.add('active');
+  }
+
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+</script>
+
+</body>
+</html>
