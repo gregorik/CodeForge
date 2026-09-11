@@ -7,24 +7,35 @@
 {{#each AdditionalIncludes}}
 #include "{{IncludePath}}"
 {{/each}}
+{{#each InterfaceIncludes}}
+#include "{{IncludePath}}"
+{{/each}}
 #include "{{ClassName}}.generated.h"
 
+{{#each Delegates}}
+{{DelegateDeclaration}};
+
+{{/each}}
 UCLASS({{ClassSpecifiers}})
-class {{ModuleAPI}} {{ClassName}} : public {{ParentClassName}}
+class {{ModuleAPI}} {{OwnerClassName}} : public {{ParentClassName}}{{Interfaces}}
 {
     GENERATED_BODY()
 
 public:
-    {{ClassName}}();
+    {{OwnerClassName}}();
 
 {{#each Properties}}
     UPROPERTY({{PropertySpecifiers}})
     {{PropertyType}} {{PropertyName}}{{PropertyDefault}};
 
 {{/each}}
+{{#each Delegates}}
+{{DelegatePropertyLine}}
+    {{DelegateTypeName}} {{DelegateName}};
+
+{{/each}}
 {{#each Functions}}
-    UFUNCTION({{FunctionSpecifiers}})
-    {{FunctionReturnType}} {{FunctionName}}({{FunctionParams}});
+{{FunctionDeclaration}}
 
 {{/each}}
 {{#if Replicated}}
@@ -34,6 +45,13 @@ public:
 {{#each RPCs}}
     UFUNCTION({{RPCSpecifiers}})
     void {{RPCName}}({{RPCParams}});
+
+{{/each}}
+{{#if HasNativeEventFunctions}}
+protected:
+{{/if}}
+{{#each NativeEventFunctions}}
+    virtual {{FunctionReturnType}} {{FunctionName}}_Implementation({{FunctionParams}}){{ConstQualifier}};
 
 {{/each}}
 {{#if HasRepNotifyProperties}}

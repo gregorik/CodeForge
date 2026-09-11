@@ -1,3 +1,4 @@
+// Copyright (c) 2026 GregOrigin. All Rights Reserved.
 // CodeForgeChangeDetector.cpp
 // Implements FCodeForgeChangeDetector — loads, saves, and compares the
 // generation manifest to classify regenerations as structural or behavioral.

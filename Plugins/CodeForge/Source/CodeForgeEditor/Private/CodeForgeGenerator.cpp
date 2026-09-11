@@ -1,3 +1,4 @@
+// Copyright (c) 2026 GregOrigin. All Rights Reserved.
 // CodeForgeGenerator.cpp
 // Implements FCodeForgeGenerator — the orchestration layer that reads a
 // UCodeForgeBlueprint schema, populates a template context, runs templates
@@ -16,6 +17,21 @@
 #include "HAL/FileManager.h"
 #include "Interfaces/IPluginManager.h"
 #include "CodeForgeSettings.h"
+
+namespace
+{
+    FString GetInterfaceBaseName(const FString& InterfaceName)
+    {
+        if (InterfaceName.Len() >= 2
+            && (InterfaceName[0] == TEXT('I') || InterfaceName[0] == TEXT('U'))
+            && FChar::IsUpper(InterfaceName[1]))
+        {
+            return InterfaceName.RightChop(1);
+        }
+
+        return InterfaceName;
+    }
+}
 
 // ---------------------------------------------------------------------------
 // SetTemplatePath
@@ -196,14 +212,77 @@ FCodeForgeTemplateContext FCodeForgeGenerator::BuildContext(const UCodeForgeBlue
     {
     case ECodeForgeBlueprintKind::Class:
     {
+        // Determine Unreal class prefix (A for Actor-family, U for UObject-family)
+        TCHAR ExpectedPrefix;
+        switch (Blueprint->ClassType)
+        {
+        case ECodeForgeClassType::Actor:
+        case ECodeForgeClassType::Pawn:
+        case ECodeForgeClassType::Character:
+        case ECodeForgeClassType::GameModeBase:
+        case ECodeForgeClassType::GameStateBase:
+        case ECodeForgeClassType::PlayerController:
+        case ECodeForgeClassType::PlayerState:
+        case ECodeForgeClassType::HUD:
+            ExpectedPrefix = TEXT('A');
+            break;
+        default:
+            ExpectedPrefix = TEXT('U');
+            break;
+        }
+
+        // If ClassName already starts with the expected prefix (e.g. "ARPGCharacter"),
+        // don't double it. Convention: prefix char + uppercase letter.
+        bool bAlreadyHasPrefix = Blueprint->ClassName.Len() >= 2
+            && Blueprint->ClassName[0] == ExpectedPrefix
+            && FChar::IsUpper(Blueprint->ClassName[1]);
+
+        FString ClassPrefix = bAlreadyHasPrefix ? TEXT("") : FString(1, &ExpectedPrefix);
+        Context.Variables.Add(TEXT("ClassPrefix"), ClassPrefix);
+        FString PrefixedClassName = ClassPrefix + Blueprint->ClassName;
+
         // Class-level variables
         Context.Variables.Add(TEXT("ParentClassName"), Blueprint->GetParentClassName());
         Context.Variables.Add(TEXT("ParentInclude"),   Blueprint->GetParentIncludePath());
         Context.Variables.Add(TEXT("ClassSpecifiers"), Blueprint->GetClassSpecifiers());
-        Context.Variables.Add(TEXT("OwnerClassName"),  Blueprint->ClassName);
+        Context.Variables.Add(TEXT("OwnerClassName"),  PrefixedClassName);
 
         // Conditions
         Context.Conditions.Add(TEXT("Replicated"), Blueprint->bReplicated);
+
+        // ---- Interfaces ----
+        {
+            bool bHasInterfaces = Blueprint->Interfaces.Num() > 0;
+            Context.Conditions.Add(TEXT("HasInterfaces"), bHasInterfaces);
+
+            if (bHasInterfaces)
+            {
+                // Build ", public IFoo, public IBar" for class declaration
+                FString InterfacesStr;
+                for (const FString& Iface : Blueprint->Interfaces)
+                {
+                    InterfacesStr += FString::Printf(TEXT(", public I%s"), *GetInterfaceBaseName(Iface));
+                }
+                Context.Variables.Add(TEXT("Interfaces"), InterfacesStr);
+
+                // Build array of include paths for interface headers
+                TArray<FCodeForgeTemplateArrayItem> InterfaceIncludesArray;
+                for (const FString& Iface : Blueprint->Interfaces)
+                {
+                    FCodeForgeTemplateArrayItem Item;
+                    Item.Values.Add(TEXT("IncludePath"), Iface + TEXT(".h"));
+                    InterfaceIncludesArray.Add(Item);
+                }
+                Context.Arrays.Add(TEXT("InterfaceIncludes"), InterfaceIncludesArray);
+            }
+            else
+            {
+                Context.Variables.Add(TEXT("Interfaces"), TEXT(""));
+            }
+        }
+
+        // ---- Constructor body ----
+        Context.Variables.Add(TEXT("ConstructorBody"), Blueprint->ConstructorBody);
 
         // Check for RepNotify properties
         bool bHasRepNotify = false;
@@ -249,7 +328,12 @@ FCodeForgeTemplateContext FCodeForgeGenerator::BuildContext(const UCodeForgeBlue
             {
                 FCodeForgeTemplateArrayItem RepNotifyItem;
                 RepNotifyItem.Values.Add(TEXT("PropertyName"),   Prop.Name);
-                RepNotifyItem.Values.Add(TEXT("OwnerClassName"), Blueprint->ClassName);
+                RepNotifyItem.Values.Add(TEXT("OwnerClassName"), PrefixedClassName);
+                // OnRepBody: custom body or fallback TODO
+                RepNotifyItem.Values.Add(TEXT("OnRepBody"),
+                    Prop.OnRepBody.IsEmpty()
+                        ? TEXT("\t// TODO: Implement replication notify logic")
+                        : Prop.OnRepBody);
                 RepNotifyArray.Add(RepNotifyItem);
             }
 
@@ -258,7 +342,7 @@ FCodeForgeTemplateContext FCodeForgeGenerator::BuildContext(const UCodeForgeBlue
             {
                 FCodeForgeTemplateArrayItem ReplicatedItem;
                 ReplicatedItem.Values.Add(TEXT("PropertyName"),        Prop.Name);
-                ReplicatedItem.Values.Add(TEXT("OwnerClassName"),      Blueprint->ClassName);
+                ReplicatedItem.Values.Add(TEXT("OwnerClassName"),      PrefixedClassName);
                 ReplicatedItem.Values.Add(TEXT("ReplicationCondition"),
                     RepConditionToString(Prop.ReplicationCondition));
                 ReplicatedArray.Add(ReplicatedItem);
@@ -272,14 +356,32 @@ FCodeForgeTemplateContext FCodeForgeGenerator::BuildContext(const UCodeForgeBlue
         // ---- Functions array ----
         TArray<FCodeForgeTemplateArrayItem> FunctionsArray;
         TArray<FCodeForgeTemplateArrayItem> NativeEventArray;
+        TArray<FCodeForgeTemplateArrayItem> ImplementedFunctionsArray;
 
         for (const FCodeForgeFunctionDef& Func : Blueprint->Functions)
         {
+            const FString FunctionParams = Func.BuildParamListString();
+            const FString ConstQualifier = Func.bConst ? TEXT(" const") : TEXT("");
+            FString FunctionDeclaration;
+            if (Func.bUFunction)
+            {
+                FunctionDeclaration += FString::Printf(TEXT("    UFUNCTION(%s)\n"), *Func.BuildSpecifierString());
+            }
+            FunctionDeclaration += FString::Printf(TEXT("    %s%s %s(%s)%s%s;"),
+                Func.bVirtual ? TEXT("virtual ") : TEXT(""),
+                *Func.ReturnType,
+                *Func.Name,
+                *FunctionParams,
+                *ConstQualifier,
+                Func.bOverride ? TEXT(" override") : TEXT(""));
+
             FCodeForgeTemplateArrayItem Item;
             Item.Values.Add(TEXT("FunctionSpecifiers"), Func.BuildSpecifierString());
             Item.Values.Add(TEXT("FunctionReturnType"), Func.ReturnType);
             Item.Values.Add(TEXT("FunctionName"),       Func.Name);
-            Item.Values.Add(TEXT("FunctionParams"),     Func.BuildParamListString());
+            Item.Values.Add(TEXT("FunctionParams"),     FunctionParams);
+            Item.Values.Add(TEXT("ConstQualifier"),     ConstQualifier);
+            Item.Values.Add(TEXT("FunctionDeclaration"), FunctionDeclaration);
             FunctionsArray.Add(Item);
 
             if (Func.bBlueprintNativeEvent)
@@ -288,35 +390,95 @@ FCodeForgeTemplateContext FCodeForgeGenerator::BuildContext(const UCodeForgeBlue
                 NEItem.Values.Add(TEXT("FunctionReturnType"), Func.ReturnType);
                 NEItem.Values.Add(TEXT("FunctionName"),       Func.Name);
                 NEItem.Values.Add(TEXT("FunctionParams"),     Func.BuildParamListString());
-                NEItem.Values.Add(TEXT("OwnerClassName"),     Blueprint->ClassName);
-                // Provide a return statement for non-void functions.
-                // Template engine merges item Values into Variables per iteration,
-                // but does NOT support per-item Conditions.  We encode the return
-                // statement directly as a variable value so the template can embed it.
+                NEItem.Values.Add(TEXT("ConstQualifier"),     Func.bConst ? TEXT(" const") : TEXT(""));
+                NEItem.Values.Add(TEXT("OwnerClassName"),     PrefixedClassName);
+
                 bool bReturnsVoid = Func.ReturnType.TrimStartAndEnd().Equals(
                     TEXT("void"), ESearchCase::IgnoreCase);
                 NEItem.Values.Add(TEXT("FunctionReturnStatement"),
                     bReturnsVoid ? TEXT("") :
                     TEXT("    return {};"));
+
+                // FunctionBody: custom body or fallback TODO
+                if (!Func.FunctionBody.IsEmpty())
+                {
+                    NEItem.Values.Add(TEXT("FunctionBody"), Func.FunctionBody);
+                }
+                else
+                {
+                    FString DefaultBody = FString::Printf(TEXT("\t// TODO: Implement %s logic"), *Func.Name);
+                    if (!bReturnsVoid)
+                    {
+                        DefaultBody += TEXT("\n\treturn {};");
+                    }
+                    NEItem.Values.Add(TEXT("FunctionBody"), DefaultBody);
+                }
                 NativeEventArray.Add(NEItem);
+            }
+            else
+            {
+                // Non-NativeEvent functions still need a generated implementation so
+                // reflected UFUNCTIONs have a concrete symbol at link time.
+                FCodeForgeTemplateArrayItem ImplItem;
+                ImplItem.Values.Add(TEXT("FunctionReturnType"), Func.ReturnType);
+                ImplItem.Values.Add(TEXT("FunctionName"),       Func.Name);
+                ImplItem.Values.Add(TEXT("FunctionParams"),     Func.BuildParamListString());
+                ImplItem.Values.Add(TEXT("ConstQualifier"),     Func.bConst ? TEXT(" const") : TEXT(""));
+                ImplItem.Values.Add(TEXT("OwnerClassName"),     PrefixedClassName);
+
+                if (!Func.FunctionBody.IsEmpty())
+                {
+                    ImplItem.Values.Add(TEXT("FunctionBody"), Func.FunctionBody);
+                }
+                else
+                {
+                    bool bReturnsVoid = Func.ReturnType.TrimStartAndEnd().Equals(
+                        TEXT("void"), ESearchCase::IgnoreCase);
+                    FString DefaultBody = FString::Printf(TEXT("\t// TODO: Implement %s logic"), *Func.Name);
+                    if (!bReturnsVoid)
+                    {
+                        DefaultBody += TEXT("\n\treturn {};");
+                    }
+                    ImplItem.Values.Add(TEXT("FunctionBody"), DefaultBody);
+                }
+                ImplementedFunctionsArray.Add(ImplItem);
             }
         }
 
         Context.Arrays.Add(TEXT("Functions"),            FunctionsArray);
         Context.Arrays.Add(TEXT("NativeEventFunctions"), NativeEventArray);
+        Context.Arrays.Add(TEXT("ImplementedFunctions"), ImplementedFunctionsArray);
 
         // ---- RPCs array ----
         TArray<FCodeForgeTemplateArrayItem> RPCsArray;
+        TArray<FCodeForgeTemplateArrayItem> ServerValidationArray;
         for (const FCodeForgeRPCDef& RPC : Blueprint->RPCs)
         {
             FCodeForgeTemplateArrayItem Item;
             Item.Values.Add(TEXT("RPCSpecifiers"), RPC.BuildSpecifierString());
             Item.Values.Add(TEXT("RPCName"),       RPC.Name);
             Item.Values.Add(TEXT("RPCParams"),     RPC.BuildParamListString());
-            Item.Values.Add(TEXT("OwnerClassName"), Blueprint->ClassName);
+            Item.Values.Add(TEXT("OwnerClassName"), PrefixedClassName);
+            // FunctionBody: custom body or fallback TODO
+            Item.Values.Add(TEXT("FunctionBody"),
+                RPC.FunctionBody.IsEmpty()
+                    ? FString::Printf(TEXT("\t// TODO: Implement %s logic"), *RPC.Name)
+                    : RPC.FunctionBody);
             RPCsArray.Add(Item);
+
+            // Server RPCs with WithValidation need a _Validate implementation
+            if (RPC.Mode == ECodeForgeRPCMode::Server)
+            {
+                FCodeForgeTemplateArrayItem ValItem;
+                ValItem.Values.Add(TEXT("RPCName"),       RPC.Name);
+                ValItem.Values.Add(TEXT("RPCParams"),     RPC.BuildParamListString());
+                ValItem.Values.Add(TEXT("OwnerClassName"), PrefixedClassName);
+                ServerValidationArray.Add(ValItem);
+            }
         }
         Context.Arrays.Add(TEXT("RPCs"), RPCsArray);
+        Context.Arrays.Add(TEXT("ServerRPCValidations"), ServerValidationArray);
+        Context.Conditions.Add(TEXT("HasServerRPCs"), ServerValidationArray.Num() > 0);
 
         // ---- Additional includes for custom types ----
         {
@@ -326,6 +488,13 @@ FCodeForgeTemplateContext FCodeForgeGenerator::BuildContext(const UCodeForgeBlue
                 if (!Prop.IncludePath.IsEmpty())
                 {
                     UniqueIncludes.Add(Prop.IncludePath);
+                }
+            }
+            for (const FCodeForgeFunctionDef& Func : Blueprint->Functions)
+            {
+                if (!Func.IncludePath.IsEmpty())
+                {
+                    UniqueIncludes.Add(Func.IncludePath);
                 }
             }
 
@@ -338,12 +507,21 @@ FCodeForgeTemplateContext FCodeForgeGenerator::BuildContext(const UCodeForgeBlue
             }
             Context.Arrays.Add(TEXT("AdditionalIncludes"), IncludesArray);
         }
-
-        break;
     }
-
+        break;
     case ECodeForgeBlueprintKind::Struct:
     {
+        // Add F prefix only if ClassName doesn't already have it
+        {
+            bool bAlreadyHasPrefix = Blueprint->ClassName.Len() >= 2
+                && Blueprint->ClassName[0] == TEXT('F')
+                && FChar::IsUpper(Blueprint->ClassName[1]);
+            Context.Variables.Add(TEXT("ClassPrefix"),
+                bAlreadyHasPrefix ? TEXT("") : TEXT("F"));
+            Context.Variables.Add(TEXT("OwnerClassName"),
+                (bAlreadyHasPrefix ? TEXT("") : TEXT("F")) + Blueprint->ClassName);
+        }
+
         // Struct specifiers
         FString StructSpecifiers = Blueprint->bBlueprintType
             ? TEXT("BlueprintType") : TEXT("");
@@ -383,11 +561,60 @@ FCodeForgeTemplateContext FCodeForgeGenerator::BuildContext(const UCodeForgeBlue
             Context.Arrays.Add(TEXT("AdditionalIncludes"), IncludesArray);
         }
 
+        }
         break;
-    }
+    case ECodeForgeBlueprintKind::Interface:
+    {
+        FString InterfaceBaseName = GetInterfaceBaseName(Blueprint->ClassName);
 
+        Context.Variables.Add(TEXT("UInterfaceClassName"), TEXT("U") + InterfaceBaseName);
+        Context.Variables.Add(TEXT("IInterfaceClassName"), TEXT("I") + InterfaceBaseName);
+        Context.Variables.Add(TEXT("OwnerClassName"), TEXT("I") + InterfaceBaseName);
+
+        // Interface methods from Functions array
+        TArray<FCodeForgeTemplateArrayItem> InterfaceFunctionsArray;
+        TSet<FString> UniqueIncludes;
+        for (const FCodeForgeFunctionDef& Func : Blueprint->Functions)
+        {
+            FCodeForgeTemplateArrayItem Item;
+            Item.Values.Add(TEXT("FunctionSpecifiers"), Func.BuildSpecifierString());
+            Item.Values.Add(TEXT("FunctionReturnType"), Func.ReturnType);
+            Item.Values.Add(TEXT("FunctionName"), Func.Name);
+            Item.Values.Add(TEXT("FunctionParams"), Func.BuildParamListString());
+            Item.Values.Add(TEXT("ConstQualifier"), Func.bConst ? TEXT(" const") : TEXT(""));
+            InterfaceFunctionsArray.Add(Item);
+
+            if (!Func.IncludePath.IsEmpty())
+            {
+                UniqueIncludes.Add(Func.IncludePath);
+            }
+        }
+        Context.Arrays.Add(TEXT("Functions"), InterfaceFunctionsArray);
+
+        // Additional includes for custom types used in interface functions
+        TArray<FCodeForgeTemplateArrayItem> IncludesArray;
+        for (const FString& Inc : UniqueIncludes)
+        {
+            FCodeForgeTemplateArrayItem Item;
+            Item.Values.Add(TEXT("IncludePath"), Inc);
+            IncludesArray.Add(Item);
+        }
+        Context.Arrays.Add(TEXT("AdditionalIncludes"), IncludesArray);
+        }
+        break;
     case ECodeForgeBlueprintKind::Enum:
     {
+        // Add E prefix only if ClassName doesn't already have it
+        {
+            bool bAlreadyHasPrefix = Blueprint->ClassName.Len() >= 2
+                && Blueprint->ClassName[0] == TEXT('E')
+                && FChar::IsUpper(Blueprint->ClassName[1]);
+            Context.Variables.Add(TEXT("ClassPrefix"),
+                bAlreadyHasPrefix ? TEXT("") : TEXT("E"));
+            Context.Variables.Add(TEXT("OwnerClassName"),
+                (bAlreadyHasPrefix ? TEXT("") : TEXT("E")) + Blueprint->ClassName);
+        }
+
         // Enum specifiers
         FString EnumSpecifiers = Blueprint->bBlueprintType
             ? TEXT("BlueprintType") : TEXT("");
@@ -422,16 +649,21 @@ FCodeForgeTemplateContext FCodeForgeGenerator::BuildContext(const UCodeForgeBlue
                 }
                 EntryMeta += TEXT("Hidden");
             }
-            Item.Values.Add(TEXT("EntryMeta"), EntryMeta);
+            // Build complete UMETA suffix — empty string when no meta is set
+            FString EntryMetaSuffix;
+            if (!EntryMeta.IsEmpty())
+            {
+                EntryMetaSuffix = FString::Printf(TEXT(" UMETA(%s)"), *EntryMeta);
+            }
+            Item.Values.Add(TEXT("EntryMetaSuffix"), EntryMetaSuffix);
 
             EntriesArray.Add(Item);
         }
         Context.Arrays.Add(TEXT("EnumEntries"), EntriesArray);
 
+        }
         break;
     }
-    }
-
     return Context;
 }
 
@@ -486,13 +718,15 @@ FString FCodeForgeGenerator::SelectTemplate(
             return bHeader ? TEXT("object_header") : TEXT("object_source");
         }
     }
-
     case ECodeForgeBlueprintKind::Struct:
         return bHeader ? TEXT("struct_header") : TEXT("struct_source");
 
     case ECodeForgeBlueprintKind::Enum:
         // Enums have a header only — no source file
         return bHeader ? TEXT("enum_header") : TEXT("");
+
+    case ECodeForgeBlueprintKind::Interface:
+        return bHeader ? TEXT("interface_header") : TEXT("interface_source");
     }
 
     return TEXT("");

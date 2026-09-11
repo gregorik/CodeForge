@@ -1,3 +1,4 @@
+// Copyright (c) 2026 GregOrigin. All Rights Reserved.
 // CodeForgeAssetTypeActions.cpp
 // FAssetTypeActions_Base implementation for UCodeForgeBlueprint.
 

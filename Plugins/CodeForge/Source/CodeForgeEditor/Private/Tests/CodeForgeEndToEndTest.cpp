@@ -1,3 +1,4 @@
+// Copyright (c) 2026 GregOrigin. All Rights Reserved.
 // CodeForgeEndToEndTest.cpp
 // End-to-end automation tests for the CodeForge pipeline — Task 11.
 //

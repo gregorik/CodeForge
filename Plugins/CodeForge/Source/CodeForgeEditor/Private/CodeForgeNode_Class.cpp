@@ -1,5 +1,7 @@
+// Copyright (c) 2026 GregOrigin. All Rights Reserved.
 #include "CodeForgeNode_Class.h"
 #include "CodeForgeBlueprint.h"
+#include "CodeForgeSettings.h"
 
 FText UCodeForgeNode_Class::GetNodeTitle(ENodeTitleType::Type TitleType) const
 {
@@ -8,7 +10,7 @@ FText UCodeForgeNode_Class::GetNodeTitle(ENodeTitleType::Type TitleType) const
 
 FLinearColor UCodeForgeNode_Class::GetNodeTitleColor() const
 {
-	return FLinearColor(0.0f, 0.2f, 0.8f);
+	return GetDefault<UCodeForgeSettings>()->ClassNodeColor;
 }
 
 void UCodeForgeNode_Class::AllocateDefaultPins()
@@ -24,6 +26,10 @@ void UCodeForgeNode_Class::AllocateDefaultPins()
 	FEdGraphPinType RPCPinType;
 	RPCPinType.PinCategory = TEXT("PC_CodeForgeRPC");
 	CreatePin(EGPD_Output, RPCPinType, TEXT("RPCs"));
+
+	FEdGraphPinType DelegatePinType;
+	DelegatePinType.PinCategory = TEXT("PC_CodeForgeDelegate");
+	CreatePin(EGPD_Output, DelegatePinType, TEXT("Delegates"));
 }
 
 void UCodeForgeNode_Class::SyncToBlueprint(UCodeForgeBlueprint* Blueprint) const

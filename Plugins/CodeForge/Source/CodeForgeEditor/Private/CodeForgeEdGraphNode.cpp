@@ -1,4 +1,6 @@
+// Copyright (c) 2026 GregOrigin. All Rights Reserved.
 #include "CodeForgeEdGraphNode.h"
+#include "EdGraph/EdGraphSchema.h"
 
 FText UCodeForgeEdGraphNode::GetNodeTitle(ENodeTitleType::Type TitleType) const
 {
@@ -12,4 +14,30 @@ FLinearColor UCodeForgeEdGraphNode::GetNodeTitleColor() const
 
 void UCodeForgeEdGraphNode::AllocateDefaultPins()
 {
+}
+
+void UCodeForgeEdGraphNode::AutowireNewNode(UEdGraphPin* FromPin)
+{
+	if (!FromPin)
+	{
+		return;
+	}
+
+	const UEdGraphSchema* Schema = GetSchema();
+	if (!Schema)
+	{
+		return;
+	}
+
+	for (UEdGraphPin* Pin : Pins)
+	{
+		if (Pin->Direction != FromPin->Direction
+			&& Pin->PinType.PinCategory == FromPin->PinType.PinCategory)
+		{
+			if (Schema->TryCreateConnection(FromPin, Pin))
+			{
+				break;
+			}
+		}
+	}
 }

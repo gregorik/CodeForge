@@ -6,9 +6,9 @@
 #include "{{ClassName}}.generated.h"
 
 UENUM({{EnumSpecifiers}})
-enum class {{ClassName}} : uint8
+enum class {{OwnerClassName}} : uint8
 {
 {{#each EnumEntries}}
-    {{EntryName}}{{EntryValue}} UMETA({{EntryMeta}}),
+    {{EntryName}}{{EntryValue}}{{EntryMetaSuffix}},
 {{/each}}
 };

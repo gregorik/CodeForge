@@ -1,3 +1,4 @@
+// Copyright (c) 2026 GregOrigin. All Rights Reserved.
 #include "CodeForgeRuntime.h"
 
 #define LOCTEXT_NAMESPACE "FCodeForgeRuntimeModule"

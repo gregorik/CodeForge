@@ -1,3 +1,4 @@
+// Copyright (c) 2026 GregOrigin. All Rights Reserved.
 #pragma once
 
 #include "CoreMinimal.h"
@@ -9,10 +10,10 @@ struct CODEFORGERUNTIME_API FCodeForgeParamDef
 {
     GENERATED_BODY()
 
-    UPROPERTY(EditAnywhere) FString Name;
-    UPROPERTY(EditAnywhere) FString Type;
-    UPROPERTY(EditAnywhere) bool bIsConst = false;
-    UPROPERTY(EditAnywhere) bool bIsRef = false;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CodeForge") FString Name;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CodeForge") FString Type;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CodeForge") bool bIsConst = false;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CodeForge") bool bIsRef = false;
 
     /** Builds the full parameter declaration string, e.g. "const FString& ParamName" */
     FString BuildParamString() const;
@@ -23,34 +24,38 @@ struct CODEFORGERUNTIME_API FCodeForgePropertyDef
 {
     GENERATED_BODY()
 
-    UPROPERTY(EditAnywhere) FString Name;
-    UPROPERTY(EditAnywhere) FString Type;
-    UPROPERTY(EditAnywhere) FString Category;
-    UPROPERTY(EditAnywhere) FString DefaultValue;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CodeForge") FString Name;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CodeForge") FString Type;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CodeForge") FString Category;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CodeForge") FString DefaultValue;
 
     // Edit specifiers (mutually exclusive — first true wins)
-    UPROPERTY(EditAnywhere) bool bEditAnywhere = false;
-    UPROPERTY(EditAnywhere) bool bEditDefaultsOnly = false;
-    UPROPERTY(EditAnywhere) bool bEditInstanceOnly = false;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CodeForge") bool bVisibleAnywhere = false;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CodeForge") bool bEditAnywhere = false;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CodeForge") bool bEditDefaultsOnly = false;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CodeForge") bool bEditInstanceOnly = false;
 
     // Blueprint specifiers (mutually exclusive — first true wins)
-    UPROPERTY(EditAnywhere) bool bBlueprintReadWrite = false;
-    UPROPERTY(EditAnywhere) bool bBlueprintReadOnly = false;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CodeForge") bool bBlueprintReadWrite = false;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CodeForge") bool bBlueprintReadOnly = false;
 
     // Replication
-    UPROPERTY(EditAnywhere) bool bReplicated = false;
-    UPROPERTY(EditAnywhere) ECodeForgeRepCondition ReplicationCondition = ECodeForgeRepCondition::None;
-    UPROPERTY(EditAnywhere) bool bRepNotify = false;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CodeForge") bool bReplicated = false;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CodeForge") ECodeForgeRepCondition ReplicationCondition = ECodeForgeRepCondition::None;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CodeForge") bool bRepNotify = false;
 
     // Other specifiers
-    UPROPERTY(EditAnywhere) bool bExposeOnSpawn = false;
-    UPROPERTY(EditAnywhere) bool bSaveGame = false;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CodeForge") bool bExposeOnSpawn = false;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CodeForge") bool bSaveGame = false;
 
     // Meta tags
-    UPROPERTY(EditAnywhere) TMap<FString, FString> Meta;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CodeForge") TMap<FString, FString> Meta;
 
     /** Optional #include path for custom types (e.g. "MyStruct.h"). Empty for built-in types. */
-    UPROPERTY(EditAnywhere) FString IncludePath;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CodeForge") FString IncludePath;
+
+    /** Optional body emitted inside the generated OnRep_ function for RepNotify properties. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CodeForge", meta = (MultiLine = "true")) FString OnRepBody;
 
     /**
      * Builds the UPROPERTY specifier string, e.g.

@@ -1,3 +1,4 @@
+// Copyright (c) 2026 GregOrigin. All Rights Reserved.
 // CodeForgeAssetFactory.h
 // UFactory subclass for creating UCodeForgeBlueprint assets from Content Browser.
 

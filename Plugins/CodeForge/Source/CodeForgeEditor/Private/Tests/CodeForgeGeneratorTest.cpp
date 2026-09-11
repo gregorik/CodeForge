@@ -1,3 +1,4 @@
+// Copyright (c) 2026 GregOrigin. All Rights Reserved.
 // CodeForgeGeneratorTest.cpp
 // Automation tests for FCodeForgeGenerator — Task 6 (TDD).
 //
@@ -345,6 +346,200 @@ bool FCodeForgeGeneratorTest_ValidationFailure::RunTest(const FString& Parameter
         Result.bSuccess);
     TestFalse(TEXT("Error message should not be empty"),
         Result.ErrorMessage.IsEmpty());
+
+    return true;
+}
+
+// ===========================================================================
+// Test 7 — Delegate generation
+// ===========================================================================
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+    FCodeForgeGeneratorTest_DelegateClass,
+    "CodeForge.Generator.DelegateClass",
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+bool FCodeForgeGeneratorTest_DelegateClass::RunTest(const FString& Parameters)
+{
+    UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
+    BP->ClassName     = TEXT("AMyActor");
+    BP->BlueprintKind = ECodeForgeBlueprintKind::Class;
+    BP->ClassType     = ECodeForgeClassType::Actor;
+    BP->ModuleTarget  = TEXT("MyGame");
+
+    
+
+    FCodeForgeGenerator Gen = MakeGenerator();
+    FCodeForgeGeneratorResult Result = Gen.Generate(BP);
+
+    if (!TestTrue(TEXT("Delegate generation succeeded"), Result.bSuccess))
+    {
+        AddError(FString::Printf(TEXT("Error: %s"), *Result.ErrorMessage));
+        return false;
+    }
+
+    TestTrue(TEXT("Header contains dynamic multicast delegate macro"),
+        Result.HeaderContent.Contains(TEXT("DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnHealthChanged, float, NewHealth, float, MaxHealth);")));
+    TestTrue(TEXT("Header contains delegate property specifiers"),
+        Result.HeaderContent.Contains(TEXT("UPROPERTY(BlueprintAssignable, Category=\"Stats\")")));
+    TestTrue(TEXT("Header contains delegate property"),
+        Result.HeaderContent.Contains(TEXT("FOnHealthChanged OnHealthChanged;")));
+
+    return true;
+}
+
+// ===========================================================================
+// Test 8 — Interface generation
+// ===========================================================================
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+    FCodeForgeGeneratorTest_Interface,
+    "CodeForge.Generator.Interface",
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+bool FCodeForgeGeneratorTest_Interface::RunTest(const FString& Parameters)
+{
+    UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
+    BP->ClassName     = TEXT("Damageable");
+    BP->BlueprintKind = ECodeForgeBlueprintKind::Interface;
+    BP->ModuleTarget  = TEXT("MyGame");
+
+    FCodeForgeFunctionDef ReceiveDamage;
+    ReceiveDamage.Name                  = TEXT("ReceiveDamage");
+    ReceiveDamage.ReturnType            = TEXT("void");
+    ReceiveDamage.bBlueprintCallable    = false;
+    ReceiveDamage.bBlueprintNativeEvent = true;
+
+    FCodeForgeParamDef AmountParam;
+    AmountParam.Type = TEXT("float");
+    AmountParam.Name = TEXT("Amount");
+    ReceiveDamage.Parameters.Add(AmountParam);
+    BP->Functions.Add(ReceiveDamage);
+
+    FCodeForgeFunctionDef GetCurrentHealth;
+    GetCurrentHealth.Name                  = TEXT("GetCurrentHealth");
+    GetCurrentHealth.ReturnType            = TEXT("float");
+    GetCurrentHealth.bBlueprintCallable    = false;
+    GetCurrentHealth.bBlueprintNativeEvent = true;
+    GetCurrentHealth.bConst                = true;
+    BP->Functions.Add(GetCurrentHealth);
+
+    FCodeForgeGenerator Gen = MakeGenerator();
+    FCodeForgeGeneratorResult Result = Gen.Generate(BP);
+
+    if (!TestTrue(TEXT("Interface generation succeeded"), Result.bSuccess))
+    {
+        AddError(FString::Printf(TEXT("Error: %s"), *Result.ErrorMessage));
+        return false;
+    }
+
+    TestTrue(TEXT("Header contains UINTERFACE"),
+        Result.HeaderContent.Contains(TEXT("UINTERFACE(Blueprintable)")));
+    TestTrue(TEXT("Header contains U interface class declaration"),
+        Result.HeaderContent.Contains(TEXT("class MYGAME_API UDamageable : public UInterface")));
+    TestTrue(TEXT("Header contains I interface class declaration"),
+        Result.HeaderContent.Contains(TEXT("class MYGAME_API IDamageable")));
+    TestTrue(TEXT("Header contains BlueprintNativeEvent"),
+        Result.HeaderContent.Contains(TEXT("UFUNCTION(BlueprintNativeEvent)")));
+    TestTrue(TEXT("Header contains ReceiveDamage declaration"),
+        Result.HeaderContent.Contains(TEXT("void ReceiveDamage(float Amount);")));
+    TestTrue(TEXT("Header contains const GetCurrentHealth declaration"),
+        Result.HeaderContent.Contains(TEXT("float GetCurrentHealth() const;")));
+    TestTrue(TEXT("Source includes generated interface header"),
+        Result.SourceContent.Contains(TEXT("#include \"Damageable.h\"")));
+
+    return true;
+}
+
+// ===========================================================================
+// Test 9 — Class implements interface generation
+// ===========================================================================
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+    FCodeForgeGeneratorTest_ClassImplementsInterface,
+    "CodeForge.Generator.ClassImplementsInterface",
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+bool FCodeForgeGeneratorTest_ClassImplementsInterface::RunTest(const FString& Parameters)
+{
+    UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
+    BP->ClassName     = TEXT("AMyActor");
+    BP->BlueprintKind = ECodeForgeBlueprintKind::Class;
+    BP->ClassType     = ECodeForgeClassType::Actor;
+    BP->ModuleTarget  = TEXT("MyGame");
+    BP->Interfaces.Add(TEXT("IDamageable"));
+
+    FCodeForgeFunctionDef ReceiveDamage;
+    ReceiveDamage.Name                  = TEXT("ReceiveDamage");
+    ReceiveDamage.ReturnType            = TEXT("void");
+    ReceiveDamage.bBlueprintCallable    = false;
+    ReceiveDamage.bBlueprintNativeEvent = true;
+
+    FCodeForgeParamDef AmountParam;
+    AmountParam.Type = TEXT("float");
+    AmountParam.Name = TEXT("Amount");
+    ReceiveDamage.Parameters.Add(AmountParam);
+    BP->Functions.Add(ReceiveDamage);
+
+    FCodeForgeGenerator Gen = MakeGenerator();
+    FCodeForgeGeneratorResult Result = Gen.Generate(BP);
+
+    if (!TestTrue(TEXT("Class implementing interface generation succeeded"), Result.bSuccess))
+    {
+        AddError(FString::Printf(TEXT("Error: %s"), *Result.ErrorMessage));
+        return false;
+    }
+
+    TestTrue(TEXT("Header includes implemented interface"),
+        Result.HeaderContent.Contains(TEXT("#include \"IDamageable.h\"")));
+    TestTrue(TEXT("Header inherits implemented interface"),
+        Result.HeaderContent.Contains(TEXT("class MYGAME_API AMyActor : public AActor, public IDamageable")));
+    TestTrue(TEXT("Header contains interface native event declaration"),
+        Result.HeaderContent.Contains(TEXT("void ReceiveDamage(float Amount);")));
+    TestTrue(TEXT("Source contains interface native event implementation"),
+        Result.SourceContent.Contains(TEXT("AMyActor::ReceiveDamage_Implementation(float Amount)")));
+
+    return true;
+}
+
+// ===========================================================================
+// Test 10 — Native virtual override generation
+// ===========================================================================
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+    FCodeForgeGeneratorTest_NativeOverrideFunction,
+    "CodeForge.Generator.NativeOverrideFunction",
+    EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter)
+bool FCodeForgeGeneratorTest_NativeOverrideFunction::RunTest(const FString& Parameters)
+{
+    UCodeForgeBlueprint* BP = NewObject<UCodeForgeBlueprint>();
+    BP->ClassName     = TEXT("AMyPawn");
+    BP->BlueprintKind = ECodeForgeBlueprintKind::Class;
+    BP->ClassType     = ECodeForgeClassType::Pawn;
+    BP->ModuleTarget  = TEXT("MyGame");
+
+    FCodeForgeFunctionDef Tick;
+    Tick.Name         = TEXT("Tick");
+    Tick.ReturnType   = TEXT("void");
+    Tick.bUFunction   = false;
+    Tick.bVirtual     = true;
+    Tick.bOverride    = true;
+    Tick.FunctionBody = TEXT("\tSuper::Tick(DeltaSeconds);");
+
+    FCodeForgeParamDef DeltaSeconds;
+    DeltaSeconds.Type = TEXT("float");
+    DeltaSeconds.Name = TEXT("DeltaSeconds");
+    Tick.Parameters.Add(DeltaSeconds);
+    BP->Functions.Add(Tick);
+
+    FCodeForgeGenerator Gen = MakeGenerator();
+    FCodeForgeGeneratorResult Result = Gen.Generate(BP);
+
+    if (!TestTrue(TEXT("Native override generation succeeded"), Result.bSuccess))
+    {
+        AddError(FString::Printf(TEXT("Error: %s"), *Result.ErrorMessage));
+        return false;
+    }
+
+    TestTrue(TEXT("Header contains native override declaration"),
+        Result.HeaderContent.Contains(TEXT("virtual void Tick(float DeltaSeconds) override;")));
+    TestFalse(TEXT("Header does not emit UFUNCTION for native override"),
+        Result.HeaderContent.Contains(TEXT("UFUNCTION()\n    virtual void Tick")));
+    TestTrue(TEXT("Source contains native override implementation"),
+        Result.SourceContent.Contains(TEXT("void AMyPawn::Tick(float DeltaSeconds)")));
 
     return true;
 }

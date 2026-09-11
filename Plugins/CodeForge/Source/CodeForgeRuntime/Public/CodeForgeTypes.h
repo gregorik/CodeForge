@@ -1,3 +1,4 @@
+// Copyright (c) 2026 GregOrigin. All Rights Reserved.
 #pragma once
 
 #include "CoreMinimal.h"
@@ -8,7 +9,8 @@ enum class ECodeForgeBlueprintKind : uint8
 {
     Class,
     Struct,
-    Enum
+    Enum,
+    Interface
 };
 
 UENUM(BlueprintType)
@@ -33,6 +35,15 @@ enum class ECodeForgeRPCMode : uint8
     Server,
     Client,
     NetMulticast
+};
+
+UENUM(BlueprintType)
+enum class ECodeForgeDelegateType : uint8
+{
+    DynamicMulticast,
+    Dynamic,
+    Multicast,
+    Simple
 };
 
 UENUM(BlueprintType)

@@ -1,3 +1,4 @@
+// Copyright (c) 2026 GregOrigin. All Rights Reserved.
 // CodeForgeChangeDetector.h
 // Tracks manifest entries for generated classes and detects whether a
 // regeneration constitutes a structural change (requiring hot-reload /

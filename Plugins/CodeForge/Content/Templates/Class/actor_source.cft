@@ -5,11 +5,12 @@
 #include "Net/UnrealNetwork.h"
 {{/if}}
 
-{{ClassName}}::{{ClassName}}()
+{{OwnerClassName}}::{{OwnerClassName}}()
 {
 {{#if Replicated}}
     bReplicates = true;
 {{/if}}
+{{ConstructorBody}}
 }
 
 {{#if Replicated}}
@@ -26,21 +27,35 @@ void {{ClassName}}::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLif
 {{#each RepNotifyProperties}}
 void {{OwnerClassName}}::OnRep_{{PropertyName}}()
 {
-    // TODO: Implement replication notify logic
+{{OnRepBody}}
 }
 
 {{/each}}
 {{#each RPCs}}
 void {{OwnerClassName}}::{{RPCName}}_Implementation({{RPCParams}})
 {
-    // TODO: Implement {{RPCName}} logic
+{{FunctionBody}}
+}
+
+{{/each}}
+{{#each ServerRPCValidations}}
+bool {{OwnerClassName}}::{{RPCName}}_Validate({{RPCParams}})
+{
+    return true;
 }
 
 {{/each}}
 {{#each NativeEventFunctions}}
-void {{OwnerClassName}}::{{FunctionName}}_Implementation({{FunctionParams}})
+{{FunctionReturnType}} {{OwnerClassName}}::{{FunctionName}}_Implementation({{FunctionParams}}){{ConstQualifier}}
 {
-    // TODO: Implement {{FunctionName}} logic
+{{FunctionBody}}
+}
+
+{{/each}}
+{{#each ImplementedFunctions}}
+{{FunctionReturnType}} {{OwnerClassName}}::{{FunctionName}}({{FunctionParams}}){{ConstQualifier}}
+{
+{{FunctionBody}}
 }
 
 {{/each}}

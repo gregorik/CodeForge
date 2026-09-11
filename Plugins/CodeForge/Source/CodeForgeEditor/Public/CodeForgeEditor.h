@@ -1,3 +1,4 @@
+// Copyright (c) 2026 GregOrigin. All Rights Reserved.
 #pragma once
 
 #include "Modules/ModuleManager.h"
@@ -14,4 +15,12 @@ public:
 private:
 	TSharedPtr<FCodeForgeAssetTypeActions> CreatedAssetTypeActions;
 	TSharedPtr<FCodeForgeNodeFactory> NodeFactory;
+
+	/** UClass FNames we registered IDetailCustomization for (so we can unregister cleanly). */
+	TArray<FName> RegisteredDetailCustomizationClasses;
+
+	void RegisterToolbarButton();
+	void RegisterDetailCustomizations();
+	void UnregisterDetailCustomizations();
+	static void CreateNewCodeForgeBlueprint();
 };

@@ -1,3 +1,4 @@
+// Copyright (c) 2026 GregOrigin. All Rights Reserved.
 #pragma once
 
 #include "CoreMinimal.h"
@@ -13,15 +14,15 @@
  * A single validation message produced by UCodeForgeBlueprint::Validate().
  * AutoFixId is non-empty when an automatic fix is available via ApplyAutoFix().
  */
-USTRUCT()
+USTRUCT(BlueprintType)
 struct FCodeForgeValidationResult
 {
     GENERATED_BODY()
 
-    UPROPERTY() ECodeForgeValidationSeverity Severity = ECodeForgeValidationSeverity::Error;
-    UPROPERTY() FString Message;
-    UPROPERTY() FString FieldName;
-    UPROPERTY() FString AutoFixId;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CodeForge") ECodeForgeValidationSeverity Severity = ECodeForgeValidationSeverity::Error;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CodeForge") FString Message;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CodeForge") FString FieldName;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CodeForge") FString AutoFixId;
 };
 
 /**
@@ -52,6 +53,10 @@ public:
     UPROPERTY(EditAnywhere, Category = "CodeForge|Class")
     bool bReplicated = false;
 
+    /** Optional custom constructor body emitted after generated setup such as bReplicates. */
+    UPROPERTY(EditAnywhere, Category = "CodeForge|Class", meta = (MultiLine = "true"))
+    FString ConstructorBody;
+
     /** Target module name for code generation output. */
     UPROPERTY(EditAnywhere, Category = "CodeForge")
     FString ModuleTarget;
@@ -73,6 +78,8 @@ public:
     UPROPERTY(EditAnywhere, Category = "CodeForge|Class")
     TArray<FCodeForgeRPCDef> RPCs;
 
+    UPROPERTY(EditAnywhere, Category = "CodeForge|Class")
+    TArray<FString> Interfaces;
     // -------------------------------------------------------------------------
     // Struct members
     // -------------------------------------------------------------------------

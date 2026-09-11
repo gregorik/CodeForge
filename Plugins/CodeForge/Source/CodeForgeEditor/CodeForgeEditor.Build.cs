@@ -1,3 +1,4 @@
+// Copyright (c) 2026 GregOrigin. All Rights Reserved.
 using UnrealBuildTool;
 
 public class CodeForgeEditor : ModuleRules
@@ -28,7 +29,10 @@ public class CodeForgeEditor : ModuleRules
             "Json",
             "JsonUtilities",
             "DeveloperSettings",
-            "AssetRegistry"
+            "AssetRegistry",
+            "ContentBrowser",
+            "MainFrame",
+            "Settings"
         });
     }
 }

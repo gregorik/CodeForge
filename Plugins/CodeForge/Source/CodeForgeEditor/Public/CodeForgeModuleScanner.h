@@ -1,3 +1,4 @@
+// Copyright (c) 2026 GregOrigin. All Rights Reserved.
 // CodeForgeModuleScanner.h
 // Scans an Unreal project directory to discover game modules, their
 // source/public/private directories, existing subdirectories, and the

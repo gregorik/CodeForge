@@ -1,3 +1,4 @@
+// Copyright (c) 2026 GregOrigin. All Rights Reserved.
 #include "CodeForgeNodeFactory.h"
 #include "CodeForgeEdGraphNode.h"
 #include "SGraphNode_CodeForge.h"

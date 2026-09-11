@@ -1,3 +1,4 @@
+// Copyright (c) 2026 GregOrigin. All Rights Reserved.
 // CodeForgeAssetEditor.h
 // FAssetEditorToolkit subclass providing the graph editor UI for UCodeForgeBlueprint.
 
@@ -16,10 +17,15 @@ class SSearchBox;
 class FCodeForgeAssetEditor : public FAssetEditorToolkit
 {
 public:
+	virtual ~FCodeForgeAssetEditor();
+
 	void InitEditor(
 		const EToolkitMode::Type Mode,
 		const TSharedPtr<IToolkitHost>& InitToolkitHost,
 		UCodeForgeBlueprint* InBlueprint);
+
+	/** Create example blueprints for learning. */
+	static void CreateExampleBlueprints();
 
 	// FAssetEditorToolkit interface
 	virtual FName GetToolkitFName() const override;
@@ -29,6 +35,7 @@ public:
 
 	virtual void RegisterTabSpawners(const TSharedRef<FTabManager>& InTabManager) override;
 	virtual void UnregisterTabSpawners(const TSharedRef<FTabManager>& InTabManager) override;
+	virtual void SaveAsset_Execute() override;
 
 private:
 	/** The blueprint being edited. */
@@ -77,6 +84,16 @@ private:
 	void OnSearchTextChanged(const FText& NewText);
 	FReply OnAutoLayoutClicked();
 
-	/** Create example blueprints for learning. */
-	static void CreateExampleBlueprints();
+	/** Handle for the settings-changed delegate so we can unregister on close. */
+	FDelegateHandle SettingsChangedHandle;
+
+	/** Toolbar Advanced toggle handlers. */
+	void HandleToggleAdvancedSpecifiers();
+	bool IsAdvancedSpecifiersToggled() const;
+
+	/** Force the property view to re-run customizations after settings flip. */
+	void RefreshDetailsAfterSettingsChange();
+
+	/** Click handler for the sample retargeting banner. Opens the wizard so the user can retarget. */
+	FReply HandleRetargetSample();
 };

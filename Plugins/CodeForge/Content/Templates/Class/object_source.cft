@@ -2,14 +2,22 @@
 
 #include "{{ClassName}}.h"
 
-{{ClassName}}::{{ClassName}}()
+{{OwnerClassName}}::{{OwnerClassName}}()
 {
+{{ConstructorBody}}
 }
 
 {{#each NativeEventFunctions}}
-{{FunctionReturnType}} {{OwnerClassName}}::{{FunctionName}}_Implementation({{FunctionParams}})
+{{FunctionReturnType}} {{OwnerClassName}}::{{FunctionName}}_Implementation({{FunctionParams}}){{ConstQualifier}}
 {
-    // TODO: Implement {{FunctionName}} logic
+{{FunctionBody}}
+}
+
+{{/each}}
+{{#each ImplementedFunctions}}
+{{FunctionReturnType}} {{OwnerClassName}}::{{FunctionName}}({{FunctionParams}}){{ConstQualifier}}
+{
+{{FunctionBody}}
 }
 
 {{/each}}

@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CodeForge FAQ</title>
+<meta name="description" content="Frequently asked questions for CodeForge, the Unreal Engine C++ code generation plugin by GregOrigin.">
+<style>
+:root {
+  --bg: #06111f;
+  --bg-deep: #030a14;
+  --surface: #081a2b;
+  --surface-2: #0b2238;
+  --surface-3: #0d2b45;
+  --line: #164360;
+  --line-bright: #1f6f99;
+  --cyan: #00d4ff;
+  --cyan-soft: #73ecff;
+  --blue: #2383ff;
+  --text: #c7daee;
+  --text-strong: #ffffff;
+  --text-muted: #88a8c2;
+  --ok: #4ce38a;
+  --warn: #ffc857;
+  --danger: #ff7373;
+  --shadow: rgba(0, 0, 0, 0.38);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 104px;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--text);
+  background:
+    linear-gradient(180deg, rgba(0, 212, 255, 0.10), transparent 430px),
+    linear-gradient(135deg, var(--bg-deep), var(--bg) 46%, #041626);
+  line-height: 1.65;
+  font-size: 16px;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(115, 236, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(115, 236, 255, 0.045) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,0.75), transparent 75%);
+}
+
+a {
+  color: var(--cyan-soft);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--text-strong);
+  text-decoration: underline;
+}
+
+code {
+  display: inline-block;
+  max-width: 100%;
+  color: var(--cyan-soft);
+  background: rgba(0, 212, 255, 0.08);
+  border: 1px solid rgba(115, 236, 255, 0.18);
+  border-radius: 6px;
+  padding: 1px 6px;
+  font-family: "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+  font-size: 0.92em;
+  overflow-wrap: anywhere;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 15px 28px;
+  background: rgba(3, 10, 20, 0.88);
+  border-bottom: 1px solid rgba(115, 236, 255, 0.18);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.30);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-strong);
+  font-weight: 900;
+  letter-spacing: 0;
+  white-space: nowrap;
+}
+
+.brand-mark {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(115, 236, 255, 0.46);
+  color: var(--cyan-soft);
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.18), rgba(35, 131, 255, 0.08));
+  box-shadow: inset 0 0 22px rgba(0, 212, 255, 0.16);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  border-radius: 8px;
+  border: 1px solid rgba(115, 236, 255, 0.32);
+  padding: 10px 15px;
+  color: var(--text-strong);
+  background: rgba(0, 212, 255, 0.08);
+  font-size: 13px;
+  font-weight: 850;
+  letter-spacing: 0;
+  transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+  background: rgba(0, 212, 255, 0.16);
+  border-color: var(--cyan);
+  text-decoration: none;
+}
+
+.button.primary {
+  color: #02101d;
+  background: linear-gradient(135deg, var(--cyan), var(--blue));
+  border-color: transparent;
+}
+
+.page {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 28px 78px;
+}
+
+.hero {
+  min-height: min(780px, calc(100svh - 86px));
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(320px, 0.78fr);
+  align-items: center;
+  gap: 58px;
+  padding: 62px 0 42px;
+}
+
+.eyebrow {
+  margin: 0 0 14px;
+  color: var(--cyan-soft);
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+h1 {
+  max-width: 720px;
+  margin: 0;
+  color: var(--text-strong);
+  font-size: 74px;
+  line-height: 0.98;
+  letter-spacing: 0;
+}
+
+.hero-copy {
+  max-width: 690px;
+  margin: 24px 0 0;
+  color: #d9ebfa;
+  font-size: 19px;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.hero-visual {
+  position: relative;
+  min-height: 430px;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid rgba(115, 236, 255, 0.32);
+  background: var(--surface);
+  box-shadow: 0 28px 76px var(--shadow);
+}
+
+.hero-visual img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 430px;
+  object-fit: cover;
+  filter: saturate(1.08) contrast(1.06) brightness(0.86);
+}
+
+.hero-visual::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(3, 10, 20, 0.68), rgba(3, 10, 20, 0.05));
+}
+
+.visual-caption {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 18px;
+  z-index: 2;
+  color: var(--text-strong);
+  font-weight: 850;
+}
+
+.top-tools {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.9fr) minmax(0, 1.1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+  align-items: stretch;
+}
+
+.search-panel,
+.facts {
+  border: 1px solid rgba(115, 236, 255, 0.20);
+  border-radius: 8px;
+  background: rgba(8, 26, 43, 0.82);
+}
+
+.search-panel {
+  padding: 18px;
+}
+
+.search-panel label {
+  display: block;
+  margin-bottom: 9px;
+  color: var(--text-strong);
+  font-weight: 850;
+}
+
+.search-panel input {
+  width: 100%;
+  min-height: 46px;
+  border-radius: 8px;
+  border: 1px solid rgba(115, 236, 255, 0.28);
+  padding: 11px 13px;
+  color: var(--text-strong);
+  background: rgba(3, 10, 20, 0.72);
+  font: inherit;
+}
+
+.search-panel input:focus {
+  outline: 2px solid rgba(0, 212, 255, 0.45);
+  outline-offset: 2px;
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.fact {
+  padding: 18px;
+  border-right: 1px solid rgba(115, 236, 255, 0.14);
+}
+
+.fact:last-child {
+  border-right: 0;
+}
+
+.fact strong {
+  display: block;
+  color: var(--text-strong);
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+
+.quick-nav {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+  margin: 0 0 54px;
+  padding: 15px 0;
+  border-top: 1px solid rgba(115, 236, 255, 0.16);
+  border-bottom: 1px solid rgba(115, 236, 255, 0.16);
+}
+
+.quick-nav a {
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: 8px;
+  border: 1px solid rgba(115, 236, 255, 0.20);
+  background: rgba(11, 34, 56, 0.62);
+  color: var(--text);
+  font-weight: 850;
+}
+
+.quick-nav a:hover {
+  color: var(--text-strong);
+  background: rgba(0, 212, 255, 0.12);
+  text-decoration: none;
+}
+
+.section {
+  margin-top: 68px;
+}
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 24px;
+  padding-bottom: 18px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid rgba(115, 236, 255, 0.18);
+}
+
+h2 {
+  margin: 0;
+  color: var(--text-strong);
+  font-size: 40px;
+  line-height: 1.05;
+  letter-spacing: 0;
+}
+
+.section-heading p {
+  max-width: 430px;
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.faq-list {
+  display: grid;
+  gap: 12px;
+}
+
+.faq-item {
+  border: 1px solid rgba(115, 236, 255, 0.20);
+  border-radius: 8px;
+  background: rgba(8, 26, 43, 0.84);
+  overflow: hidden;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+
+.faq-item:hover,
+.faq-item[open] {
+  border-color: rgba(0, 212, 255, 0.55);
+  background: rgba(11, 34, 56, 0.88);
+}
+
+.faq-item summary {
+  cursor: pointer;
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 18px;
+  align-items: center;
+  padding: 19px 22px;
+  color: var(--text-strong);
+  font-size: 18px;
+  font-weight: 850;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item summary::after {
+  content: "+";
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  border: 1px solid rgba(115, 236, 255, 0.28);
+  color: var(--cyan-soft);
+  background: rgba(0, 212, 255, 0.08);
+}
+
+.faq-item[open] summary::after {
+  content: "-";
+}
+
+.answer {
+  padding: 0 22px 22px;
+}
+
+.answer p {
+  margin: 0 0 14px;
+}
+
+.answer p:last-child {
+  margin-bottom: 0;
+}
+
+.answer ul,
+.answer ol {
+  margin: 0 0 14px 20px;
+  padding: 0;
+}
+
+.answer li + li {
+  margin-top: 6px;
+}
+
+.note {
+  margin-top: 16px;
+  padding: 16px 18px;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 212, 255, 0.28);
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.12), rgba(35, 131, 255, 0.08));
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  min-height: 27px;
+  padding: 3px 9px;
+  margin: 0 7px 7px 0;
+  border-radius: 8px;
+  border: 1px solid rgba(115, 236, 255, 0.22);
+  color: var(--cyan-soft);
+  background: rgba(0, 212, 255, 0.08);
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.final-cta {
+  margin-top: 78px;
+  padding: 34px;
+  border-radius: 8px;
+  border: 1px solid rgba(115, 236, 255, 0.30);
+  background:
+    linear-gradient(135deg, rgba(0, 212, 255, 0.14), rgba(35, 131, 255, 0.10)),
+    rgba(8, 26, 43, 0.92);
+}
+
+.final-cta h2 {
+  max-width: 760px;
+}
+
+.final-cta p {
+  max-width: 760px;
+  margin: 14px 0 24px;
+}
+
+.footer {
+  margin-top: 52px;
+  padding-top: 26px;
+  border-top: 1px solid rgba(115, 236, 255, 0.18);
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.is-hidden {
+  display: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-copy,
+  .hero-actions,
+  .hero-visual,
+  .top-tools,
+  .quick-nav,
+  .section,
+  .final-cta {
+    animation: rise 560ms ease both;
+  }
+
+  .faq-item {
+    animation: fade-in 360ms ease both;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (max-width: 980px) {
+  .hero {
+    min-height: auto;
+    grid-template-columns: 1fr;
+    padding-top: 44px;
+  }
+
+  h1 {
+    font-size: 58px;
+  }
+
+  h2 {
+    font-size: 34px;
+  }
+
+  .hero-visual,
+  .hero-visual img {
+    min-height: 320px;
+  }
+
+  .top-tools {
+    grid-template-columns: 1fr;
+  }
+
+  .quick-nav {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .site-header {
+    position: relative;
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 15px 18px;
+  }
+
+  .header-actions {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .button {
+    flex: 1 1 145px;
+  }
+
+  .page {
+    padding: 0 18px 58px;
+  }
+
+  h1 {
+    font-size: 42px;
+  }
+
+  h2 {
+    font-size: 29px;
+  }
+
+  .hero-copy {
+    font-size: 17px;
+  }
+
+  .facts {
+    grid-template-columns: 1fr;
+  }
+
+  .fact {
+    border-right: 0;
+    border-bottom: 1px solid rgba(115, 236, 255, 0.14);
+  }
+
+  .fact:last-child {
+    border-bottom: 0;
+  }
+
+  .quick-nav {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .section-heading {
+    display: block;
+  }
+
+  .section-heading p {
+    margin-top: 10px;
+  }
+
+  .faq-item summary {
+    padding: 17px;
+    font-size: 16px;
+  }
+
+  .answer {
+    padding: 0 17px 18px;
+  }
+
+  .final-cta {
+    padding: 24px;
+  }
+}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <a class="brand" href="index.html" aria-label="Open the CodeForge user manual">
+    <span class="brand-mark" aria-hidden="true">CF</span>
+    <span>CodeForge FAQ</span>
+  </a>
+  <nav class="header-actions" aria-label="Primary links">
+    <a class="button" href="index.html">Manual</a>
+    <a class="button" href="RPGKit_Manual.html">RPG Kit</a>
+    <a class="button" href="https://discord.gg/nqYQ5mtmHb" target="_blank" rel="noopener">Discord</a>
+    <a class="button primary" href="https://www.fab.com/listings/14bcc805-1ed2-42f3-8d52-406b9f97b8e9" target="_blank" rel="noopener">Fab Listing</a>
+  </nav>
+</header>
+
+<main class="page">
+  <section class="hero" id="top">
+    <div>
+      <p class="eyebrow">Unreal Engine C++ code generation</p>
+      <h1>Answers for every CodeForge workflow.</h1>
+      <p class="hero-copy">CodeForge helps Unreal Engine teams define native C++ classes, structs, enums, interfaces, properties, functions, delegates, RPCs, and replication setup in a visual editor, then generate Unreal-compatible source files.</p>
+      <div class="hero-actions">
+        <a class="button primary" href="https://www.fab.com/listings/14bcc805-1ed2-42f3-8d52-406b9f97b8e9" target="_blank" rel="noopener">Open Fab Listing</a>
+        <a class="button" href="https://discord.gg/nqYQ5mtmHb" target="_blank" rel="noopener">Ask On Discord</a>
+      </div>
+    </div>
+    <figure class="hero-visual">
+      <img src="https://gregorigin.com/LOGOS/CodeForge0.jpg" alt="CodeForge illustration">
+      <figcaption class="visual-caption">Visual C++ scaffolding for Unreal Engine modules.</figcaption>
+    </figure>
+  </section>
+
+  <section class="top-tools" aria-label="FAQ tools and summary">
+    <div class="search-panel">
+      <label for="faq-search">Search the FAQ</label>
+      <input id="faq-search" type="search" placeholder="Try installation, RPC, template, validation, Fab..." autocomplete="off">
+    </div>
+    <div class="facts" aria-label="Key facts">
+      <div class="fact">
+        <strong>Best fit</strong>
+        Native Unreal projects that use C++ modules.
+      </div>
+      <div class="fact">
+        <strong>Output</strong>
+        Header and source files generated from CodeForge assets.
+      </div>
+      <div class="fact">
+        <strong>Support</strong>
+        Fab listing and GregOrigin Discord are linked throughout.
+      </div>
+    </div>
+  </section>
+
+  <nav class="quick-nav" aria-label="FAQ sections">
+    <a href="#basics">Basics</a>
+    <a href="#setup">Setup</a>
+    <a href="#workflow">Workflow</a>
+    <a href="#generation">Generation</a>
+    <a href="#customization">Customization</a>
+    <a href="#troubleshooting">Troubleshooting</a>
+    <a href="#team">Team Use</a>
+    <a href="#fab">Fab</a>
+    <a href="#support">Support</a>
+    <a href="#reference">Reference</a>
+    <a href="#examples">Examples</a>
+    <a href="#updates">Updates</a>
+  </nav>
+
+  <section class="section faq-section" id="basics">
+    <div class="section-heading">
+      <h2>Basics</h2>
+      <p>What CodeForge is, what it creates, and who gets the most value from it.</p>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item" open>
+        <summary>What is CodeForge?</summary>
+        <div class="answer">
+          <p>CodeForge is an Unreal Engine editor plugin for generating native C++ boilerplate from a structured visual asset. You define the type, members, specifiers, and module target, then generate files that follow Unreal Header Tool expectations.</p>
+          <p>It is built for repetitive C++ setup work: classes, structs, enums, interfaces, properties, functions, delegates, RPCs, replication declarations, includes, and common Unreal naming conventions.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Who is CodeForge for?</summary>
+        <div class="answer">
+          <p>CodeForge is for Unreal developers who create native gameplay or editor-facing C++ types. It is useful for solo developers, prototype teams, technical designers working with C++ projects, and studios that want repeatable class scaffolding.</p>
+          <p>Blueprint-only projects can inspect the workflow, but the main value appears when your project has a valid <code>Source</code> folder and at least one C++ module.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Does CodeForge replace programming?</summary>
+        <div class="answer">
+          <p>No. CodeForge generates the framework-safe starting point. You still write gameplay behavior, algorithms, data loading, AI logic, combat rules, UI behavior, and project-specific implementation.</p>
+          <p>Use it to remove boilerplate from the start of a task, not to avoid reviewing or compiling the generated code.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>What does "CodeForge Blueprint" mean?</summary>
+        <div class="answer">
+          <p>A CodeForge Blueprint is a CodeForge-specific asset that stores a C++ type definition. It is not the same as a gameplay Blueprint class. The asset stores fields such as type kind, class type, module target, subdirectory, properties, functions, RPCs, delegates, enum entries, and validation state.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>What type kinds are supported?</summary>
+        <div class="answer">
+          <p>CodeForge supports these root type kinds:</p>
+          <p><span class="tag">Class</span><span class="tag">Struct</span><span class="tag">Enum</span><span class="tag">Interface</span></p>
+          <p>Class assets are the broadest option. Struct, enum, and interface assets focus on their Unreal-specific declaration patterns.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section class="section faq-section" id="setup">
+    <div class="section-heading">
+      <h2>Installation And Setup</h2>
+      <p>How to install, enable, and prepare a project before generating C++.</p>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>How do I install CodeForge from Fab?</summary>
+        <div class="answer">
+          <p>Open the official <a href="https://www.fab.com/listings/14bcc805-1ed2-42f3-8d52-406b9f97b8e9" target="_blank" rel="noopener">CodeForge Fab listing</a>, add it to your library, and install the build that matches your Unreal Engine version.</p>
+          <p>After installation, open Unreal Engine, go to <strong>Edit &gt; Plugins</strong>, enable CodeForge if needed, and restart the editor when prompted.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>How do I install CodeForge manually?</summary>
+        <div class="answer">
+          <p>Place the plugin folder in your project plugins directory so the descriptor is here:</p>
+          <p><code>YourProject/Plugins/CodeForge/CodeForge.uplugin</code></p>
+          <p>Open the project and let Unreal rebuild modules if requested. If the editor rebuild fails, close Unreal and build from Visual Studio, Rider, or your normal Unreal Build Tool workflow.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>What does my project need before CodeForge can generate files?</summary>
+        <div class="answer">
+          <p>Your project needs a valid native module. In practice, that means a <code>Source</code> folder, a module directory, and a <code>.Build.cs</code> file. Blueprint-only projects should be converted to C++ first by adding a C++ class from Unreal or by creating the module manually.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Where is CodeForge configured?</summary>
+        <div class="answer">
+          <p>Project settings include CodeForge options for default module target, default subdirectory, custom template path, Live Coding behavior, preview visibility, toolbar visibility, node colors, brand accent colors, node body brightness, and node title font sizes.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Which Unreal versions are supported?</summary>
+        <div class="answer">
+          <p>Use the plugin build that matches the Unreal Engine version shown on Fab or in your downloaded package. Unreal C++ editor APIs can change between engine releases, so a build compiled for one engine version should not be assumed to work in every other version.</p>
+          <p>For version-specific help, use the <a href="https://discord.gg/nqYQ5mtmHb" target="_blank" rel="noopener">Discord</a>.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section class="section faq-section" id="workflow">
+    <div class="section-heading">
+      <h2>Daily Workflow</h2>
+      <p>The path from a new CodeForge asset to generated and compiled files.</p>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>How do I create my first CodeForge asset?</summary>
+        <div class="answer">
+          <ol>
+            <li>Create or open a C++ Unreal project.</li>
+            <li>Enable CodeForge and restart the editor if Unreal asks.</li>
+            <li>Create a CodeForge Blueprint asset. The <em>Create CodeForge Class</em> wizard will guide you through picking a visual archetype (Actor, Component, Struct, Enum, Interface, etc.) and a name.</li>
+            <li>Open the asset in the CodeForge editor.</li>
+            <li>Set the type kind, name, class type, module target, and optional subdirectory.</li>
+            <li>Add properties, functions, RPCs, delegates, interfaces, enum entries, or struct fields. Full Undo/Redo is supported for all graph and property edits.</li>
+            <li>Review validation messages directly on the graph nodes and the live code preview output.</li>
+            <li>Generate files and compile the project.</li>
+          </ol>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>What does the CodeForge editor contain?</summary>
+        <div class="answer">
+          <p>The editor has a graph area, a details panel, and a generated code preview. It also includes workflow actions such as Generate, Examples, search, and auto layout.</p>
+          <p>The graph is for orientation and structure. The details panel is where selected node and asset properties are edited.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Can I preview code before writing files?</summary>
+        <div class="answer">
+          <p>Yes. The preview panel shows generated header and source output so you can inspect names, specifiers, includes, parent classes, replication code, and function bodies before writing files into the project.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Can I regenerate after changing the asset?</summary>
+        <div class="answer">
+          <p>Yes. Update the CodeForge asset, review the preview, and regenerate. If generated files have been hand-edited, compare the new output before overwriting important implementation work.</p>
+          <div class="note"><strong>Recommended habit:</strong> commit or back up generated files before a large regeneration pass.</div>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Does CodeForge compile the project?</summary>
+        <div class="answer">
+          <p>CodeForge writes source files. Compilation is still handled by Unreal Build Tool, Live Coding, your IDE, or your normal build command. If a structural change causes Live Coding friction, close the editor and run a clean build.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section class="section faq-section" id="generation">
+    <div class="section-heading">
+      <h2>Code Generation</h2>
+      <p>Classes, properties, functions, delegates, interfaces, networking, and output paths.</p>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Which class parents can CodeForge generate?</summary>
+        <div class="answer">
+          <p>Supported class targets include <code>AActor</code>, <code>APawn</code>, <code>ACharacter</code>, <code>UActorComponent</code>, <code>USceneComponent</code>, <code>UObject</code>, <code>AGameModeBase</code>, <code>AGameStateBase</code>, <code>APlayerController</code>, <code>APlayerState</code>, and <code>AHUD</code>.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Does CodeForge handle Unreal prefixes?</summary>
+        <div class="answer">
+          <p>Yes. CodeForge derives the expected prefix for generated types. Actor-family classes receive <code>A</code>, object-family classes receive <code>U</code>, structs receive <code>F</code>, enums receive <code>E</code>, and interfaces use the Unreal <code>U</code>/<code>I</code> interface pattern.</p>
+          <p>If you already entered a correctly prefixed name, CodeForge avoids creating a double prefix.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>What property options are available?</summary>
+        <div class="answer">
+          <p>Property definitions include name, type, category, default value, edit visibility, Blueprint read access, replication, RepNotify, replication condition, ExposeOnSpawn, SaveGame, metadata, include path, and optional RepNotify body.</p>
+          <p>Edit specifiers are prioritized as <code>VisibleAnywhere</code>, <code>EditAnywhere</code>, <code>EditDefaultsOnly</code>, then <code>EditInstanceOnly</code>. Blueprint access is either <code>BlueprintReadWrite</code> or <code>BlueprintReadOnly</code>.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>What function options are available?</summary>
+        <div class="answer">
+          <p>Function definitions include name, return type, parameters, category, include path, Blueprint callable or pure behavior, const, BlueprintNativeEvent, Exec, UFUNCTION emission, virtual, override, and optional function body.</p>
+          <p>Function parameters can be const, reference, both, or plain value parameters.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>How are RPCs generated?</summary>
+        <div class="answer">
+          <p>RPC definitions support <code>Server</code>, <code>Client</code>, and <code>NetMulticast</code> modes, reliable or unreliable flags, parameters, and optional function body text. Server RPCs include validation support according to the plugin's current generation rules.</p>
+          <p>RPCs are only valid on actor-derived class types.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>How does replication work?</summary>
+        <div class="answer">
+          <p>Class-level replication and property-level replication can generate Unreal replication setup. RepNotify properties generate <code>ReplicatedUsing=OnRep_Name</code> declarations and matching notification body hooks. Replication conditions map to Unreal condition names such as <code>COND_OwnerOnly</code>, <code>COND_InitialOnly</code>, and <code>COND_SkipOwner</code>.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Can CodeForge generate delegates?</summary>
+        <div class="answer">
+          <p>Yes. Delegate types include dynamic multicast, dynamic, multicast, and simple delegates. Delegate parameters are supported up to the Unreal macro limits used by the generator. Dynamic multicast delegates receive <code>BlueprintAssignable</code> property output, while dynamic delegates can receive <code>BlueprintReadWrite</code>.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Can CodeForge generate interfaces?</summary>
+        <div class="answer">
+          <p>Yes. Interface generation creates the Unreal dual-class structure: a <code>UINTERFACE</code> class and the matching <code>I</code>-prefixed native interface type. Interface functions are generated from the asset's function list.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Where do generated files go?</summary>
+        <div class="answer">
+          <p>CodeForge scans project modules from <code>.Build.cs</code> files, then writes output into the selected module's <code>Public</code> and <code>Private</code> folders. The optional subdirectory setting is applied under those folders.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Does an enum generate a source file?</summary>
+        <div class="answer">
+          <p>No. Enum assets generate a header. Class, struct, and interface assets can generate both header and source output when their selected templates provide both.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section class="section faq-section" id="customization">
+    <div class="section-heading">
+      <h2>Templates And Customization</h2>
+      <p>How to adapt generated output and the editor appearance to your project.</p>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Can I customize generated code?</summary>
+        <div class="answer">
+          <p>Yes. CodeForge uses <code>.cft</code> template files. The built-in template folders include common fragments, class templates, struct templates, enum templates, and replication templates.</p>
+          <p>You can point CodeForge at a custom template directory in project settings. That lets a project or team keep its own generator style without editing plugin files directly.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>What happens if a template is missing?</summary>
+        <div class="answer">
+          <p>The generator reports an error such as a missing header template, missing source template, or template processing failure. Restore the default templates or fix the custom template path before regenerating.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Can I customize node colors?</summary>
+        <div class="answer">
+          <p>Yes. Project settings expose colors for class, struct, enum, interface, property, function, RPC, and delegate nodes. Branding settings also control the accent color, secondary color, body brightness, type node tinting, and node title font sizes.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Can I change the default module or output folder?</summary>
+        <div class="answer">
+          <p>Yes. Set the default module target and default subdirectory in CodeForge settings. Individual assets can still choose their own module and subdirectory when needed.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Should templates be kept in source control?</summary>
+        <div class="answer">
+          <p>Yes, if a team depends on custom output. Template changes affect future generated files, so review them like code generator changes and keep them versioned with the project.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section class="section faq-section" id="troubleshooting">
+    <div class="section-heading">
+      <h2>Troubleshooting</h2>
+      <p>Fast checks for the most common build, validation, and regeneration issues.</p>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Unreal says modules need to be rebuilt. What should I do?</summary>
+        <div class="answer">
+          <p>Allow Unreal to rebuild if prompted. If the rebuild fails inside the editor, close Unreal and build the project from your IDE or command line. Confirm that your Unreal version, Visual Studio toolchain, Windows SDK, and project module setup are valid.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>The generated code does not compile. Where should I start?</summary>
+        <div class="answer">
+          <ol>
+            <li>Open the CodeForge asset and read validation messages.</li>
+            <li>Confirm the module target and subdirectory.</li>
+            <li>Check the type name, parent class, include paths, property types, and function return types.</li>
+            <li>Review replication and RPC settings.</li>
+            <li>Preview the output before writing files again.</li>
+            <li>Compile from a clean editor state if Live Coding is stuck.</li>
+          </ol>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Why did I get a double prefix such as AARPGCharacter?</summary>
+        <div class="answer">
+          <p>Use the base type name unless you intentionally need the prefixed form. For example, enter <code>RPGCharacter</code> and let CodeForge generate <code>ARPGCharacter</code>. If a previously generated file used a double prefix, fix the asset name and regenerate.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>The module list is empty. What does that mean?</summary>
+        <div class="answer">
+          <p>CodeForge discovers modules by scanning for <code>.Build.cs</code> files. If no modules appear, the project may still be Blueprint-only, the source folder may be missing, or the module file may not be in the expected Unreal structure.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Why did Live Coding fail after generation?</summary>
+        <div class="answer">
+          <p>Structural changes such as new classes, new reflected members, new includes, and generated files can require a full rebuild. Save work, close the editor, build the project, then reopen Unreal.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Can CodeForge fix every validation problem automatically?</summary>
+        <div class="answer">
+          <p>No. Some issues have auto-fixes, such as enabling replication for a RepNotify property or fixing a bool prefix. Other issues need developer judgment, especially when the compiler error depends on project-specific includes or gameplay code.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section class="section faq-section" id="team">
+    <div class="section-heading">
+      <h2>Team Use And Source Control</h2>
+      <p>How to use generated code responsibly in a shared project.</p>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Should generated files be committed?</summary>
+        <div class="answer">
+          <p>Yes. Generated headers and source files are normal Unreal project source once written. Commit them with the CodeForge asset that produced them so the team can review both the source and the schema behind it.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Should CodeForge assets be committed?</summary>
+        <div class="answer">
+          <p>Yes. CodeForge assets are the editable source for future regeneration. Without them, teammates can compile the generated code but cannot easily update the structured generator data.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>How should manual edits be handled?</summary>
+        <div class="answer">
+          <p>Keep manual gameplay logic in clear places and review regeneration diffs carefully. For larger teams, agree on whether generated files are overwritten wholesale or whether regeneration is used mainly for initial scaffolding.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Does CodeForge track structural changes?</summary>
+        <div class="answer">
+          <p>CodeForge writes a generation manifest under <code>Saved/CodeForge/generation_manifest.json</code> to compare generated class names, parent classes, property names, property types, function names, and RPC names. This helps classify regenerations as structural or behavioral.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section class="section faq-section" id="fab">
+    <div class="section-heading">
+      <h2>Fab, Licensing, And Distribution</h2>
+      <p>Official listing, usage terms, and production questions.</p>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Where is the official Fab listing?</summary>
+        <div class="answer">
+          <p>The official listing is <a href="https://www.fab.com/listings/14bcc805-1ed2-42f3-8d52-406b9f97b8e9" target="_blank" rel="noopener">https://www.fab.com/listings/14bcc805-1ed2-42f3-8d52-406b9f97b8e9</a>.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Can I use CodeForge in commercial projects?</summary>
+        <div class="answer">
+          <p>Use is governed by the license terms attached to your Fab purchase and the applicable Fab/Epic terms. Check the Fab listing for the current license details before using the plugin in production or client work.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Does generated code belong in my project?</summary>
+        <div class="answer">
+          <p>Generated source is intended to become part of your Unreal project. The CodeForge plugin, templates, documentation, and bundled assets remain governed by the plugin license. Consult the Fab license for legal details.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Should I distribute CodeForge with my game?</summary>
+        <div class="answer">
+          <p>No, not as runtime game content unless your license explicitly allows it. CodeForge is an editor plugin and generation tool. Generated C++ compiles into your project; the editor plugin itself is not something end users normally need.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section class="section faq-section" id="support">
+    <div class="section-heading">
+      <h2>Support And Community</h2>
+      <p>Where to ask questions and what to include in useful reports.</p>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>Where can I get help?</summary>
+        <div class="answer">
+          <p>Join the <a href="https://discord.gg/nqYQ5mtmHb" target="_blank" rel="noopener">GregOrigin Discord</a> for questions, workflow help, bug reports, and update discussion. You can also use the support information on the <a href="https://www.fab.com/listings/14bcc805-1ed2-42f3-8d52-406b9f97b8e9" target="_blank" rel="noopener">Fab listing</a>.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>What should I include in a bug report?</summary>
+        <div class="answer">
+          <ul>
+            <li>Unreal Engine version.</li>
+            <li>CodeForge version or package name.</li>
+            <li>Whether the install came from Fab or a manual plugin folder.</li>
+            <li>The exact validation, compiler, or Unreal log error.</li>
+            <li>Steps to reproduce from a new CodeForge asset if possible.</li>
+            <li>Relevant generated header/source snippets.</li>
+          </ul>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Can I request features?</summary>
+        <div class="answer">
+          <p>Yes. Feature requests are welcome on Discord. The most useful requests include the workflow problem, current workaround, expected generated output, and why the change would save time or reduce errors.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Where are the manuals?</summary>
+        <div class="answer">
+          <p>Use <a href="index.html">CodeForge User Manual</a> for the main feature guide and <a href="RPGKit_Manual.html">RPG Kit Manual</a> for the included example workflow.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section class="section faq-section" id="reference">
+    <div class="section-heading">
+      <h2>Quick Reference</h2>
+      <p>A compact list of fields and generated concepts.</p>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>What root asset fields matter most?</summary>
+        <div class="answer">
+          <p><span class="tag">ClassName</span><span class="tag">BlueprintKind</span><span class="tag">ClassType</span><span class="tag">ModuleTarget</span><span class="tag">SubDirectory</span><span class="tag">bReplicated</span><span class="tag">ConstructorBody</span></p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Which replication conditions are available?</summary>
+        <div class="answer">
+          <p><span class="tag">None</span><span class="tag">InitialOnly</span><span class="tag">OwnerOnly</span><span class="tag">SkipOwner</span><span class="tag">SimulatedOnly</span><span class="tag">AutonomousOnly</span><span class="tag">SimulatedOrPhysics</span><span class="tag">InitialOrOwner</span><span class="tag">Custom</span><span class="tag">ReplayOrOwner</span><span class="tag">ReplayOnly</span><span class="tag">SimulatedOnlyNoReplay</span><span class="tag">SimulatedOrPhysicsNoReplay</span><span class="tag">SkipReplay</span><span class="tag">Dynamic</span><span class="tag">Never</span></p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>What does validation check?</summary>
+        <div class="answer">
+          <p>Validation checks missing class names, duplicate member names, conflicting Blueprint property flags, reserved Unreal names, C++ keywords, invalid RepNotify settings, bool naming, RPCs on non-actor classes, replicated properties on non-actor classes, struct replication flags, empty interfaces, empty classes, empty RPC names, and delegate parameter limits.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Which auto-fixes exist?</summary>
+        <div class="answer">
+          <p>Current auto-fixes include enabling replication for a RepNotify property, adding the <code>b</code> prefix to bool properties, and removing replication flags from struct properties.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section class="section faq-section" id="examples">
+    <div class="section-heading">
+      <h2>Examples And RPG Kit</h2>
+      <p>How the included example workflow fits into the plugin.</p>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>What are the example blueprints?</summary>
+        <div class="answer">
+          <p>The RPG Setup wizard can create nine sample CodeForge assets under <code>/Game/CodeForgeExamples/</code>. The RPG Starter Kit examples demonstrate enums, structs, interfaces, replicated classes, components, delegates, RPCs, pickups, enemies, and generated gameplay scaffolding.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Does the RPG kit create a playable map?</summary>
+        <div class="answer">
+          <p>Yes. The RPG Setup wizard creates an RPG demo map at <code>/Game/CodeForgeExamples/RPGStarterKit/Maps/RPG_Demo</code>, reports whether the compiled runtime classes are loaded, and can open the map directly. If runtime classes are missing, compile the project first, then refresh the wizard status.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Where can I read the RPG kit guide?</summary>
+        <div class="answer">
+          <p>Open <a href="RPGKit_Manual.html">RPG Kit Manual</a> from the docs folder.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section class="section faq-section" id="updates">
+    <div class="section-heading">
+      <h2>Updates And Maintenance</h2>
+      <p>How to keep CodeForge useful across project and engine changes.</p>
+    </div>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary>How do Fab updates work?</summary>
+        <div class="answer">
+          <p>Fab-delivered updates appear through the normal Fab or Epic Games Launcher flow. Install the update for the Unreal Engine version you use, then rebuild modules if Unreal requests it.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>What should I do before updating?</summary>
+        <div class="answer">
+          <p>Commit your project, generated files, CodeForge assets, and custom templates. After updating, open key assets, inspect previews, regenerate only when needed, and review diffs before committing.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>How do I move a project to a new Unreal version?</summary>
+        <div class="answer">
+          <p>Use a CodeForge package built for the target Unreal version. Compile the project cleanly, regenerate only after the project builds, and check any Unreal API changes that affect generated source or custom templates.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section class="final-cta" aria-label="Final support links">
+    <span class="tag">Official listing</span>
+    <span class="tag">Community support</span>
+    <h2>Start with the asset, preview the output, then compile with confidence.</h2>
+    <p>Use Fab for the official CodeForge listing, the manuals for detailed workflows, and Discord for version-specific support, bug reports, and feature requests.</p>
+    <div class="hero-actions">
+      <a class="button primary" href="https://www.fab.com/listings/14bcc805-1ed2-42f3-8d52-406b9f97b8e9" target="_blank" rel="noopener">Open Fab Listing</a>
+      <a class="button" href="https://discord.gg/nqYQ5mtmHb" target="_blank" rel="noopener">Open Discord</a>
+      <a class="button" href="#top">Back To Top</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p><strong>CodeForge FAQ</strong> - Unreal Engine C++ code generation plugin by GregOrigin.</p>
+    <p>Copyright &copy; 2026 GregOrigin. All Rights Reserved.</p>
+  </footer>
+</main>
+
+<script>
+(function () {
+  const input = document.getElementById("faq-search");
+  const items = Array.from(document.querySelectorAll(".faq-item"));
+  const sections = Array.from(document.querySelectorAll(".faq-section"));
+
+  function normalize(value) {
+    return value.toLowerCase().trim();
+  }
+
+  function update() {
+    const query = normalize(input.value);
+
+    items.forEach((item) => {
+      const text = normalize(item.textContent || "");
+      const match = !query || text.includes(query);
+      item.classList.toggle("is-hidden", !match);
+      if (query && match) {
+        item.open = true;
+      }
+    });
+
+    sections.forEach((section) => {
+      const visible = section.querySelector(".faq-item:not(.is-hidden)");
+      section.classList.toggle("is-hidden", !visible);
+    });
+  }
+
+  if (input) {
+    input.addEventListener("input", update);
+  }
+})();
+</script>
+</body>
+</html>

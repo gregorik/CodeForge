@@ -1,3 +1,4 @@
+// Copyright (c) 2026 GregOrigin. All Rights Reserved.
 #include "CodeForgeBlueprint.h"
 
 // ---------------------------------------------------------------------------
@@ -40,8 +41,12 @@ FString FCodeForgePropertyDef::BuildSpecifierString() const
 {
     TArray<FString> Specifiers;
 
-    // Edit specifiers — mutually exclusive, first true wins
-    if (bEditAnywhere)
+    // Edit/visibility specifiers — mutually exclusive, first true wins
+    if (bVisibleAnywhere)
+    {
+        Specifiers.Add(TEXT("VisibleAnywhere"));
+    }
+    else if (bEditAnywhere)
     {
         Specifiers.Add(TEXT("EditAnywhere"));
     }
@@ -130,8 +135,12 @@ FString FCodeForgeFunctionDef::BuildSpecifierString() const
 {
     TArray<FString> Specifiers;
 
-    // BlueprintPure implies BlueprintCallable — treat as mutually exclusive
-    if (bBlueprintPure)
+    // Exec and Blueprint exposure specifiers are mutually exclusive in CodeForge's UI.
+    if (bExec)
+    {
+        Specifiers.Add(TEXT("Exec"));
+    }
+    else if (bBlueprintPure)
     {
         Specifiers.Add(TEXT("BlueprintPure"));
     }
@@ -206,6 +215,8 @@ FString FCodeForgeRPCDef::BuildParamListString() const
     }
     return FString::Join(Parts, TEXT(", "));
 }
+
+// ---------------------------------------------------------------------------
 
 // ---------------------------------------------------------------------------
 // UCodeForgeBlueprint — helpers
@@ -568,6 +579,40 @@ TArray<FCodeForgeValidationResult> UCodeForgeBlueprint::Validate() const
                     FString::Printf(TEXT("StructProperties.%s"), *Prop.Name),
                     FString::Printf(TEXT("RemoveReplicationFlags:%s"), *Prop.Name)));
             }
+        }
+    }
+    else if (BlueprintKind == ECodeForgeBlueprintKind::Interface)
+    {
+        TArray<FString> FunctionNames;
+
+        for (const FCodeForgeFunctionDef& Func : Functions)
+        {
+            if (FunctionNames.Contains(Func.Name))
+            {
+                Results.Add(MakeValidationError(
+                    FString::Printf(TEXT("Duplicate function name '%s' in interface"), *Func.Name),
+                    TEXT("Functions")));
+            }
+            else
+            {
+                FunctionNames.Add(Func.Name);
+            }
+
+            if (Func.Name.IsEmpty())
+            {
+                Results.Add(MakeValidationError(
+                    TEXT("An interface function has an empty name"),
+                    TEXT("Functions")));
+            }
+
+            ValidateName(Func.Name, FString::Printf(TEXT("Interface function '%s'"), *Func.Name), Results);
+        }
+
+        if (Functions.Num() == 0)
+        {
+            Results.Add(MakeValidationWarning(
+                TEXT("Interface has no functions"),
+                TEXT("Interface")));
         }
     }
     // Enum kind: no special validation beyond ClassName (already checked above)

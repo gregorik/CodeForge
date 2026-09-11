@@ -1,3 +1,4 @@
+// Copyright (c) 2026 GregOrigin. All Rights Reserved.
 #pragma once
 
 #include "CoreMinimal.h"
@@ -18,4 +19,7 @@ public:
 	void SyncAllNodesToBlueprint();
 	void SyncAllNodesFromBlueprint();
 	void RunValidationOnNodes();
+
+	/** Creates graph nodes from blueprint data when opening a blueprint that has no graph yet. */
+	void PopulateFromBlueprint();
 };

@@ -1,0 +1,14 @@
+{{> copyright_header}}
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "{{ClassName}}.generated.h"
+
+UENUM({{EnumSpecifiers}})
+enum class {{OwnerClassName}} : uint8
+{
+{{#each EnumEntries}}
+    {{EntryName}}{{EntryValue}}{{EntryMetaSuffix}},
+{{/each}}
+};

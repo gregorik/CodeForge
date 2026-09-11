@@ -1,10 +1,17 @@
+// Copyright (c) 2026 GregOrigin. All Rights Reserved.
 // CodeForgeAssetFactory.cpp
 // Creates new UCodeForgeBlueprint assets when the user right-clicks in Content Browser.
 
 #include "CodeForgeAssetFactory.h"
+
 #include "CodeForgeBlueprint.h"
 #include "CodeForgeSettings.h"
 #include "Misc/App.h"
+
+#include "Framework/Application/SlateApplication.h"
+#include "Interfaces/IMainFrameModule.h"
+#include "Modules/ModuleManager.h"
+#include "Widgets/SWindow.h"
 
 UCodeForgeAssetFactory::UCodeForgeAssetFactory()
 {
@@ -12,6 +19,8 @@ UCodeForgeAssetFactory::UCodeForgeAssetFactory()
 	bCreateNew = true;
 	bEditAfterNew = true;
 }
+
+
 
 UObject* UCodeForgeAssetFactory::FactoryCreateNew(
 	UClass* InClass,
@@ -23,26 +32,16 @@ UObject* UCodeForgeAssetFactory::FactoryCreateNew(
 {
 	UCodeForgeBlueprint* NewBlueprint = NewObject<UCodeForgeBlueprint>(
 		InParent, InClass, InName, Flags);
+	if (!NewBlueprint) return nullptr;
 
-	if (NewBlueprint)
+	NewBlueprint->ClassName = InName.ToString();
+
+	const UCodeForgeSettings* Settings = GetDefault<UCodeForgeSettings>();
+	if (NewBlueprint->ModuleTarget.IsEmpty())
 	{
-		NewBlueprint->ClassName = InName.ToString();
-
-		// Default ModuleTarget from settings, falling back to project name
-		if (NewBlueprint->ModuleTarget.IsEmpty())
-		{
-			const UCodeForgeSettings* Settings = GetDefault<UCodeForgeSettings>();
-			if (Settings && !Settings->DefaultModuleTarget.IsEmpty())
-			{
-				NewBlueprint->ModuleTarget = Settings->DefaultModuleTarget;
-			}
-			else
-			{
-				NewBlueprint->ModuleTarget = FApp::GetProjectName();
-			}
-
-			NewBlueprint->SubDirectory = Settings ? Settings->DefaultSubDirectory : TEXT("");
-		}
+		NewBlueprint->ModuleTarget = (Settings && !Settings->DefaultModuleTarget.IsEmpty())
+			? Settings->DefaultModuleTarget : FApp::GetProjectName();
+		NewBlueprint->SubDirectory = Settings ? Settings->DefaultSubDirectory : TEXT("");
 	}
 
 	return NewBlueprint;

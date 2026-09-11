@@ -1,3 +1,4 @@
+// Copyright (c) 2026 GregOrigin. All Rights Reserved.
 // CodeForgeBlueprintValidationTest.cpp
 // Automation tests for UCodeForgeBlueprint::Validate() and ApplyAutoFix() — Task 4.
 // One test per validation rule (12 rules) plus auto-fix and positive tests.

@@ -1,29 +1,44 @@
 {
     "FileVersion": 3,
     "Version": 1,
-    "VersionName": "0.1.0",
+    "VersionName": "0.1",
     "FriendlyName": "CodeForge",
-    "Description": "Visual C++ code generator with node-based class definition and UBT-compliant boilerplate generation.",
+    "Description": "Native Visual C++ code generator with node-based class definition and UBT-compliant boilerplate generation.",
     "Category": "Editor",
-    "CreatedBy": "CodeForge",
-    "CreatedByURL": "",
-    "DocsURL": "",
-    "SupportURL": "",
+    "CreatedBy": "GregOrigin",
+    "CreatedByURL": "https://www.gregorigin.com",
+    "DocsURL": "https://gregorigin.com/CodeForge/",
+    "SupportURL": "https://www.gregorigin.com/contact.html",
     "EngineVersion": "5.7.0",
     "EnabledByDefault": true,
     "CanContainContent": true,
-    "IsBetaVersion": true,
-    "Installed": false,
+    "Installed": true,
     "Modules": [
         {
             "Name": "CodeForgeRuntime",
             "Type": "Runtime",
-            "LoadingPhase": "Default"
+            "LoadingPhase": "Default",
+            "PlatformAllowList": [
+                "Win64",
+				"Mac",
+				"Linux",
+				"Android",
+				"IOS"
+
+            ]
         },
         {
             "Name": "CodeForgeEditor",
             "Type": "Editor",
-            "LoadingPhase": "PostEngineInit"
+            "LoadingPhase": "PostEngineInit",
+            "PlatformAllowList": [
+                "Win64",
+				"Mac",
+				"Linux",
+				"Android",
+				"IOS"
+
+            ]
         }
     ]
 }

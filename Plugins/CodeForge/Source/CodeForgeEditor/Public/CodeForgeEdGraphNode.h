@@ -1,3 +1,4 @@
+// Copyright (c) 2026 GregOrigin. All Rights Reserved.
 #pragma once
 
 #include "CoreMinimal.h"
@@ -13,6 +14,7 @@ public:
 	virtual FText GetNodeTitle(ENodeTitleType::Type TitleType) const override;
 	virtual FLinearColor GetNodeTitleColor() const override;
 	virtual void AllocateDefaultPins() override;
+	virtual void AutowireNewNode(UEdGraphPin* FromPin) override;
 
 	virtual void SyncToBlueprint(class UCodeForgeBlueprint* Blueprint) const {}
 	virtual void SyncFromBlueprint(const class UCodeForgeBlueprint* Blueprint) {}

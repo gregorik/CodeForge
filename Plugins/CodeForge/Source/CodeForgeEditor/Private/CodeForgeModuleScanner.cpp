@@ -1,3 +1,4 @@
+// Copyright (c) 2026 GregOrigin. All Rights Reserved.
 // CodeForgeModuleScanner.cpp
 // Implements FCodeForgeModuleScanner — discovers project modules by reading
 // the .uproject file and scanning Source/ for *.Build.cs files.
@@ -125,15 +126,16 @@ TArray<FString> FCodeForgeModuleScanner::FindSubdirectories(const FString& Dir) 
 {
 	TArray<FString> SubDirs;
 
+	
 	IFileManager& FM = IFileManager::Get();
-	FM.IterateDirectory(*Dir, [&SubDirs](const TCHAR* Path, bool bIsDirectory) -> bool
+	TArray<FString> FoundDirs;
+	FM.FindFiles(FoundDirs, *FPaths::Combine(Dir, TEXT("*")), false, true);
+	
+	for (const FString& D : FoundDirs)
 	{
-		if (bIsDirectory)
-		{
-			SubDirs.Add(FPaths::GetCleanFilename(Path));
-		}
-		return true; // continue iteration
-	});
+		SubDirs.Add(FPaths::GetCleanFilename(D));
+	}
+
 
 	return SubDirs;
 }

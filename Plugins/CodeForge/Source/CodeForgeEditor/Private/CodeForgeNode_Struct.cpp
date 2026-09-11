@@ -1,5 +1,7 @@
+// Copyright (c) 2026 GregOrigin. All Rights Reserved.
 #include "CodeForgeNode_Struct.h"
 #include "CodeForgeBlueprint.h"
+#include "CodeForgeSettings.h"
 
 FText UCodeForgeNode_Struct::GetNodeTitle(ENodeTitleType::Type TitleType) const
 {
@@ -8,7 +10,7 @@ FText UCodeForgeNode_Struct::GetNodeTitle(ENodeTitleType::Type TitleType) const
 
 FLinearColor UCodeForgeNode_Struct::GetNodeTitleColor() const
 {
-	return FLinearColor(0.0f, 0.6f, 0.2f);
+	return GetDefault<UCodeForgeSettings>()->StructNodeColor;
 }
 
 void UCodeForgeNode_Struct::AllocateDefaultPins()

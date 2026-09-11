@@ -1,3 +1,4 @@
+// Copyright (c) 2026 GregOrigin. All Rights Reserved.
 #include "CodeForgeEdGraphSchema.h"
 #include "CodeForgeEdGraphNode.h"
 #include "ScopedTransaction.h"
@@ -7,6 +8,7 @@
 #include "CodeForgeNode_Property.h"
 #include "CodeForgeNode_Function.h"
 #include "CodeForgeNode_RPC.h"
+#include "CodeForgeSettings.h"
 
 // ---------------------------------------------------------------------------
 // FCodeForgeSchemaAction_NewNode
@@ -35,9 +37,21 @@ UEdGraphNode* FCodeForgeSchemaAction_NewNode::PerformAction(
 	NewNode->PostPlacedNewNode();
 	NewNode->AllocateDefaultPins();
 
+	// Wire the new node to the pin we dragged from
 	if (FromPin)
 	{
-		NewNode->AutowireNewNode(FromPin);
+		for (UEdGraphPin* Pin : NewNode->Pins)
+		{
+			if (Pin->Direction != FromPin->Direction
+				&& Pin->PinType.PinCategory == FromPin->PinType.PinCategory)
+			{
+				// Record both sides for undo
+				FromPin->GetOwningNode()->Modify();
+				Pin->GetOwningNode()->Modify();
+				FromPin->MakeLinkTo(Pin);
+				break;
+			}
+		}
 	}
 
 	return NewNode;
@@ -116,11 +130,11 @@ const FPinConnectionResponse UCodeForgeEdGraphSchema::CanCreateConnection(
 		return FPinConnectionResponse(CONNECT_RESPONSE_DISALLOW, TEXT("Property pins must connect from a Class or Struct node."));
 	}
 
-	// Function connections: Class output -> Function input
+	// Function connections: Class or Interface output -> Function input
 	if (InputCategory == TEXT("PC_CodeForgeFunction"))
 	{
-		bool bFromClass = OutputNode->IsA<UCodeForgeNode_Class>();
 		bool bToFunction = InputNode->IsA<UCodeForgeNode_Function>();
+		bool bFromClass = OutputNode->IsA<UCodeForgeNode_Class>();
 
 		if (bFromClass && bToFunction)
 		{
@@ -148,6 +162,14 @@ const FPinConnectionResponse UCodeForgeEdGraphSchema::CanCreateConnection(
 		}
 
 		return FPinConnectionResponse(CONNECT_RESPONSE_DISALLOW, TEXT("RPC pins must connect from a Class node."));
+	}
+
+	// Delegate connections: Class output -> Delegate input
+	if (InputCategory == TEXT("PC_CodeForgeDelegate"))
+	{
+		bool bFromClass = OutputNode->IsA<UCodeForgeNode_Class>();
+
+		return FPinConnectionResponse(CONNECT_RESPONSE_DISALLOW, TEXT("Delegate pins must connect from a Class node."));
 	}
 
 	return FPinConnectionResponse(CONNECT_RESPONSE_DISALLOW, TEXT("Unknown pin category."));
@@ -218,6 +240,24 @@ void UCodeForgeEdGraphSchema::GetGraphContextActions(FGraphContextMenuBuilder& C
 		Action->NodeTemplate = NewObject<UCodeForgeNode_RPC>(ContextMenuBuilder.OwnerOfTemporaries);
 		ContextMenuBuilder.AddAction(Action);
 	}
+
+	{
+		TSharedPtr<FCodeForgeSchemaAction_NewNode> Action = MakeShared<FCodeForgeSchemaAction_NewNode>(
+			FText::FromString(TEXT("CodeForge")),
+			FText::FromString(TEXT("Add Delegate")),
+			FText::FromString(TEXT("Add a new Delegate node")),
+			0);
+		ContextMenuBuilder.AddAction(Action);
+	}
+
+	{
+		TSharedPtr<FCodeForgeSchemaAction_NewNode> Action = MakeShared<FCodeForgeSchemaAction_NewNode>(
+			FText::FromString(TEXT("CodeForge")),
+			FText::FromString(TEXT("Add Interface")),
+			FText::FromString(TEXT("Add a new Interface definition node")),
+			0);
+		ContextMenuBuilder.AddAction(Action);
+	}
 }
 
 // ---------------------------------------------------------------------------
@@ -226,19 +266,26 @@ void UCodeForgeEdGraphSchema::GetGraphContextActions(FGraphContextMenuBuilder& C
 
 FLinearColor UCodeForgeEdGraphSchema::GetPinTypeColor(const FEdGraphPinType& PinType) const
 {
+	const UCodeForgeSettings* Settings = GetDefault<UCodeForgeSettings>();
+
 	if (PinType.PinCategory == TEXT("PC_CodeForgeProperty"))
 	{
-		return FLinearColor(0.2f, 0.8f, 0.2f);
+		return Settings->PropertyNodeColor;
 	}
 
 	if (PinType.PinCategory == TEXT("PC_CodeForgeFunction"))
 	{
-		return FLinearColor(0.9f, 0.5f, 0.0f);
+		return Settings->FunctionNodeColor;
 	}
 
 	if (PinType.PinCategory == TEXT("PC_CodeForgeRPC"))
 	{
-		return FLinearColor(0.9f, 0.1f, 0.1f);
+		return Settings->RPCNodeColor;
+	}
+
+	if (PinType.PinCategory == TEXT("PC_CodeForgeDelegate"))
+	{
+		return Settings->DelegateNodeColor;
 	}
 
 	return FLinearColor::White;

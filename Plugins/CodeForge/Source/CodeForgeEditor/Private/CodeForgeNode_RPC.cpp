@@ -1,5 +1,7 @@
+// Copyright (c) 2026 GregOrigin. All Rights Reserved.
 #include "CodeForgeNode_RPC.h"
 #include "CodeForgeBlueprint.h"
+#include "CodeForgeSettings.h"
 
 FText UCodeForgeNode_RPC::GetNodeTitle(ENodeTitleType::Type TitleType) const
 {
@@ -8,7 +10,7 @@ FText UCodeForgeNode_RPC::GetNodeTitle(ENodeTitleType::Type TitleType) const
 
 FLinearColor UCodeForgeNode_RPC::GetNodeTitleColor() const
 {
-	return FLinearColor(0.9f, 0.1f, 0.1f);
+	return GetDefault<UCodeForgeSettings>()->RPCNodeColor;
 }
 
 void UCodeForgeNode_RPC::AllocateDefaultPins()

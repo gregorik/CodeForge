@@ -1,5 +1,7 @@
+// Copyright (c) 2026 GregOrigin. All Rights Reserved.
 #include "CodeForgeNode_Enum.h"
 #include "CodeForgeBlueprint.h"
+#include "CodeForgeSettings.h"
 
 FText UCodeForgeNode_Enum::GetNodeTitle(ENodeTitleType::Type TitleType) const
 {
@@ -8,7 +10,7 @@ FText UCodeForgeNode_Enum::GetNodeTitle(ENodeTitleType::Type TitleType) const
 
 FLinearColor UCodeForgeNode_Enum::GetNodeTitleColor() const
 {
-	return FLinearColor(0.8f, 0.7f, 0.0f);
+	return GetDefault<UCodeForgeSettings>()->EnumNodeColor;
 }
 
 void UCodeForgeNode_Enum::AllocateDefaultPins()

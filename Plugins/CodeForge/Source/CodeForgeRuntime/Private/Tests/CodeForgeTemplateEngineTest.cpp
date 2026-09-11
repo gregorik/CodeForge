@@ -1,3 +1,4 @@
+// Copyright (c) 2026 GregOrigin. All Rights Reserved.
 // CodeForgeTemplateEngineTest.cpp
 // Automation tests for FCodeForgeTemplateEngine — written TDD-style (tests first).
 

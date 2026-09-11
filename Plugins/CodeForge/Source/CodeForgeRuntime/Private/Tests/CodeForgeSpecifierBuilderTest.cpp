@@ -1,3 +1,4 @@
+// Copyright (c) 2026 GregOrigin. All Rights Reserved.
 #include "Misc/AutomationTest.h"
 #include "CodeForgeBlueprint.h"
 #include "CodeForgePropertyDef.h"

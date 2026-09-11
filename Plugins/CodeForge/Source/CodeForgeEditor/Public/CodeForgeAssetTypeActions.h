@@ -1,3 +1,4 @@
+// Copyright (c) 2026 GregOrigin. All Rights Reserved.
 // CodeForgeAssetTypeActions.h
 // Defines how UCodeForgeBlueprint appears in the Content Browser.
 

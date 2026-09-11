@@ -1,3 +1,4 @@
+// Copyright (c) 2026 GregOrigin. All Rights Reserved.
 // CodeForgeTemplateEngine.cpp
 // Implementation of FCodeForgeTemplateEngine — a minimal, dependency-free
 // string template processor for the CodeForge plugin (Layer 3).
